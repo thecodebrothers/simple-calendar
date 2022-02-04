@@ -15,7 +15,7 @@
     },
     {
       "name": "bloc",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/bloc-7.2.1",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -99,7 +99,7 @@
     },
     {
       "name": "flutter_bloc",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-7.3.1",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -332,13 +332,13 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "calendar",
+      "name": "simple_calendar",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-02-04T17:33:21.442858Z",
+  "generated": "2022-02-04T17:35:54.807380Z",
   "generator": "pub",
   "generatorVersion": "2.15.1"
 }

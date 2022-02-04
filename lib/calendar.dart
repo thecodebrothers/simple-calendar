@@ -1,6 +1,6 @@
 library calendar;
 
-import 'package:calendar/presentation/five_days_calendar/widgets/five_days_navigation_bar.dart';
+import 'package:simple_calendar/presentation/five_days_calendar/widgets/five_days_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:infinite_listview/infinite_listview.dart';
