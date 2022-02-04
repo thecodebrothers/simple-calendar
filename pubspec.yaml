@@ -1,0 +1,35 @@
+name: custom_calendar
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get_it: 7.2.0
+  provider: 6.0.1
+  flutter_bloc: 7.3.1
+  equatable: 2.0.3
+  cupertino_icons: 1.0.2
+  infinite_listview: 1.1.0
+  fimber: 0.6.1
+  calendar:
+    path: packages/calendar
+  easy_localization: 3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^1.0.0
+
+flutter:
+
+
+  uses-material-design: true
