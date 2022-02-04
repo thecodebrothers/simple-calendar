@@ -1,35 +1,34 @@
-name: custom_calendar
-description: A new Flutter project.
-
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
-version: 1.0.0+1
+name: calendar
+description: A new Flutter package project.
+version: 0.0.1
+homepage:
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-
+  flutter: ">=1.17.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
-  get_it: 7.2.0
-  provider: 6.0.1
   flutter_bloc: 7.3.1
   equatable: 2.0.3
   cupertino_icons: 1.0.2
   infinite_listview: 1.1.0
-  fimber: 0.6.1
-  calendar:
-    path: packages/calendar
+  flutter:
+    sdk: flutter
   easy_localization: 3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^1.0.0
 
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
 flutter:
 
+  # To add assets to your package, add an assets section, like this:
+  assets:
+    - assets/
+    - assets/translations/
 
-  uses-material-design: true
