@@ -76,16 +76,14 @@ class MonthCalendarView extends StatelessWidget {
                     crossAxisCount: 7,
                     children: state.items
                         .map(
-                          (e) => InkWell(
+                          (e) => MonthTile(
                             onTap: () {
                               onSelected(e.date);
                             },
-                            child: MonthTile(
-                              calendarSettings: calendarSettings,
-                              text: e.isDayName ? _dayName(e.date) : e.date.day.toString(),
-                              hasAnyTask: !e.isDayName && e.hasAnyEvents,
-                              isTheSameMonth: e.isDayName || state.date.isSameMonth(e.date),
-                            ),
+                            calendarSettings: calendarSettings,
+                            text: e.isDayName ? _dayName(e.date) : e.date.day.toString(),
+                            hasAnyTask: !e.isDayName && e.hasAnyEvents,
+                            isTheSameMonth: e.isDayName || state.date.isSameMonth(e.date),
                           ),
                         )
                         .toList(),

@@ -6,12 +6,14 @@ class MonthTile extends StatelessWidget {
   final String text;
   final bool hasAnyTask;
   final bool isTheSameMonth;
+  final VoidCallback onTap;
 
   const MonthTile({
     required this.hasAnyTask,
     required this.calendarSettings,
     required this.text,
     required this.isTheSameMonth,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -19,7 +21,7 @@ class MonthTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
