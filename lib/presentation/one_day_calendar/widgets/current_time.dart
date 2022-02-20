@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/constants.dart';
 
 class CurrentTime extends StatelessWidget {
-  const CurrentTime({Key? key}) : super(key: key);
+  final int numberOfConstantsTasks;
+
+  const CurrentTime({required this.numberOfConstantsTasks, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: DateTime.now().hour * 60 + DateTime.now().minute + 22,
+      top: numberOfConstantsTasks * kCellHeight +
+          DateTime.now().hour * kCellHeight +
+          DateTime.now().minute +
+          kDayNameHeight,
       left: 0,
       right: 0,
       child: Container(

@@ -31,7 +31,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
         return Stack(
           children: [
             EmptyCells(date: date, numberOfConstantsTasks: maxNumberOfWholeDayTasks),
-            if (date.isSameDate(DateTime.now())) const CurrentTime(),
+            if (date.isSameDate(DateTime.now())) CurrentTime(numberOfConstantsTasks: maxNumberOfWholeDayTasks),
             ...events.map(
               (e) => CalendarEventTile(
                 event: e,
