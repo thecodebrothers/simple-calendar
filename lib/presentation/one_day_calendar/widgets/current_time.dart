@@ -11,8 +11,7 @@ class CurrentTime extends StatelessWidget {
     return Positioned(
       top: numberOfConstantsTasks * kCellHeight +
           DateTime.now().hour * kCellHeight +
-          DateTime.now().minute +
-          kDayNameHeight,
+          DateTime.now().minute,
       left: 0,
       right: 0,
       child: Container(
