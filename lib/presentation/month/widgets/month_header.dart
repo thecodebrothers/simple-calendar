@@ -1,14 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/calendar_settings.dart';
 
-class FiveDaysNavigationBar extends StatelessWidget {
-  final double rowWidth;
+class MonthHeader extends StatelessWidget {
   final Function() onTapLeft;
   final Function() onTapRight;
+  final DateTime dayFromMonth;
+  final CalendarSettings calendarSettings;
 
-  const FiveDaysNavigationBar({
-    required this.rowWidth,
+  const MonthHeader({
     required this.onTapLeft,
     required this.onTapRight,
+    required this.dayFromMonth,
+    required this.calendarSettings,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +28,10 @@ class FiveDaysNavigationBar extends StatelessWidget {
             child: Icon(Icons.keyboard_arrow_left),
           ),
         ),
+        Text(
+          _monthName(),
+          style: calendarSettings.calendarHeaderStyle,
+        ),
         InkWell(
           onTap: () => onTapRight(),
           child: const Padding(
@@ -33,5 +41,10 @@ class FiveDaysNavigationBar extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _monthName() {
+    final format = DateFormat("MMM yyyy");
+    return format.format(dayFromMonth);
   }
 }

@@ -1,4 +1,4 @@
-part of calendar;
+import 'package:flutter/material.dart';
 
 class CurrentTime extends StatelessWidget {
   const CurrentTime({Key? key}) : super(key: key);

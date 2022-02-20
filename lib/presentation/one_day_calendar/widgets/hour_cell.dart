@@ -1,4 +1,5 @@
-part of calendar;
+import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/constants.dart';
 
 class CalendarHourCell extends StatelessWidget {
   final int hour;

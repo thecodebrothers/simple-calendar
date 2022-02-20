@@ -219,31 +219,31 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.12",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.13",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "shared_preferences_android",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.10",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "shared_preferences_ios",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.0.9",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "shared_preferences_linux",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.0.4",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences_macos",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.2",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -261,7 +261,7 @@
     },
     {
       "name": "shared_preferences_windows",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.0.4",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -321,7 +321,7 @@
     },
     {
       "name": "win32",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/win32-2.3.10",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dartlang.org/win32-2.4.1",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -338,7 +338,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-02-04T17:35:54.807380Z",
+  "generated": "2022-02-20T23:17:04.347869Z",
   "generator": "pub",
   "generatorVersion": "2.15.1"
 }

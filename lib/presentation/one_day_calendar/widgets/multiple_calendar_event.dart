@@ -1,4 +1,5 @@
-part of calendar;
+import 'package:flutter/material.dart';
+import 'package:simple_calendar/presentation/models/single_event.dart';
 
 class MultipleCalendarEvent extends StatelessWidget {
   final List<SingleEvent> event;

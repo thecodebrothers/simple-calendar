@@ -1,20 +1,26 @@
-part of calendar;
+import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/constants.dart';
 
 class EmptyCells extends StatelessWidget {
   final DateTime date;
-  const EmptyCells({required this.date, Key? key}) : super(key: key);
+  final int numberOfConstantsTasks;
+
+  const EmptyCells({
+    required this.date,
+    required this.numberOfConstantsTasks,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SingleDayDate(date: date),
-        for (int i = 1; i < 25; i++)
+        SizedBox(height: numberOfConstantsTasks * kCellHeight),
+        for (int i = 0; i < kHoursInCalendar; i++)
           Container(
-            height: 60,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade200, width: 1)),
+            height: kCellHeight,
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
           )
       ],
     );

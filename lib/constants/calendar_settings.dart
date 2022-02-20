@@ -1,0 +1,31 @@
+import 'package:flutter/cupertino.dart';
+
+class CalendarSettings {
+  final TextStyle tileTextStyle;
+  final TextStyle fiveDaysHeaderTextStyle;
+  final TextStyle oneDayHeaderTextStyle;
+  final TextStyle calendarCurrentMonthTileStyle;
+  final TextStyle calendarNotCurrentMonthTileStyle;
+  final TextStyle calendarHeaderStyle;
+  final Color calendarDotColor;
+  final String dayBeforeYesterdayTranslation;
+  final String yesterdayTranslation;
+  final String todayTranslation;
+  final String tomorrowTranslation;
+  final String dayAfterTomorrowTranslation;
+
+  CalendarSettings({
+    required this.tileTextStyle,
+    required this.fiveDaysHeaderTextStyle,
+    required this.oneDayHeaderTextStyle,
+    required this.calendarCurrentMonthTileStyle,
+    required this.calendarNotCurrentMonthTileStyle,
+    required this.calendarHeaderStyle,
+    required this.calendarDotColor,
+    required this.dayBeforeYesterdayTranslation,
+    required this.yesterdayTranslation,
+    required this.todayTranslation,
+    required this.tomorrowTranslation,
+    required this.dayAfterTomorrowTranslation,
+  });
+}

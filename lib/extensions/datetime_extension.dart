@@ -1,5 +1,3 @@
-part of calendar;
-
 extension DateOnlyCompare on DateTime {
   bool isSameDate(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
@@ -17,3 +15,17 @@ extension TimeInMinutes on DateTime {
     return hour * 60 + minute;
   }
 }
+
+extension MonthCompare on DateTime {
+  bool isSameMonth(DateTime date) {
+    return date.month == month;
+  }
+}
+
+extension CalculateDaysBetween on DateTime {
+  int calculateDaysBetween(DateTime to) {
+    final newTo = DateTime(to.year, to.month, to.day);
+    return (newTo.difference(this).inHours / 24).round();
+  }
+}
+

@@ -1,24 +1,20 @@
-part of calendar;
+import 'package:flutter/material.dart';
 
 class FiveDaysDate extends StatelessWidget {
   final DateTime date;
   final double rowWidth;
 
-  const FiveDaysDate({required this.date, required this.rowWidth, Key? key})
-      : super(key: key);
+  const FiveDaysDate({required this.date, required this.rowWidth, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: kFiveDaysDateHeight,
       width: rowWidth,
       child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text:
-                "${date.day} ${_getMonth(date.month)} ${date.year}, ${_getDayOfTheWeek(date.weekday)}",
-            style: const TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+            text: "${date.day} ${_getMonth(date.month)} ${date.year}, ${_getDayOfTheWeek(date.weekday)}",
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
           )),
     );
   }
