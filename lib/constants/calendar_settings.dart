@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class CalendarSettings {
-  final TextStyle tileTextStyle;
+  final TextStyle firstLineTileTextStyle;
+  final TextStyle secondLineTileTextStyle;
   final TextStyle fiveDaysHeaderTextStyle;
   final TextStyle oneDayHeaderTextStyle;
   final TextStyle calendarCurrentMonthTileStyle;
@@ -15,7 +16,8 @@ class CalendarSettings {
   final String dayAfterTomorrowTranslation;
 
   CalendarSettings({
-    required this.tileTextStyle,
+    required this.firstLineTileTextStyle,
+    required this.secondLineTileTextStyle,
     required this.fiveDaysHeaderTextStyle,
     required this.oneDayHeaderTextStyle,
     required this.calendarCurrentMonthTileStyle,

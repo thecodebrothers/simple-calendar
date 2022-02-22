@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
@@ -10,11 +11,13 @@ class CalendarEventTile extends StatelessWidget {
   final int? numberOfEvents;
   final double? rowWidth;
   final VoidCallback action;
+  final CalendarSettings calendarSettings;
 
   const CalendarEventTile({
     required this.event,
     required this.numberOfAllDayEvents,
     required this.action,
+    required this.calendarSettings,
     this.position,
     this.numberOfEvents,
     this.rowWidth,
@@ -49,13 +52,13 @@ class CalendarEventTile extends StatelessWidget {
                       Text(
                         event.singleLine,
                         overflow: TextOverflow.fade,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+                        style: calendarSettings.firstLineTileTextStyle,
                       ),
                       if (event.secondLine != null)
                         Text(
                           event.secondLine!,
                           overflow: TextOverflow.fade,
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white10),
+                          style: calendarSettings.secondLineTileTextStyle,
                         ),
                     ],
                   ),
