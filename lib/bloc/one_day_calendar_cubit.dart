@@ -24,12 +24,12 @@ class OneDayCalendarCubit extends Cubit<OneDayCalendarState> {
     });
     loadForDate(_initialDate);
   }
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    return super.close();
-  }
+  //
+  // @override
+  // Future<void> close() {
+  //   _subscription?.cancel();
+  //   return super.close();
+  // }
 
   Future loadForDate(DateTime date) async {
     final events = await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(date);
