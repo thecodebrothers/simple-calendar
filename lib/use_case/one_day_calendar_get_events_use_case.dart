@@ -23,6 +23,7 @@ class OneDayCalendarGetEventsUseCase {
             localIconName: element.localIconName,
             networkIconName: element.networkIconName,
             iconBackgroundColor: element.iconBackgroundColor,
+            object: element.object,
           ),
         )
         .toList();

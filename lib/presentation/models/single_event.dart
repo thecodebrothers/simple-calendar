@@ -11,6 +11,7 @@ class SingleEvent extends Equatable {
   final String localIconName;
   final String networkIconName;
   final Color iconBackgroundColor;
+  final dynamic object;
 
   const SingleEvent({
     required this.singleLine,
@@ -20,6 +21,7 @@ class SingleEvent extends Equatable {
     required this.networkIconName,
     required this.iconBackgroundColor,
     required this.secondLine,
+    required this.object,
   });
 
   SingleEvent.fromCalendar(SingleCalendarEvent element)
@@ -29,7 +31,8 @@ class SingleEvent extends Equatable {
         eventEnd = element.eventEnd.toMinutes(),
         iconBackgroundColor = element.iconBackgroundColor,
         localIconName = element.localIconName,
-        networkIconName = element.networkIconName;
+        networkIconName = element.networkIconName,
+        object = element.object;
 
   @override
   List<Object?> get props => [
@@ -40,5 +43,6 @@ class SingleEvent extends Equatable {
         iconBackgroundColor,
         localIconName,
         networkIconName,
+        object,
       ];
 }

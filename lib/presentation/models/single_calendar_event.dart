@@ -10,6 +10,7 @@ class SingleCalendarEvent {
   final String localIconName;
   final String networkIconName;
   final Color iconBackgroundColor;
+  final dynamic object;
 
   SingleCalendarEvent({
     required this.singleLine,
@@ -19,6 +20,7 @@ class SingleCalendarEvent {
     required this.localIconName,
     required this.networkIconName,
     required this.iconBackgroundColor,
+    required this.object,
     this.id,
     this.secondLine,
   });

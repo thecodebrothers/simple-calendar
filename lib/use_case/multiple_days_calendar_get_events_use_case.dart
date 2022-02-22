@@ -32,6 +32,7 @@ class MultipleDaysCalendarGetEventsUseCase {
             networkIconName: element.networkIconName,
             localIconName: element.localIconName,
             iconBackgroundColor: element.iconBackgroundColor,
+            object: element.object,
           ),
         )
         .toList();
