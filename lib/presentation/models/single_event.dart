@@ -4,7 +4,8 @@ import 'package:simple_calendar/extensions/datetime_extension.dart';
 import 'package:simple_calendar/presentation/models/single_calendar_event.dart';
 
 class SingleEvent extends Equatable {
-  final String name;
+  final String singleLine;
+  final String? secondLine;
   final int eventStart;
   final int eventEnd;
   final String localIconName;
@@ -12,16 +13,18 @@ class SingleEvent extends Equatable {
   final Color iconBackgroundColor;
 
   const SingleEvent({
-    required this.name,
+    required this.singleLine,
     required this.eventStart,
     required this.eventEnd,
     required this.localIconName,
     required this.networkIconName,
     required this.iconBackgroundColor,
+    required this.secondLine,
   });
 
   SingleEvent.fromCalendar(SingleCalendarEvent element)
-      : name = element.name,
+      : singleLine = element.singleLine,
+        secondLine = element.secondLine,
         eventStart = element.eventStart.toMinutes(),
         eventEnd = element.eventEnd.toMinutes(),
         iconBackgroundColor = element.iconBackgroundColor,
@@ -29,5 +32,13 @@ class SingleEvent extends Equatable {
         networkIconName = element.networkIconName;
 
   @override
-  List<Object> get props => [name, eventStart, eventEnd, iconBackgroundColor, localIconName, networkIconName];
+  List<Object?> get props => [
+        singleLine,
+        singleLine,
+        eventStart,
+        eventEnd,
+        iconBackgroundColor,
+        localIconName,
+        networkIconName,
+      ];
 }

@@ -24,7 +24,7 @@ class MultipleDaysCalendarGetEventsUseCase {
     final allEvents = stEvents
         .map(
           (element) => SingleCalendarEvent(
-            name: element.name,
+            singleLine: element.singleLine,
             eventEnd: element.eventEnd,
             eventStart: element.eventStart,
             id: element.id,

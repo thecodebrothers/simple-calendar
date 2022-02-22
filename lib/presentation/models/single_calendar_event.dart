@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class SingleCalendarEvent {
   final int? id;
-  final String name;
+  final String singleLine;
+  final String? secondLine;
   final DateTime eventStart;
   final DateTime eventEnd;
   final bool isAllDay;
@@ -11,7 +12,7 @@ class SingleCalendarEvent {
   final Color iconBackgroundColor;
 
   SingleCalendarEvent({
-    required this.name,
+    required this.singleLine,
     required this.eventStart,
     required this.eventEnd,
     required this.isAllDay,
@@ -19,5 +20,6 @@ class SingleCalendarEvent {
     required this.networkIconName,
     required this.iconBackgroundColor,
     this.id,
+    this.secondLine,
   });
 }

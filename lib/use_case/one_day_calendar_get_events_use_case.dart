@@ -14,7 +14,7 @@ class OneDayCalendarGetEventsUseCase {
     final events = stEvents
         .map(
           (element) => SingleCalendarEvent(
-            name: element.name,
+            singleLine: element.singleLine,
             eventEnd: element.eventEnd,
             eventStart: element.eventStart,
             id: element.id,

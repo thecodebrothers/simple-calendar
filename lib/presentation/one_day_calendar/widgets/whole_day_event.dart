@@ -41,7 +41,7 @@ class WholeEventTile extends StatelessWidget {
                   if (event.networkIconName.isNotEmpty || event.localIconName.isNotEmpty) const SizedBox(width: 2),
                   Expanded(
                     child: Text(
-                      event.name,
+                      event.singleLine,
                       overflow: TextOverflow.fade,
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
                     ),

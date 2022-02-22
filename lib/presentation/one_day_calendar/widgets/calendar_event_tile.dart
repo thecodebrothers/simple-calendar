@@ -39,15 +39,25 @@ class CalendarEventTile extends StatelessWidget {
           child: InkWell(
             onTap: action,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CalendarTileImage(event: event),
                 if (event.networkIconName.isNotEmpty || event.localIconName.isNotEmpty) const SizedBox(width: 2),
                 Expanded(
-                  child: Text(
-                    event.name,
-                    overflow: TextOverflow.fade,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+                  child: Column(
+                    children: [
+                      Text(
+                        event.singleLine,
+                        overflow: TextOverflow.fade,
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+                      ),
+                      if (event.secondLine != null)
+                        Text(
+                          event.secondLine!,
+                          overflow: TextOverflow.fade,
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white10),
+                        ),
+                    ],
                   ),
                 ),
               ],
