@@ -34,7 +34,7 @@ class SingleEvent extends Equatable {
   @override
   List<Object?> get props => [
         singleLine,
-        singleLine,
+        secondLine,
         eventStart,
         eventEnd,
         iconBackgroundColor,

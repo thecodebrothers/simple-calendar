@@ -16,6 +16,7 @@ class OneDayCalendarGetEventsUseCase {
           (element) => SingleCalendarEvent(
             singleLine: element.singleLine,
             eventEnd: element.eventEnd,
+            secondLine: element.secondLine,
             eventStart: element.eventStart,
             id: element.id,
             isAllDay: element.isAllDay,
