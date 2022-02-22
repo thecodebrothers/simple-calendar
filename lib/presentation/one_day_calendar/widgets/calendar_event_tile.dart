@@ -52,17 +52,23 @@ class CalendarEventTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        event.singleLine,
-                        overflow: TextOverflow.fade,
-                        style: calendarSettings.firstLineTileTextStyle,
+                      Expanded(
+                        child: Text(
+                          event.singleLine,
+                          maxLines: event.secondLine != null ? 3 : 1,
+                          overflow: TextOverflow.fade,
+                          style: calendarSettings.firstLineTileTextStyle,
+                        ),
                       ),
                       if (event.secondLine != null) const SizedBox(height: 4),
                       if (event.secondLine != null)
-                        Text(
-                          event.secondLine!,
-                          overflow: TextOverflow.fade,
-                          style: calendarSettings.secondLineTileTextStyle,
+                        Expanded(
+                          child: Text(
+                            event.secondLine!,
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                            style: calendarSettings.secondLineTileTextStyle,
+                          ),
                         ),
                     ],
                   ),
