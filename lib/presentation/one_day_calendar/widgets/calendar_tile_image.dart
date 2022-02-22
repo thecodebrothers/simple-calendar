@@ -15,7 +15,7 @@ class CalendarTileImage extends StatelessWidget {
         height: size,
         width: size,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          borderRadius: BorderRadius.all(Radius.circular(size / 2)),
           color: event.iconBackgroundColor.withOpacity(0.2),
         ),
         child: Padding(
