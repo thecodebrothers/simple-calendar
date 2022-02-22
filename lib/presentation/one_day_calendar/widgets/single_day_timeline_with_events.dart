@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/extensions/datetime_extension.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_event_tile.dart';
@@ -13,6 +14,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   final List<SingleEvent> allDayEvents;
   final int maxNumberOfWholeDayTasks;
   final Function(SingleEvent) action;
+  final CalendarSettings calendarSettings;
 
   const SingleDayTimelineWithEvents({
     required this.date,
@@ -21,6 +23,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     required this.allDayEvents,
     required this.maxNumberOfWholeDayTasks,
     required this.action,
+    required this.calendarSettings,
     Key? key,
   }) : super(key: key);
 
@@ -37,6 +40,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
                 event: e,
                 numberOfAllDayEvents: maxNumberOfWholeDayTasks,
                 action: () => action(e),
+                calendarSettings: calendarSettings,
               ),
             ),
             for (int i = 0; i < multipleEvents.length; i++)
@@ -47,6 +51,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
                 position: i,
                 numberOfEvents: multipleEvents.length < 6 ? multipleEvents.length : 5,
                 action: () => multipleEvents[i],
+                calendarSettings: calendarSettings,
               ),
             for (int i = 0; i < allDayEvents.length; i++)
               WholeEventTile(

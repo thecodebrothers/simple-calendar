@@ -75,6 +75,7 @@ class _SingleDayState extends State<SingleDay> {
                     date: state.date,
                     maxNumberOfWholeDayTasks: state.dayWithEvents.allDaysEvents.length,
                     action: (item) => widget.onEventTap(item),
+                    calendarSettings: widget.calendarSettings,
                   ),
                 ),
               ),

@@ -137,6 +137,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                           allDayEvents: e.allDaysEvents,
                           maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
                           action: widget.onTap,
+                          calendarSettings: widget.calendarSettings,
                         ),
                       ),
                     ],
