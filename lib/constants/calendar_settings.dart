@@ -5,6 +5,7 @@ class CalendarSettings {
   final TextStyle secondLineTileTextStyle;
   final double tileIconSize;
   final double iconSpacingFromText;
+  final double iconBackgroundOpacity;
   final TextStyle fiveDaysHeaderTextStyle;
   final TextStyle oneDayHeaderTextStyle;
   final TextStyle calendarCurrentMonthTileStyle;
@@ -22,6 +23,7 @@ class CalendarSettings {
     required this.secondLineTileTextStyle,
     required this.tileIconSize,
     required this.iconSpacingFromText,
+    required this.iconBackgroundOpacity,
     required this.fiveDaysHeaderTextStyle,
     required this.oneDayHeaderTextStyle,
     required this.calendarCurrentMonthTileStyle,

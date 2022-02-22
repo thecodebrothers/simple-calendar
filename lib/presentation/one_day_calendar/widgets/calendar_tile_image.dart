@@ -4,8 +4,14 @@ import 'package:simple_calendar/presentation/models/single_event.dart';
 class CalendarTileImage extends StatelessWidget {
   final SingleEvent event;
   final double size;
+  final double iconBackgroundOpacity;
 
-  const CalendarTileImage({required this.event, required this.size, Key? key}) : super(key: key);
+  const CalendarTileImage({
+    required this.event,
+    required this.size,
+    required this.iconBackgroundOpacity,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class CalendarTileImage extends StatelessWidget {
         width: size,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-          color: event.iconBackgroundColor.withOpacity(0.2),
+          color: event.iconBackgroundColor.withOpacity(iconBackgroundOpacity),
         ),
         child: Padding(
           padding: const EdgeInsets.all(3.0),

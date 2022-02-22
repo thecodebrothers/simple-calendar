@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/multiple_days_calendar_get_events_use_case.dart';
 
-
 class MultipleDaysCalendarView extends StatefulWidget {
   final ScrollController scrollController;
   final CalendarEventsRepository calendarEventsRepository;
@@ -22,6 +22,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
   final int daysAround;
   final CalendarSettings calendarSettings;
   final Function(SingleEvent) onTap;
+  final StreamController reloadController;
 
   const MultipleDaysCalendarView({
     required this.scrollController,
@@ -30,6 +31,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
     required this.daysAround,
     required this.calendarSettings,
     required this.onTap,
+    required this.reloadController,
     Key? key,
   }) : super(key: key);
 
@@ -62,6 +64,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
         MultipleDaysCalendarGetEventsUseCase(widget.calendarEventsRepository),
         widget.initialDate ?? DateTime.now(),
         widget.daysAround,
+        widget.reloadController,
       ),
       child: BlocBuilder<MultipleDaysCalendarCubit, MultipleDaysCalendarState>(
         builder: (context, state) {

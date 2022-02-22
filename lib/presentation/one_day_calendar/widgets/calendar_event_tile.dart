@@ -45,7 +45,7 @@ class CalendarEventTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(width: calendarSettings.iconSpacingFromText),
-                CalendarTileImage(event: event, size: calendarSettings.tileIconSize),
+                CalendarTileImage(event: event, size: calendarSettings.tileIconSize, iconBackgroundOpacity: calendarSettings.iconBackgroundOpacity),
                 SizedBox(width: calendarSettings.iconSpacingFromText),
                 Expanded(
                   child: Column(
