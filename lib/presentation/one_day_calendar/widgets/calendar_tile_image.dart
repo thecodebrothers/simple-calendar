@@ -3,16 +3,17 @@ import 'package:simple_calendar/presentation/models/single_event.dart';
 
 class CalendarTileImage extends StatelessWidget {
   final SingleEvent event;
+  final double size;
 
-  const CalendarTileImage({required this.event, Key? key}) : super(key: key);
+  const CalendarTileImage({required this.event, required this.size, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 2.0, left: 1.0),
       child: Container(
-        height: 16,
-        width: 16,
+        height: size,
+        width: size,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           color: event.iconBackgroundColor.withOpacity(0.2),

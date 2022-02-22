@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class CalendarSettings {
   final TextStyle firstLineTileTextStyle;
   final TextStyle secondLineTileTextStyle;
+  final double tileIconSize;
   final TextStyle fiveDaysHeaderTextStyle;
   final TextStyle oneDayHeaderTextStyle;
   final TextStyle calendarCurrentMonthTileStyle;
@@ -18,6 +19,7 @@ class CalendarSettings {
   CalendarSettings({
     required this.firstLineTileTextStyle,
     required this.secondLineTileTextStyle,
+    required this.tileIconSize,
     required this.fiveDaysHeaderTextStyle,
     required this.oneDayHeaderTextStyle,
     required this.calendarCurrentMonthTileStyle,

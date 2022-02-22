@@ -37,7 +37,7 @@ class WholeEventTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CalendarTileImage(event: event),
+                  CalendarTileImage(event: event, size: 16),
                   if (event.networkIconName.isNotEmpty || event.localIconName.isNotEmpty) const SizedBox(width: 2),
                   Expanded(
                     child: Text(
