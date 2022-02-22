@@ -48,12 +48,14 @@ class CalendarEventTile extends StatelessWidget {
                 if (event.networkIconName.isNotEmpty || event.localIconName.isNotEmpty) const SizedBox(width: 2),
                 Expanded(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         event.singleLine,
                         overflow: TextOverflow.fade,
                         style: calendarSettings.firstLineTileTextStyle,
                       ),
+                      if (event.secondLine != null) const SizedBox(height: 4),
                       if (event.secondLine != null)
                         Text(
                           event.secondLine!,
