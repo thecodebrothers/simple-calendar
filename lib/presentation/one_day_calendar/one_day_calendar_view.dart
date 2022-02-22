@@ -32,27 +32,14 @@ class OneDayCalendarView extends StatefulWidget {
 }
 
 class _OneDayCalendarViewState extends State<OneDayCalendarView> {
-  StreamSubscription? _subscription;
-
-  @override
-  void initState() {
-    super.initState();
-    _subscription = widget.reloadController?.stream.listen((event) {
-      BlocProvider.of<OneDayCalendarCubit>(context).reload();
-    });
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OneDayCalendarCubit>(
       create: (context) => OneDayCalendarCubit(
-          OneDayCalendarGetEventsUseCase(widget.calendarEventsRepository), widget.initialDate ?? DateTime.now()),
+        OneDayCalendarGetEventsUseCase(widget.calendarEventsRepository),
+        widget.initialDate ?? DateTime.now(),
+        widget.reloadController,
+      ),
       child: BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
         builder: (context, state) {
           return _buildPage(context);
@@ -60,8 +47,6 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
       ),
     );
   }
-
-
 
   Widget _buildPage(BuildContext pageContext) {
     return Scaffold(
