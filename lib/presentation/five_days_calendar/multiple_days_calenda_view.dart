@@ -22,7 +22,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
   final int daysAround;
   final CalendarSettings calendarSettings;
   final Function(SingleEvent) onTap;
-  final StreamController reloadController;
+  final StreamController? reloadController;
 
   const MultipleDaysCalendarView({
     required this.scrollController,
@@ -31,7 +31,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
     required this.daysAround,
     required this.calendarSettings,
     required this.onTap,
-    required this.reloadController,
+    this.reloadController,
     Key? key,
   }) : super(key: key);
 
