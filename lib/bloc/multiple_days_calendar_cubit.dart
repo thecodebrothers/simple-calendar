@@ -22,4 +22,12 @@ class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
     final events = await _multipleDaysCalendarGetEventsUseCase.getMultipleDayEventsSorted(date, _daysAround);
     emit(MultipleDaysCalendarLoaded(events, date));
   }
+
+  Future reload() async {
+    final currentState = state;
+    if (currentState is MultipleDaysCalendarLoaded) {
+      final events = await _multipleDaysCalendarGetEventsUseCase.getMultipleDayEventsSorted(currentState.date, _daysAround);
+      emit(MultipleDaysCalendarLoaded(events, currentState.date));
+    }
+  }
 }

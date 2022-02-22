@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
@@ -13,6 +15,7 @@ class OneDayCalendarView extends StatefulWidget {
   final DateTime? initialDate;
   final CalendarSettings calendarSettings;
   final Function(SingleEvent) onEventTap;
+  final StreamController? reloadController;
 
   const OneDayCalendarView({
     required this.scrollController,
@@ -20,6 +23,7 @@ class OneDayCalendarView extends StatefulWidget {
     required this.initialDate,
     required this.calendarSettings,
     required this.onEventTap,
+    this.reloadController,
     Key? key,
   }) : super(key: key);
 
@@ -28,6 +32,22 @@ class OneDayCalendarView extends StatefulWidget {
 }
 
 class _OneDayCalendarViewState extends State<OneDayCalendarView> {
+  StreamSubscription? _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = widget.reloadController?.stream.listen((event) {
+      BlocProvider.of<OneDayCalendarCubit>(context).reload();
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OneDayCalendarCubit>(
@@ -40,6 +60,8 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
       ),
     );
   }
+
+
 
   Widget _buildPage(BuildContext pageContext) {
     return Scaffold(
