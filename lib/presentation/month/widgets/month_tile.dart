@@ -7,6 +7,7 @@ class MonthTile extends StatelessWidget {
   final bool hasAnyTask;
   final bool isTheSameMonth;
   final VoidCallback onTap;
+  final bool isToday;
 
   const MonthTile({
     required this.hasAnyTask,
@@ -14,35 +15,44 @@ class MonthTile extends StatelessWidget {
     required this.text,
     required this.isTheSameMonth,
     required this.onTap,
+    required this.isToday,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: isTheSameMonth
-                  ? calendarSettings.calendarCurrentMonthTileStyle
-                  : calendarSettings.calendarNotCurrentMonthTileStyle,
-            ),
-            const SizedBox(height: 8),
-            Container(
-              height: 6,
-              width: 6,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                color: hasAnyTask ? calendarSettings.calendarDotColor : Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: calendarSettings.calendarDotColor,
+            width: 2,
+          ),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: isTheSameMonth
+                    ? calendarSettings.calendarCurrentMonthTileStyle
+                    : calendarSettings.calendarNotCurrentMonthTileStyle,
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Container(
+                height: 6,
+                width: 6,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color: hasAnyTask ? calendarSettings.calendarDotColor : Colors.transparent,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
