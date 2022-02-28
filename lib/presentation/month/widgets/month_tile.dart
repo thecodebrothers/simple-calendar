@@ -23,12 +23,12 @@ class MonthTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: isToday?  BoxDecoration(
           border: Border.all(
             color: calendarSettings.calendarDotColor,
             width: 2,
           ),
-        ),
+        ) : null,
         child: InkWell(
           onTap: onTap,
           child: Column(
