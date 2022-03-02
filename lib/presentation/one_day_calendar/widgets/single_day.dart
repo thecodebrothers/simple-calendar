@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
@@ -63,20 +64,18 @@ class _SingleDayState extends State<SingleDay> {
           calendarSettings: widget.calendarSettings,
         ),
         Expanded(
-          child: GestureDetector(
-            onLongPressDown: (detials) {
-              detials.localPosition;
-            },
-            onLongPress: () {
-              widget.onLongPress(DateTime.now());
-            },
-            child: SingleChildScrollView(
-              controller: widget.scrollController,
-              child: Row(children: [
-                Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length),
-                Expanded(
-                  child: SizedBox(
-                    height: kHoursInCalendar * kCellHeight + state.dayWithEvents.allDaysEvents.length * kCellHeight,
+          child: SingleChildScrollView(
+            controller: widget.scrollController,
+            child: Row(children: [
+              Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length),
+              Expanded(
+                child: SizedBox(
+                  height: kHoursInCalendar * kCellHeight + state.dayWithEvents.allDaysEvents.length * kCellHeight,
+                  child: GestureDetector(
+                    onLongPressEnd: (details) {
+                      final date = state.date;
+                      widget.onLongPress(DateTime(date.year, date.day, details.localPosition.dy.toInt()));
+                    },
                     child: SingleDayTimelineWithEvents(
                       events: state.dayWithEvents.singleEvents,
                       multipleEvents: state.dayWithEvents.multipleEvents,
@@ -88,8 +87,8 @@ class _SingleDayState extends State<SingleDay> {
                     ),
                   ),
                 ),
-              ]),
-            ),
+              ),
+            ]),
           ),
         ),
       ],
