@@ -74,7 +74,7 @@ class _SingleDayState extends State<SingleDay> {
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
-                      widget.onLongPress(DateTime(date.year, date.day, details.localPosition.dy.toInt()));
+                      widget.onLongPress(DateTime(date.year, date.day, details.localPosition.dy.toInt() ~/ 60));
                     },
                     child: SingleDayTimelineWithEvents(
                       events: state.dayWithEvents.singleEvents,
