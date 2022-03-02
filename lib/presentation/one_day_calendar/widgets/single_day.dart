@@ -64,6 +64,9 @@ class _SingleDayState extends State<SingleDay> {
         ),
         Expanded(
           child: GestureDetector(
+            onLongPressDown: (detials) {
+              detials.localPosition;
+            },
             onLongPress: () {
               widget.onLongPress(DateTime.now());
             },
