@@ -16,6 +16,7 @@ class OneDayCalendarView extends StatefulWidget {
   final CalendarSettings calendarSettings;
   final Function(SingleEvent) onEventTap;
   final StreamController? reloadController;
+  final Function(DateTime) onLongPress;
 
   const OneDayCalendarView({
     required this.scrollController,
@@ -23,6 +24,7 @@ class OneDayCalendarView extends StatefulWidget {
     required this.initialDate,
     required this.calendarSettings,
     required this.onEventTap,
+    required this.onLongPress,
     this.reloadController,
     Key? key,
   }) : super(key: key);
@@ -57,6 +59,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           calendarSettings: widget.calendarSettings,
           scrollController: widget.scrollController,
           onEventTap: widget.onEventTap,
+          onLongPress: widget.onLongPress,
           onChanged: (date) {
             BlocProvider.of<OneDayCalendarCubit>(pageContext).loadForDate(date);
           },

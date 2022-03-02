@@ -23,6 +23,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
   final CalendarSettings calendarSettings;
   final Function(SingleEvent) onTap;
   final StreamController? reloadController;
+  final Function(DateTime) onLongPress;
 
   const MultipleDaysCalendarView({
     required this.scrollController,
@@ -31,6 +32,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
     required this.daysAround,
     required this.calendarSettings,
     required this.onTap,
+    required this.onLongPress,
     this.reloadController,
     Key? key,
   }) : super(key: key);
@@ -113,41 +115,46 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
   Widget _buildCalendar(MultipleDaysCalendarLoaded state, double rowWidth) {
     final maxNumberOfWholeDayTasks = state.daysWithEvents.map((e) => e.allDaysEvents.length).reduce(max);
     return Expanded(
-      child: SingleChildScrollView(
-        controller: widget.scrollController,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hours(numberOfConstantsTasks: maxNumberOfWholeDayTasks),
-            ...state.daysWithEvents
-                .map(
-                  (e) => Column(
-                    children: [
-                      SizedBox(
-                        width: rowWidth,
-                        child: SingleDayDate(
-                          date: e.date,
-                          calendarSettings: widget.calendarSettings,
+      child: GestureDetector(
+        onLongPress: () {
+          widget.onLongPress(DateTime.now());
+        },
+        child: SingleChildScrollView(
+          controller: widget.scrollController,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hours(numberOfConstantsTasks: maxNumberOfWholeDayTasks),
+              ...state.daysWithEvents
+                  .map(
+                    (e) => Column(
+                      children: [
+                        SizedBox(
+                          width: rowWidth,
+                          child: SingleDayDate(
+                            date: e.date,
+                            calendarSettings: widget.calendarSettings,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: rowWidth,
-                        height: kHoursInCalendar * kCellHeight + maxNumberOfWholeDayTasks * kCellHeight,
-                        child: SingleDayTimelineWithEvents(
-                          date: e.date,
-                          events: e.singleEvents,
-                          multipleEvents: e.multipleEvents,
-                          allDayEvents: e.allDaysEvents,
-                          maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
-                          action: widget.onTap,
-                          calendarSettings: widget.calendarSettings,
+                        SizedBox(
+                          width: rowWidth,
+                          height: kHoursInCalendar * kCellHeight + maxNumberOfWholeDayTasks * kCellHeight,
+                          child: SingleDayTimelineWithEvents(
+                            date: e.date,
+                            events: e.singleEvents,
+                            multipleEvents: e.multipleEvents,
+                            allDayEvents: e.allDaysEvents,
+                            maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
+                            action: widget.onTap,
+                            calendarSettings: widget.calendarSettings,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-                .toList(),
-          ],
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ],
+          ),
         ),
       ),
     );

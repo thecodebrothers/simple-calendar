@@ -84,7 +84,7 @@ class MonthCalendarView extends StatelessWidget {
                             text: e.isDayName ? _dayName(e.date) : e.date.day.toString(),
                             hasAnyTask: !e.isDayName && e.hasAnyEvents,
                             isTheSameMonth: e.isDayName || state.date.isSameMonth(e.date),
-                            isToday: e.date.isSameDate(DateTime.now()),
+                            isToday: !e.isDayName && e.date.isSameDate(DateTime.now()),
                           ),
                         )
                         .toList(),

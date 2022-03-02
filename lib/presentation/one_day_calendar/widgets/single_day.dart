@@ -13,12 +13,14 @@ class SingleDay extends StatefulWidget {
   final ScrollController scrollController;
   final CalendarSettings calendarSettings;
   final Function(SingleEvent) onEventTap;
+  final Function(DateTime) onLongPress;
 
   const SingleDay({
     required this.onChanged,
     required this.scrollController,
     required this.calendarSettings,
     required this.onEventTap,
+    required this.onLongPress,
     Key? key,
   }) : super(key: key);
 
@@ -61,25 +63,30 @@ class _SingleDayState extends State<SingleDay> {
           calendarSettings: widget.calendarSettings,
         ),
         Expanded(
-          child: SingleChildScrollView(
-            controller: widget.scrollController,
-            child: Row(children: [
-              Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length),
-              Expanded(
-                child: SizedBox(
-                  height: kHoursInCalendar * kCellHeight + state.dayWithEvents.allDaysEvents.length * kCellHeight,
-                  child: SingleDayTimelineWithEvents(
-                    events: state.dayWithEvents.singleEvents,
-                    multipleEvents: state.dayWithEvents.multipleEvents,
-                    allDayEvents: state.dayWithEvents.allDaysEvents,
-                    date: state.date,
-                    maxNumberOfWholeDayTasks: state.dayWithEvents.allDaysEvents.length,
-                    action: (item) => widget.onEventTap(item),
-                    calendarSettings: widget.calendarSettings,
+          child: GestureDetector(
+            onLongPress: () {
+              widget.onLongPress(DateTime.now());
+            },
+            child: SingleChildScrollView(
+              controller: widget.scrollController,
+              child: Row(children: [
+                Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length),
+                Expanded(
+                  child: SizedBox(
+                    height: kHoursInCalendar * kCellHeight + state.dayWithEvents.allDaysEvents.length * kCellHeight,
+                    child: SingleDayTimelineWithEvents(
+                      events: state.dayWithEvents.singleEvents,
+                      multipleEvents: state.dayWithEvents.multipleEvents,
+                      allDayEvents: state.dayWithEvents.allDaysEvents,
+                      date: state.date,
+                      maxNumberOfWholeDayTasks: state.dayWithEvents.allDaysEvents.length,
+                      action: (item) => widget.onEventTap(item),
+                      calendarSettings: widget.calendarSettings,
+                    ),
                   ),
                 ),
-              ),
-            ]),
+              ]),
+            ),
           ),
         ),
       ],
