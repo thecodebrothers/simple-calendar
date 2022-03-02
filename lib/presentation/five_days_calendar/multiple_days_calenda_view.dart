@@ -138,7 +138,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                         child: GestureDetector(
                           onLongPressEnd: (details) {
                             final date = state.date;
-                            widget.onLongPress(DateTime(date.year, date.day, details.localPosition.dy.toInt() ~/ 60));
+                            widget.onLongPress(DateTime(date.year, date.month, date.day, details.localPosition.dy.toInt() ~/ 60));
                           },
                           child: SingleDayTimelineWithEvents(
                             date: e.date,
