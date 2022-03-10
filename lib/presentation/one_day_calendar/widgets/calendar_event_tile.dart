@@ -45,14 +45,17 @@ class CalendarEventTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(width: calendarSettings.iconSpacingFromText),
-                CalendarTileImage(event: event, size: calendarSettings.tileIconSize, iconBackgroundOpacity: calendarSettings.iconBackgroundOpacity),
+                CalendarTileImage(
+                    event: event,
+                    size: calendarSettings.tileIconSize,
+                    iconBackgroundOpacity: calendarSettings.iconBackgroundOpacity),
                 SizedBox(width: calendarSettings.iconSpacingFromText),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
+                      Flexible(
                         child: Text(
                           event.singleLine,
                           maxLines: event.secondLine != null ? 3 : 1,
@@ -62,7 +65,7 @@ class CalendarEventTile extends StatelessWidget {
                       ),
                       if (event.secondLine != null) const SizedBox(height: 4),
                       if (event.secondLine != null)
-                        Expanded(
+                        Flexible(
                           child: Text(
                             event.secondLine!,
                             maxLines: 1,
@@ -71,6 +74,15 @@ class CalendarEventTile extends StatelessWidget {
                           ),
                         ),
                     ],
+                  ),
+                ),
+                SizedBox(width: calendarSettings.iconSpacingFromText),
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: event.dotTileColor,
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ],

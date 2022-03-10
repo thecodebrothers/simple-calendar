@@ -11,6 +11,7 @@ class SingleEvent extends Equatable {
   final String localIconName;
   final String networkIconName;
   final Color iconBackgroundColor;
+  final Color dotTileColor;
   final dynamic object;
 
   const SingleEvent({
@@ -21,6 +22,7 @@ class SingleEvent extends Equatable {
     required this.networkIconName,
     required this.iconBackgroundColor,
     required this.secondLine,
+    required this.dotTileColor,
     required this.object,
   });
 
@@ -32,6 +34,7 @@ class SingleEvent extends Equatable {
         iconBackgroundColor = element.iconBackgroundColor,
         localIconName = element.localIconName,
         networkIconName = element.networkIconName,
+        dotTileColor = element.dotTileColor,
         object = element.object;
 
   @override
@@ -44,5 +47,6 @@ class SingleEvent extends Equatable {
         localIconName,
         networkIconName,
         object,
+        dotTileColor,
       ];
 }

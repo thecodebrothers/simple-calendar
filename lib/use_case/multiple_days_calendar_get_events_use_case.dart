@@ -33,6 +33,7 @@ class MultipleDaysCalendarGetEventsUseCase {
             localIconName: element.localIconName,
             iconBackgroundColor: element.iconBackgroundColor,
             object: element.object,
+            dotTileColor: element.dotTileColor,
           ),
         )
         .toList();
