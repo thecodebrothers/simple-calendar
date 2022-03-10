@@ -78,13 +78,14 @@ class CalendarEventTile extends StatelessWidget {
                 ),
                 SizedBox(width: calendarSettings.iconSpacingFromText),
                 Container(
-                  width: 8,
-                  height: 8,
+                  width: 16,
+                  height: 16,
                   decoration: BoxDecoration(
                     color: event.dotTileColor,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                SizedBox(width: calendarSettings.iconSpacingFromText),
               ],
             ),
           ),
