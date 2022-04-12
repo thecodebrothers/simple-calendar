@@ -52,7 +52,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
 
   Widget _buildPage(BuildContext pageContext) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: SingleDay(
