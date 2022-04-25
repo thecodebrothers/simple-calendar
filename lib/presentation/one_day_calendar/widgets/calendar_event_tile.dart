@@ -40,9 +40,7 @@ class CalendarEventTile extends StatelessWidget {
           elevation: 6,
           clipBehavior: Clip.hardEdge,
           child: InkWell(
-            onTap: () {
-              print(event.id);
-            },
+            onTap: action,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
