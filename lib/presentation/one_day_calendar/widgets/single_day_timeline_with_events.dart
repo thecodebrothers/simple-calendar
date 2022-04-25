@@ -50,7 +50,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
                 rowWidth: constraints.maxWidth,
                 position: i,
                 numberOfEvents: multipleEvents.length < 6 ? multipleEvents.length : 5,
-                action: () => multipleEvents[i],
+                action: () => action(multipleEvents[i]),
                 calendarSettings: calendarSettings,
               ),
             for (int i = 0; i < allDayEvents.length; i++)
