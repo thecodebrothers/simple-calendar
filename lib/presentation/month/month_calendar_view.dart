@@ -14,7 +14,7 @@ class MonthCalendarView extends StatelessWidget {
   final DateTime? initialDate;
   final CalendarSettings calendarSettings;
   final Function(DateTime) onSelected;
-  final Widget? monthPicker;
+  final Widget Function(BuildContext)? monthPicker;
 
   const MonthCalendarView({
     required this.initialDate,
@@ -56,7 +56,7 @@ class MonthCalendarView extends StatelessWidget {
         padding: const EdgeInsets.only(top: 24.0),
         child: Column(
           children: [
-            monthPicker ??
+            monthPicker?.call(context) ??
                 MonthHeader(
                   calendarSettings: calendarSettings,
                   onTapLeft: () {
