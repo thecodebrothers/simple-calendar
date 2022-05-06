@@ -14,12 +14,14 @@ class MonthCalendarView extends StatelessWidget {
   final DateTime? initialDate;
   final CalendarSettings calendarSettings;
   final Function(DateTime) onSelected;
+  final Widget? monthPicker;
 
   const MonthCalendarView({
     required this.initialDate,
     required this.calendarSettings,
     required this.calendarEventsRepository,
     required this.onSelected,
+    this.monthPicker,
     Key? key,
   }) : super(key: key);
 
@@ -54,18 +56,19 @@ class MonthCalendarView extends StatelessWidget {
         padding: const EdgeInsets.only(top: 24.0),
         child: Column(
           children: [
-            MonthHeader(
-              calendarSettings: calendarSettings,
-              onTapLeft: () {
-                BlocProvider.of<MonthCalendarCubit>(context)
-                    .loadForDate(DateTime(state.date.year, state.date.month - 1, state.date.day));
-              },
-              onTapRight: () {
-                BlocProvider.of<MonthCalendarCubit>(context)
-                    .loadForDate(DateTime(state.date.year, state.date.month + 1, state.date.day));
-              },
-              dayFromMonth: state.date,
-            ),
+            monthPicker ??
+                MonthHeader(
+                  calendarSettings: calendarSettings,
+                  onTapLeft: () {
+                    BlocProvider.of<MonthCalendarCubit>(context)
+                        .loadForDate(DateTime(state.date.year, state.date.month - 1, state.date.day));
+                  },
+                  onTapRight: () {
+                    BlocProvider.of<MonthCalendarCubit>(context)
+                        .loadForDate(DateTime(state.date.year, state.date.month + 1, state.date.day));
+                  },
+                  dayFromMonth: state.date,
+                ),
             const SizedBox(
               height: 24.0,
             ),
