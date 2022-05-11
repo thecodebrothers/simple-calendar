@@ -11,6 +11,7 @@ class CalendarSettings {
   final TextStyle calendarCurrentMonthTileStyle;
   final TextStyle calendarNotCurrentMonthTileStyle;
   final TextStyle calendarHeaderStyle;
+  final TextStyle calendarMonthDayStyle;
   final Color calendarDotColor;
   final String dayBeforeYesterdayTranslation;
   final String yesterdayTranslation;
@@ -29,6 +30,7 @@ class CalendarSettings {
     required this.calendarCurrentMonthTileStyle,
     required this.calendarNotCurrentMonthTileStyle,
     required this.calendarHeaderStyle,
+    required this.calendarMonthDayStyle,
     required this.calendarDotColor,
     required this.dayBeforeYesterdayTranslation,
     required this.yesterdayTranslation,
