@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/month_calendar_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/extensions/datetime_extension.dart';
+import 'package:simple_calendar/extensions/string_extensions.dart';
 import 'package:simple_calendar/presentation/month/widgets/month_header.dart';
 import 'package:simple_calendar/presentation/month/widgets/month_tile.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
@@ -88,7 +89,7 @@ class MonthCalendarView extends StatelessWidget {
                             hasAnyTask: !e.isDayName && e.hasAnyEvents,
                             isTheSameMonth: e.isDayName || state.date.isSameMonth(e.date),
                             isToday: !e.isDayName && e.date.isSameDate(DateTime.now()),
-                            isDayName: state.items.indexOf(e) < 7,
+                            isDayName: e.isDayName,
                           ),
                         )
                         .toList(),
@@ -104,6 +105,6 @@ class MonthCalendarView extends StatelessWidget {
 
   String _dayName(DateTime date) {
     final format = DateFormat("EEE");
-    return format.format(date);
+    return format.format(date).dayName();
   }
 }
