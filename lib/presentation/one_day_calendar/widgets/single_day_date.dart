@@ -31,7 +31,7 @@ class SingleDayDate extends StatelessWidget {
   }
 
   String _getHeader() {
-    final format = DateFormat("dd MMM");
+    final format = DateFormat(calendarSettings.dayNameFormat);
     final today = DateTime.now();
     if (date.isSameDate(today)) {
       return "${format.format(date)}, ${calendarSettings.todayTranslation}";
