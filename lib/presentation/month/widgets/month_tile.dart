@@ -27,7 +27,7 @@ class MonthTile extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         child: ClipOval(
             child: Material(
-          color: isToday ? const Color(0xFF0474BB) : null,
+          color: isToday ? calendarSettings .monthSelectedColor : null,
           child: InkWell(
             onTap: onTap,
             child: Center(

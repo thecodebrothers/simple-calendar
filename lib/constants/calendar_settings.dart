@@ -13,6 +13,7 @@ class CalendarSettings {
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
   final Color calendarDotColor;
+  final Color monthSelectedColor;
   final String dayBeforeYesterdayTranslation;
   final String yesterdayTranslation;
   final String todayTranslation;
@@ -37,5 +38,6 @@ class CalendarSettings {
     required this.todayTranslation,
     required this.tomorrowTranslation,
     required this.dayAfterTomorrowTranslation,
+    this.monthSelectedColor = const Color(0xFF0474BB),
   });
 }
