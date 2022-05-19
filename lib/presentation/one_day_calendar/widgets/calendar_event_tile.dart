@@ -36,7 +36,7 @@ class CalendarEventTile extends StatelessWidget {
         padding: const EdgeInsets.all(2.0),
         child: Material(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: calendarSettings.tileBackgroundColor,
+          color: event.tileBackgroundColor,
           elevation: 6,
           clipBehavior: Clip.hardEdge,
           child: InkWell(

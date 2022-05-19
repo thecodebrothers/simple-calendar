@@ -15,7 +15,6 @@ class CalendarSettings {
   final TextStyle calendarMonthDayStyle;
   final Color calendarDotColor;
   final Color monthSelectedColor;
-  final Color tileBackgroundColor;
   final String dayBeforeYesterdayTranslation;
   final String yesterdayTranslation;
   final String todayTranslation;
@@ -41,6 +40,5 @@ class CalendarSettings {
     required this.tomorrowTranslation,
     required this.dayAfterTomorrowTranslation,
     this.monthSelectedColor = const Color(0xFF0474BB),
-    this.tileBackgroundColor = Colors.white,
   });
 }
