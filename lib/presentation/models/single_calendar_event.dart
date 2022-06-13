@@ -11,6 +11,7 @@ class SingleCalendarEvent {
   final String networkIconName;
   final Color iconBackgroundColor;
   final Color dotTileColor;
+  final Color tileBackgroundColor;
   final dynamic object;
 
   SingleCalendarEvent({
@@ -23,6 +24,7 @@ class SingleCalendarEvent {
     required this.iconBackgroundColor,
     required this.object,
     required this.dotTileColor,
+    required this.tileBackgroundColor,
     this.id,
     this.secondLine,
   });

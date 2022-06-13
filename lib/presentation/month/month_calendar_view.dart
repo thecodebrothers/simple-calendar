@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/month_calendar_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/extensions/datetime_extension.dart';
+import 'package:simple_calendar/extensions/string_extensions.dart';
 import 'package:simple_calendar/presentation/month/widgets/month_header.dart';
 import 'package:simple_calendar/presentation/month/widgets/month_tile.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
@@ -14,12 +15,14 @@ class MonthCalendarView extends StatelessWidget {
   final DateTime? initialDate;
   final CalendarSettings calendarSettings;
   final Function(DateTime) onSelected;
+  final Widget Function(BuildContext)? monthPicker;
 
   const MonthCalendarView({
     required this.initialDate,
     required this.calendarSettings,
     required this.calendarEventsRepository,
     required this.onSelected,
+    this.monthPicker,
     Key? key,
   }) : super(key: key);
 
@@ -54,18 +57,19 @@ class MonthCalendarView extends StatelessWidget {
         padding: const EdgeInsets.only(top: 24.0),
         child: Column(
           children: [
-            MonthHeader(
-              calendarSettings: calendarSettings,
-              onTapLeft: () {
-                BlocProvider.of<MonthCalendarCubit>(context)
-                    .loadForDate(DateTime(state.date.year, state.date.month - 1, state.date.day));
-              },
-              onTapRight: () {
-                BlocProvider.of<MonthCalendarCubit>(context)
-                    .loadForDate(DateTime(state.date.year, state.date.month + 1, state.date.day));
-              },
-              dayFromMonth: state.date,
-            ),
+            monthPicker?.call(context) ??
+                MonthHeader(
+                  calendarSettings: calendarSettings,
+                  onTapLeft: () {
+                    BlocProvider.of<MonthCalendarCubit>(context)
+                        .loadForDate(DateTime(state.date.year, state.date.month - 1, state.date.day));
+                  },
+                  onTapRight: () {
+                    BlocProvider.of<MonthCalendarCubit>(context)
+                        .loadForDate(DateTime(state.date.year, state.date.month + 1, state.date.day));
+                  },
+                  dayFromMonth: state.date,
+                ),
             const SizedBox(
               height: 24.0,
             ),
@@ -85,6 +89,7 @@ class MonthCalendarView extends StatelessWidget {
                             hasAnyTask: !e.isDayName && e.hasAnyEvents,
                             isTheSameMonth: e.isDayName || state.date.isSameMonth(e.date),
                             isToday: !e.isDayName && e.date.isSameDate(DateTime.now()),
+                            isDayName: e.isDayName,
                           ),
                         )
                         .toList(),
@@ -100,6 +105,6 @@ class MonthCalendarView extends StatelessWidget {
 
   String _dayName(DateTime date) {
     final format = DateFormat("EEE");
-    return format.format(date);
+    return format.format(date).dayName();
   }
 }
