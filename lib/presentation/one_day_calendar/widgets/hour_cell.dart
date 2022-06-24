@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/constants/constants.dart';
 
 class CalendarHourCell extends StatelessWidget {
   final int hour;
+  final CalendarSettings calendarSettings;
 
-  const CalendarHourCell({required this.hour, Key? key}) : super(key: key);
+  const CalendarHourCell({
+    required this.hour,
+    required this.calendarSettings,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: kCellHeight,
+      height: calendarSettings.rowHeight,
       child: Row(
         children: [
           SizedBox(

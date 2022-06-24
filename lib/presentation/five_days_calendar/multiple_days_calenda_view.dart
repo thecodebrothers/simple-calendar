@@ -120,7 +120,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hours(numberOfConstantsTasks: maxNumberOfWholeDayTasks),
+            Hours(numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: widget.calendarSettings),
             ...state.daysWithEvents
                 .map(
                   (e) => Column(
@@ -134,7 +134,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                       ),
                       SizedBox(
                         width: rowWidth,
-                        height: kHoursInCalendar * kCellHeight + maxNumberOfWholeDayTasks * kCellHeight,
+                        height: kHoursInCalendar * widget.calendarSettings.rowHeight + maxNumberOfWholeDayTasks * widget.calendarSettings.rowHeight,
                         child: GestureDetector(
                           onLongPressEnd: (details) {
                             final date = state.date;

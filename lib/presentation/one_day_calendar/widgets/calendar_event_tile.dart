@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
-import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
 
@@ -27,7 +26,7 @@ class CalendarEventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: event.eventStart.toDouble() + numberOfAllDayEvents * kCellHeight,
+      top: event.eventStart.toDouble() + numberOfAllDayEvents * calendarSettings.rowHeight,
       left: rowWidth != null ? _getPositionLeft(position ?? 0) : 3,
       right: rowWidth != null ? null : 3,
       width: rowWidth != null ? (rowWidth ?? 0) / (numberOfEvents ?? 1) : null,

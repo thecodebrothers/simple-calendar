@@ -219,6 +219,9 @@
       <excludeFolder url="file://$MODULE_DIR$/.fvm/flutter_sdk/dev/automated_tests/build" />
       <excludeFolder url="file://$MODULE_DIR$/.fvm/flutter_sdk/dev/automated_tests/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/.fvm/flutter_sdk/dev/automated_tests/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.fvm/flutter_sdk/dev/tools/gen_defaults/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.fvm/flutter_sdk/dev/tools/gen_defaults/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/.fvm/flutter_sdk/dev/tools/gen_defaults/.pub" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

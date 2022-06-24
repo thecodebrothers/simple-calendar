@@ -33,8 +33,8 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return Stack(
           children: [
-            EmptyCells(date: date, numberOfConstantsTasks: maxNumberOfWholeDayTasks),
-            if (date.isSameDate(DateTime.now())) CurrentTime(numberOfConstantsTasks: maxNumberOfWholeDayTasks),
+            EmptyCells(date: date, numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: calendarSettings,),
+            if (date.isSameDate(DateTime.now())) CurrentTime(numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: calendarSettings),
             ...events.map(
               (e) => CalendarEventTile(
                 event: e,
@@ -55,6 +55,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
               ),
             for (int i = 0; i < allDayEvents.length; i++)
               WholeEventTile(
+                calendarSettings: calendarSettings,
                 event: allDayEvents[i],
                 rowWidth: constraints.maxWidth,
                 position: i,

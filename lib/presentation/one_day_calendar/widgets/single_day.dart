@@ -66,10 +66,10 @@ class _SingleDayState extends State<SingleDay> {
           child: SingleChildScrollView(
             controller: widget.scrollController,
             child: Row(children: [
-              Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length),
+              Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length, calendarSettings: widget.calendarSettings),
               Expanded(
                 child: SizedBox(
-                  height: kHoursInCalendar * kCellHeight + state.dayWithEvents.allDaysEvents.length * kCellHeight,
+                  height: kHoursInCalendar * widget.calendarSettings.rowHeight + state.dayWithEvents.allDaysEvents.length * widget.calendarSettings.rowHeight,
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;

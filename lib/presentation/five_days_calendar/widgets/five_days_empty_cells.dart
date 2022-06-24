@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:simple_calendar/constants/constants.dart';
+import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/five_days_calendar/widgets/five_days_date.dart';
 
 class FiveDaysEmptyCells extends StatelessWidget {
   final DateTime date;
   final double rowWidth;
+  final CalendarSettings calendarSettings;
 
-  const FiveDaysEmptyCells({required this.date, required this.rowWidth, Key? key}) : super(key: key);
+  const FiveDaysEmptyCells({
+    required this.date,
+    required this.rowWidth,
+    required this.calendarSettings,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class FiveDaysEmptyCells extends StatelessWidget {
         ),
         for (int i = 0; i < 24; i++)
           Container(
-            height: kCellHeight,
+            height: calendarSettings.rowHeight,
             width: rowWidth,
             decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
           )

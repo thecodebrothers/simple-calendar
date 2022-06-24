@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,7 @@ class CalendarSettings {
   final String tomorrowTranslation;
   final String dayAfterTomorrowTranslation;
   final String dayNameFormat;
+  final double rowHeight;
 
   CalendarSettings({
     required this.firstLineTileTextStyle,
@@ -41,6 +41,7 @@ class CalendarSettings {
     required this.todayTranslation,
     required this.tomorrowTranslation,
     required this.dayAfterTomorrowTranslation,
+    this.rowHeight = 60.0,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
   });

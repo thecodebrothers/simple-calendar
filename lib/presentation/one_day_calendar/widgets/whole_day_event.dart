@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_calendar/constants/constants.dart';
+import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
 
@@ -8,21 +8,23 @@ class WholeEventTile extends StatelessWidget {
   final int position;
   final double rowWidth;
   final VoidCallback action;
+  final CalendarSettings calendarSettings;
 
   const WholeEventTile({
     required this.event,
     required this.position,
     required this.rowWidth,
     required this.action,
+    required this.calendarSettings,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: position * kCellHeight,
+      top: position * calendarSettings.rowHeight,
       width: rowWidth,
-      height: kCellHeight,
+      height: calendarSettings.rowHeight,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Material(
