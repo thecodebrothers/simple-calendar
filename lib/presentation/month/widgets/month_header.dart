@@ -44,7 +44,7 @@ class MonthHeader extends StatelessWidget {
   }
 
   String _monthName() {
-    final format = DateFormat("MMM yyyy");
+    final format = DateFormat("MMMM yyyy");
     return format.format(dayFromMonth);
   }
 }
