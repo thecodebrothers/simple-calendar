@@ -42,22 +42,6 @@ class MultipleDaysCalendarView extends StatefulWidget {
 }
 
 class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-  }
-
-  @override
-  void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
