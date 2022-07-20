@@ -57,7 +57,7 @@ class CalendarEventTile extends StatelessWidget {
                       Flexible(
                         child: Text(
                           event.singleLine,
-                          maxLines: event.secondLine != null ? 3 : 1,
+                          maxLines: event.secondLine == null ? 3 : 1,
                           overflow: TextOverflow.fade,
                           style: calendarSettings.firstLineTileTextStyle,
                         ),
