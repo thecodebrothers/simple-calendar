@@ -34,7 +34,7 @@ class CalendarTileImage extends StatelessWidget {
 
   Widget _getImageWidget() {
     if (event.networkIconName.isNotEmpty) {
-      return Image.network(event.networkIconName, color: event.iconBackgroundColor);
+      return Image.network(event.networkIconName, color: event.iconBackgroundColor, headers: event.imageHeaders);
     } else if (event.localIconName.isNotEmpty) {
       return Image.asset(event.localIconName, color: event.iconBackgroundColor);
     } else {

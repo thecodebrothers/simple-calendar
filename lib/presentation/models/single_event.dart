@@ -13,6 +13,7 @@ class SingleEvent extends Equatable {
   final Color iconBackgroundColor;
   final Color dotTileColor;
   final Color tileBackgroundColor;
+  final Map<String, String>? imageHeaders;
   final int? id;
   final dynamic object;
 
@@ -28,6 +29,7 @@ class SingleEvent extends Equatable {
     required this.object,
     required this.id,
     required this.tileBackgroundColor,
+    required this.imageHeaders,
   });
 
   SingleEvent.fromCalendar(SingleCalendarEvent element)
@@ -41,6 +43,7 @@ class SingleEvent extends Equatable {
         dotTileColor = element.dotTileColor,
         object = element.object,
         tileBackgroundColor = element.tileBackgroundColor,
+        imageHeaders = element.imageHeaders,
         id = element.id;
 
   @override
