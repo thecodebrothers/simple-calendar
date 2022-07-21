@@ -117,7 +117,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                       ),
                       SizedBox(
                         width: rowWidth,
-                        height: kHoursInCalendar * widget.calendarSettings.rowHeight + maxNumberOfWholeDayTasks * widget.calendarSettings.rowHeight,
+                        height: (widget.calendarSettings.endHour - widget.calendarSettings.startHour) * widget.calendarSettings.rowHeight + maxNumberOfWholeDayTasks * widget.calendarSettings.rowHeight,
                         child: GestureDetector(
                           onLongPressEnd: (details) {
                             final date = state.date;

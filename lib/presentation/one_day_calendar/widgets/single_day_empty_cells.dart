@@ -20,7 +20,7 @@ class EmptyCells extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SizedBox(height: numberOfConstantsTasks * calendarSettings.rowHeight),
-        for (int i = 0; i < kHoursInCalendar; i++)
+        for (int i = 0; i < (calendarSettings.endHour - calendarSettings.startHour); i++)
           Container(
             height: calendarSettings.rowHeight,
             decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),

@@ -69,7 +69,7 @@ class _SingleDayState extends State<SingleDay> {
               Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length, calendarSettings: widget.calendarSettings),
               Expanded(
                 child: SizedBox(
-                  height: kHoursInCalendar * widget.calendarSettings.rowHeight + state.dayWithEvents.allDaysEvents.length * widget.calendarSettings.rowHeight,
+                  height: (widget.calendarSettings.endHour - widget.calendarSettings.startHour) * widget.calendarSettings.rowHeight + state.dayWithEvents.allDaysEvents.length * widget.calendarSettings.rowHeight,
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
