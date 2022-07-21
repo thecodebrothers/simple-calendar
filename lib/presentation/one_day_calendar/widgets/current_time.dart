@@ -17,7 +17,7 @@ class CurrentTime extends StatelessWidget {
       top: numberOfConstantsTasks * calendarSettings.rowHeight +
           DateTime.now().hour * calendarSettings.rowHeight +
           DateTime.now().minute -
-          (calendarSettings.endHour - calendarSettings.startHour) * calendarSettings.rowHeight,
+          calendarSettings.startHour * calendarSettings.rowHeight,
       left: 0,
       right: 0,
       child: Container(
