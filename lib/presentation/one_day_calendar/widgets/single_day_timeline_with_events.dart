@@ -9,7 +9,6 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_
 
 class SingleDayTimelineWithEvents extends StatelessWidget {
   final DateTime date;
-  final List<SingleEvent> events;
   final List<List<SingleEvent>> multipleEvents;
   final List<SingleEvent> allDayEvents;
   final int maxNumberOfWholeDayTasks;
@@ -18,7 +17,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
 
   const SingleDayTimelineWithEvents({
     required this.date,
-    required this.events,
     required this.multipleEvents,
     required this.allDayEvents,
     required this.maxNumberOfWholeDayTasks,
@@ -40,14 +38,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
             ),
             if (date.isSameDate(DateTime.now()))
               CurrentTime(numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: calendarSettings),
-            ...events.map(
-              (e) => CalendarEventTile(
-                event: e,
-                numberOfAllDayEvents: maxNumberOfWholeDayTasks,
-                action: () => action(e),
-                calendarSettings: calendarSettings,
-              ),
-            ),
             ..._getMultiple(constraints),
             for (int i = 0; i < allDayEvents.length; i++)
               WholeEventTile(

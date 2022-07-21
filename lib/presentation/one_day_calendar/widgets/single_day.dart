@@ -66,17 +66,21 @@ class _SingleDayState extends State<SingleDay> {
           child: SingleChildScrollView(
             controller: widget.scrollController,
             child: Row(children: [
-              Hours(numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length, calendarSettings: widget.calendarSettings),
+              Hours(
+                  numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length,
+                  calendarSettings: widget.calendarSettings),
               Expanded(
                 child: SizedBox(
-                  height: (widget.calendarSettings.endHour - widget.calendarSettings.startHour) * widget.calendarSettings.rowHeight + state.dayWithEvents.allDaysEvents.length * widget.calendarSettings.rowHeight,
+                  height: (widget.calendarSettings.endHour - widget.calendarSettings.startHour) *
+                          widget.calendarSettings.rowHeight +
+                      state.dayWithEvents.allDaysEvents.length * widget.calendarSettings.rowHeight,
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
-                      widget.onLongPress(DateTime(date.year, date.month, date.day, details.localPosition.dy.toInt() ~/ 60));
+                      widget.onLongPress(
+                          DateTime(date.year, date.month, date.day, details.localPosition.dy.toInt() ~/ 60));
                     },
                     child: SingleDayTimelineWithEvents(
-                      events: state.dayWithEvents.singleEvents,
                       multipleEvents: state.dayWithEvents.multipleEvents,
                       allDayEvents: state.dayWithEvents.allDaysEvents,
                       date: state.date,

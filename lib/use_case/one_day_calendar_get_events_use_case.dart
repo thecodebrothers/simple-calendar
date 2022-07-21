@@ -67,7 +67,7 @@ class OneDayCalendarGetEventsUseCase {
           eventsToSplit.remove(item);
         }
       }
-
+      tmpEvents.add(firstEvent);
       if(tmpEvents.isNotEmpty) {
         multipleEvents.add(tmpEvents);
       }
@@ -90,14 +90,6 @@ class OneDayCalendarGetEventsUseCase {
       //   }
       // }
     }
-
-    for (final element in events) {
-      if (!multipleEvents.expand((element) => element).contains(element) && !allDayEvents.contains(element)) {
-        singleEvents.add(element);
-      }
-    }
-
-    final singleEventsWoDuplicates = singleEvents.where((element) => !element.isAllDay).toSet().toList();
     // final multipleEventsWoDuplicates = multipleEvents.where((element) => !element.isAllDay).toSet().toList();
     // multipleEventsWoDuplicates.sort((a, b) => a.eventStart.compareTo(b.eventStart));
 
@@ -107,7 +99,6 @@ class OneDayCalendarGetEventsUseCase {
       // multipleEvents: multipleEventsWoDuplicates.map((element) => SingleEvent.fromCalendar(element)).toList(),
       multipleEvents:
           multipleEvents.map((element) => element.map((e) => SingleEvent.fromCalendar(e)).toList()).toList(),
-      singleEvents: singleEventsWoDuplicates.map((element) => SingleEvent.fromCalendar(element)).toList(),
     );
   }
 

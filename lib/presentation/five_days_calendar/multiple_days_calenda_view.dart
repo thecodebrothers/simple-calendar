@@ -125,7 +125,6 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                           },
                           child: SingleDayTimelineWithEvents(
                             date: e.date,
-                            events: e.singleEvents,
                             multipleEvents: e.multipleEvents,
                             allDayEvents: e.allDaysEvents,
                             maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
