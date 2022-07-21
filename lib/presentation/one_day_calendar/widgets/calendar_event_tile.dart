@@ -26,7 +26,9 @@ class CalendarEventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: event.eventStart.toDouble() - calendarSettings.startHour * calendarSettings.rowHeight + numberOfAllDayEvents * calendarSettings.rowHeight,
+      top: event.eventStart.toDouble() -
+          calendarSettings.startHour * calendarSettings.rowHeight +
+          numberOfAllDayEvents * calendarSettings.rowHeight,
       left: rowWidth != null ? _getPositionLeft(position ?? 0) : 3,
       right: rowWidth != null ? null : 3,
       width: rowWidth != null ? (rowWidth ?? 0) / (numberOfEvents ?? 1) : null,
@@ -49,32 +51,34 @@ class CalendarEventTile extends StatelessWidget {
                     size: calendarSettings.tileIconSize,
                     iconBackgroundOpacity: calendarSettings.iconBackgroundOpacity),
                 SizedBox(width: calendarSettings.iconSpacingFromText),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          event.singleLine,
-                          maxLines: event.secondLine == null ? 3 : 1,
-                          overflow: TextOverflow.fade,
-                          style: calendarSettings.firstLineTileTextStyle,
-                        ),
-                      ),
-                      if (event.secondLine != null) const SizedBox(height: 4),
-                      if (event.secondLine != null)
+                if ((rowWidth ?? 0) / (numberOfEvents ?? 1) >
+                    calendarSettings.tileIconSize + calendarSettings.iconSpacingFromText * 4 + 16)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         Flexible(
                           child: Text(
-                            event.secondLine!,
-                            maxLines: 1,
+                            event.singleLine,
+                            maxLines: event.secondLine == null ? 3 : 1,
                             overflow: TextOverflow.fade,
-                            style: calendarSettings.secondLineTileTextStyle,
+                            style: calendarSettings.firstLineTileTextStyle,
                           ),
                         ),
-                    ],
+                        if (event.secondLine != null) const SizedBox(height: 4),
+                        if (event.secondLine != null)
+                          Flexible(
+                            child: Text(
+                              event.secondLine!,
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                              style: calendarSettings.secondLineTileTextStyle,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
                 SizedBox(width: calendarSettings.iconSpacingFromText),
                 Container(
                   width: 16,
