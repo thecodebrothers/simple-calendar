@@ -53,43 +53,43 @@ class CalendarEventTile extends StatelessWidget {
                     size: calendarSettings.tileIconSize,
                     iconBackgroundOpacity: calendarSettings.iconBackgroundOpacity),
                 if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
-                if (calculatedRowWidth > minWidth)
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          event.singleLine,
+                          maxLines: event.secondLine == null ? 3 : 1,
+                          overflow: TextOverflow.fade,
+                          style: calendarSettings.firstLineTileTextStyle,
+                        ),
+                      ),
+                      if (event.secondLine != null) const SizedBox(height: 4),
+                      if (event.secondLine != null)
                         Flexible(
                           child: Text(
-                            event.singleLine,
-                            maxLines: event.secondLine == null ? 3 : 1,
+                            event.secondLine!,
+                            maxLines: 1,
                             overflow: TextOverflow.fade,
-                            style: calendarSettings.firstLineTileTextStyle,
+                            style: calendarSettings.secondLineTileTextStyle,
                           ),
                         ),
-                        if (event.secondLine != null) const SizedBox(height: 4),
-                        if (event.secondLine != null)
-                          Flexible(
-                            child: Text(
-                              event.secondLine!,
-                              maxLines: 1,
-                              overflow: TextOverflow.fade,
-                              style: calendarSettings.secondLineTileTextStyle,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                SizedBox(width: calendarSettings.iconSpacingFromText),
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: event.dotTileColor,
-                    borderRadius: BorderRadius.circular(8),
+                    ],
                   ),
                 ),
-                SizedBox(width: calendarSettings.iconSpacingFromText),
+                if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
+                if (calculatedRowWidth > minWidth)
+                  Container(
+                    width: 16,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: event.dotTileColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
               ],
             ),
           ),
