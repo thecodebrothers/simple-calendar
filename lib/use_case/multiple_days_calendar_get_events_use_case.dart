@@ -41,56 +41,57 @@ class MultipleDaysCalendarGetEventsUseCase {
 
     final List<DayWithSingleAndMultipleItems> list = [];
 
-    for (final item in selectedDays) {
-      final eventsForSelectedDay = allEvents.where((element) => element.eventStart.isSameDate(item));
-      final List<SingleCalendarEvent> singleEvents = [];
-      final List<SingleCalendarEvent> multipleEvents = [];
-      final List<SingleCalendarEvent> allDayEvents = [];
-
-      for (final element in eventsForSelectedDay) {
-        if (element.isAllDay) {
-          allDayEvents.add(element);
-        }
-      }
-
-      for (final element in eventsForSelectedDay) {
-        for (final e in eventsForSelectedDay) {
-          if (!allDayEvents.contains(element) &&
-              element.id != e.id &&
-              element.eventStart.isSameDate(e.eventStart) &&
-              (((element.eventStart.isBefore(e.eventStart) || element.eventStart.isAtSameMomentAs(e.eventStart)) &&
-                      element.eventEnd.isAfter(e.eventStart)) ||
-                  (element.eventStart.isAfter(e.eventStart) && element.eventStart.isBefore(e.eventEnd)))) {
-            multipleEvents.add(e);
-          }
-        }
-      }
-
-      for (final element in eventsForSelectedDay) {
-        if (!multipleEvents.contains(element) && !allDayEvents.contains(element)) {
-          singleEvents.add(element);
-        }
-      }
-
-      final singleEventsWoDuplicates = singleEvents.where((element) => !element.isAllDay).toSet().toList();
-      final multipleEventsWoDuplicates = multipleEvents.where((element) => !element.isAllDay).toSet().toList();
-      multipleEventsWoDuplicates.sort((a, b) => a.eventStart.compareTo(b.eventStart));
-
-      list.add(
-        DayWithSingleAndMultipleItems(
-          date: item,
-          allDaysEvents: allDayEvents
-              .map((element) => SingleEvent.fromCalendar(element))
-              .toList(),
-          multipleEvents: multipleEventsWoDuplicates
-              .map((element) => SingleEvent.fromCalendar(element))
-              .toList(),
-          singleEvents: singleEventsWoDuplicates
-              .map((element) => SingleEvent.fromCalendar(element))
-              .toList(),
-        ),
-      );
-    }
+    // for (final item in selectedDays) {
+    //   final eventsForSelectedDay = allEvents.where((element) => element.eventStart.isSameDate(item));
+    //
+    //   final List<SingleCalendarEvent> singleEvents = [];
+    //   final List<SingleCalendarEvent> multipleEvents = [];
+    //   final List<SingleCalendarEvent> allDayEvents = [];
+    //
+    //   for (final element in eventsForSelectedDay) {
+    //     if (element.isAllDay) {
+    //       allDayEvents.add(element);
+    //     }
+    //   }
+    //
+    //   for (final element in eventsForSelectedDay) {
+    //     for (final e in eventsForSelectedDay) {
+    //       if (!allDayEvents.contains(element) &&
+    //           element.id != e.id &&
+    //           element.eventStart.isSameDate(e.eventStart) &&
+    //           (((element.eventStart.isBefore(e.eventStart) || element.eventStart.isAtSameMomentAs(e.eventStart)) &&
+    //                   element.eventEnd.isAfter(e.eventStart)) ||
+    //               (element.eventStart.isAfter(e.eventStart) && element.eventStart.isBefore(e.eventEnd)))) {
+    //         multipleEvents.add(e);
+    //       }
+    //     }
+    //   }
+    //
+    //   for (final element in eventsForSelectedDay) {
+    //     if (!multipleEvents.contains(element) && !allDayEvents.contains(element)) {
+    //       singleEvents.add(element);
+    //     }
+    //   }
+    //
+    //   final singleEventsWoDuplicates = singleEvents.where((element) => !element.isAllDay).toSet().toList();
+    //   final multipleEventsWoDuplicates = multipleEvents.where((element) => !element.isAllDay).toSet().toList();
+    //   multipleEventsWoDuplicates.sort((a, b) => a.eventStart.compareTo(b.eventStart));
+    //
+    //   list.add(
+    //     DayWithSingleAndMultipleItems(
+    //       date: item,
+    //       allDaysEvents: allDayEvents
+    //           .map((element) => SingleEvent.fromCalendar(element))
+    //           .toList(),
+    //       multipleEvents: multipleEventsWoDuplicates
+    //           .map((element) => SingleEvent.fromCalendar(element))
+    //           .toList(),
+    //       singleEvents: singleEventsWoDuplicates
+    //           .map((element) => SingleEvent.fromCalendar(element))
+    //           .toList(),
+    //     ),
+    //   );
+    // }
     return list;
   }
 }

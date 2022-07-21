@@ -10,7 +10,7 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_
 class SingleDayTimelineWithEvents extends StatelessWidget {
   final DateTime date;
   final List<SingleEvent> events;
-  final List<SingleEvent> multipleEvents;
+  final List<List<SingleEvent>> multipleEvents;
   final List<SingleEvent> allDayEvents;
   final int maxNumberOfWholeDayTasks;
   final Function(SingleEvent) action;
@@ -33,8 +33,13 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return Stack(
           children: [
-            EmptyCells(date: date, numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: calendarSettings,),
-            if (date.isSameDate(DateTime.now())) CurrentTime(numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: calendarSettings),
+            EmptyCells(
+              date: date,
+              numberOfConstantsTasks: maxNumberOfWholeDayTasks,
+              calendarSettings: calendarSettings,
+            ),
+            if (date.isSameDate(DateTime.now()))
+              CurrentTime(numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: calendarSettings),
             ...events.map(
               (e) => CalendarEventTile(
                 event: e,
@@ -43,16 +48,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
                 calendarSettings: calendarSettings,
               ),
             ),
-            for (int i = 0; i < multipleEvents.length; i++)
-              CalendarEventTile(
-                numberOfAllDayEvents: maxNumberOfWholeDayTasks,
-                event: multipleEvents[i],
-                rowWidth: constraints.maxWidth,
-                position: i,
-                numberOfEvents: multipleEvents.length < 6 ? multipleEvents.length : 5,
-                action: () => action(multipleEvents[i]),
-                calendarSettings: calendarSettings,
-              ),
+            ..._getMultiple(constraints),
             for (int i = 0; i < allDayEvents.length; i++)
               WholeEventTile(
                 calendarSettings: calendarSettings,
@@ -65,5 +61,23 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Widget> _getMultiple(BoxConstraints constraints) {
+    final List<Widget> widgets = [];
+    for (final events in multipleEvents) {
+      for (int i = 0; i < events.length; i++) {
+        widgets.add(CalendarEventTile(
+          numberOfAllDayEvents: maxNumberOfWholeDayTasks,
+          event: events[i],
+          rowWidth: constraints.maxWidth,
+          position: i,
+          numberOfEvents: events.length < 6 ? events.length : 5,
+          action: () => action(events[i]),
+          calendarSettings: calendarSettings,
+        ));
+      }
+    }
+    return widgets;
   }
 }
