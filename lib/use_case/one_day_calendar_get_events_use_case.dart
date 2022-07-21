@@ -59,14 +59,18 @@ class OneDayCalendarGetEventsUseCase {
         for (final element in eventsToSplit) {
           if (eventIsInTimeFrame(startTimeFrame, endTimeFrame, element)) {
             tmpEvents.add(element);
-            eventsToSplit.remove(element);
           }
         }
         startTimeFrame = tmpEvents.map((e) => e.eventStart.minute + e.eventStart.hour * 60.0).reduce(min);
         endTimeFrame = tmpEvents.map((e) => e.eventEnd.minute + e.eventEnd.hour * 60.0).reduce(max);
+        for(final item in tmpEvents) {
+          eventsToSplit.remove(item);
+        }
       }
 
-      multipleEvents.add(tmpEvents);
+      if(tmpEvents.isNotEmpty) {
+        multipleEvents.add(tmpEvents);
+      }
       // for (final element in events) {
       //
       //
