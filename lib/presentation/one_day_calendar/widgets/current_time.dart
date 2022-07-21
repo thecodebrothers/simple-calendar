@@ -14,7 +14,10 @@ class CurrentTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: numberOfConstantsTasks * calendarSettings.rowHeight + DateTime.now().hour * calendarSettings.rowHeight + DateTime.now().minute,
+      top: numberOfConstantsTasks * calendarSettings.rowHeight +
+          DateTime.now().hour * calendarSettings.rowHeight +
+          DateTime.now().minute -
+          (calendarSettings.endHour - calendarSettings.startHour) * calendarSettings.rowHeight,
       left: 0,
       right: 0,
       child: Container(
