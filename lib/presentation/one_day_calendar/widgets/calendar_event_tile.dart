@@ -26,7 +26,7 @@ class CalendarEventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: event.eventStart.toDouble() + numberOfAllDayEvents * calendarSettings.rowHeight,
+      top: event.eventStart.toDouble() - calendarSettings.startHour * calendarSettings.rowHeight + numberOfAllDayEvents * calendarSettings.rowHeight,
       left: rowWidth != null ? _getPositionLeft(position ?? 0) : 3,
       right: rowWidth != null ? null : 3,
       width: rowWidth != null ? (rowWidth ?? 0) / (numberOfEvents ?? 1) : null,

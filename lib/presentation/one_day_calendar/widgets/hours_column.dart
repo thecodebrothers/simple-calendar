@@ -17,8 +17,8 @@ class Hours extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: numberOfConstantsTasks * calendarSettings.rowHeight + 8 + kDayNameHeight),
-        for (int i = 1; i < 25; i++)
+        SizedBox(height: numberOfConstantsTasks * calendarSettings.rowHeight + 8 + kDayNameHeight - calendarSettings.startHour * calendarSettings.rowHeight),
+        for (int i = calendarSettings.startHour; i < calendarSettings.endHour + 1; i++)
           CalendarHourCell(
             hour: i,
             calendarSettings: calendarSettings,

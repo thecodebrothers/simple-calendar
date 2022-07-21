@@ -22,6 +22,8 @@ class CalendarSettings {
   final String dayAfterTomorrowTranslation;
   final String dayNameFormat;
   final double rowHeight;
+  final int startHour;
+  final int endHour;
 
   CalendarSettings({
     required this.firstLineTileTextStyle,
@@ -41,6 +43,8 @@ class CalendarSettings {
     required this.todayTranslation,
     required this.tomorrowTranslation,
     required this.dayAfterTomorrowTranslation,
+    required this.startHour,
+    required this.endHour,
     this.rowHeight = 60.0,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
