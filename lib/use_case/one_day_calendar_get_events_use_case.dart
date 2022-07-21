@@ -32,7 +32,6 @@ class OneDayCalendarGetEventsUseCase {
         )
         .toList();
 
-    final List<SingleCalendarEvent> singleEvents = [];
     final List<List<SingleCalendarEvent>> multipleEvents = [];
     final List<SingleCalendarEvent> allDayEvents = [];
 
@@ -63,40 +62,19 @@ class OneDayCalendarGetEventsUseCase {
         }
         startTimeFrame = tmpEvents.map((e) => e.eventStart.minute + e.eventStart.hour * 60.0).reduce(min);
         endTimeFrame = tmpEvents.map((e) => e.eventEnd.minute + e.eventEnd.hour * 60.0).reduce(max);
-        for(final item in tmpEvents) {
+        for (final item in tmpEvents) {
           eventsToSplit.remove(item);
         }
       }
       tmpEvents.add(firstEvent);
-      if(tmpEvents.isNotEmpty) {
+      if (tmpEvents.isNotEmpty) {
         multipleEvents.add(tmpEvents);
       }
-      // for (final element in events) {
-      //
-      //
-      //   for (final e in events) {
-      //     if(e.id != element.id) {
-      //
-      //     }
-      //
-      //     if (!allDayEvents.contains(element) &&
-      //         element.id != e.id &&
-      //         element.eventStart.isSameDate(e.eventStart) &&
-      //         (((element.eventStart.isBefore(e.eventStart) || element.eventStart.isAtSameMomentAs(e.eventStart)) &&
-      //             element.eventEnd.isAfter(e.eventStart)) ||
-      //             (element.eventStart.isAfter(e.eventStart) && element.eventStart.isBefore(e.eventEnd)))) {
-      //       multipleEvents.add(e);
-      //     }
-      //   }
-      // }
     }
-    // final multipleEventsWoDuplicates = multipleEvents.where((element) => !element.isAllDay).toSet().toList();
-    // multipleEventsWoDuplicates.sort((a, b) => a.eventStart.compareTo(b.eventStart));
 
     return DayWithSingleAndMultipleItems(
       date: date,
       allDaysEvents: allDayEvents.map((element) => SingleEvent.fromCalendar(element)).toList(),
-      // multipleEvents: multipleEventsWoDuplicates.map((element) => SingleEvent.fromCalendar(element)).toList(),
       multipleEvents:
           multipleEvents.map((element) => element.map((e) => SingleEvent.fromCalendar(e)).toList()).toList(),
     );
