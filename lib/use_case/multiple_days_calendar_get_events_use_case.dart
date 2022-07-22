@@ -37,6 +37,7 @@ class MultipleDaysCalendarGetEventsUseCase {
             object: element.object,
             dotTileColor: element.dotTileColor,
             tileBackgroundColor: element.tileBackgroundColor,
+            imageHeaders: element.imageHeaders,
           ),
         )
         .toList();

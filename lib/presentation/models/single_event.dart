@@ -59,5 +59,6 @@ class SingleEvent extends Equatable {
         tileBackgroundColor,
         id,
         object,
+        imageHeaders,
       ];
 }
