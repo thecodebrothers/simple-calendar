@@ -29,8 +29,8 @@ class MonthTile extends StatelessWidget {
         children: [
           ClipOval(
             child: SizedBox(
-              height: 24,
-              width: 24,
+              height: 32,
+              width: 32,
               child: Material(
                 color: isToday ? calendarSettings.monthSelectedColor : null,
                 child: InkWell(
@@ -53,6 +53,7 @@ class MonthTile extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 4),
           ClipOval(
             child: Container(
               height: 8,
