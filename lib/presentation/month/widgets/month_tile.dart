@@ -24,26 +24,40 @@ class MonthTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(4),
-        child: ClipOval(
+      padding: const EdgeInsets.all(4),
+      child: Column(
+        children: [
+          ClipOval(
             child: Material(
-          color: isToday ? calendarSettings .monthSelectedColor : null,
-          child: InkWell(
-            onTap: onTap,
-            child: Center(
-                child: Text(
-              text,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: isDayName
-                  ? calendarSettings.calendarMonthDayStyle
-                  : (isTheSameMonth
-                      ? (isToday
-                          ? calendarSettings.calendarCurrentMonthTileStyle.apply(color: Colors.white)
-                          : calendarSettings.calendarCurrentMonthTileStyle)
-                      : calendarSettings.calendarNotCurrentMonthTileStyle),
-            )),
+              color: isToday ? calendarSettings.monthSelectedColor : null,
+              child: InkWell(
+                onTap: onTap,
+                child: Center(
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: isDayName
+                        ? calendarSettings.calendarMonthDayStyle
+                        : (isTheSameMonth
+                            ? (isToday
+                                ? calendarSettings.calendarCurrentMonthTileStyle.apply(color: Colors.white)
+                                : calendarSettings.calendarCurrentMonthTileStyle)
+                            : calendarSettings.calendarNotCurrentMonthTileStyle),
+                  ),
+                ),
+              ),
+            ),
           ),
-        )));
+          ClipOval(
+            child: Container(
+              height: 8,
+              width: 8,
+              color: hasAnyTask ? calendarSettings.monthSelectedColor : Colors.transparent,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
