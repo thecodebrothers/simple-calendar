@@ -28,22 +28,26 @@ class MonthTile extends StatelessWidget {
       child: Column(
         children: [
           ClipOval(
-            child: Material(
-              color: isToday ? calendarSettings.monthSelectedColor : null,
-              child: InkWell(
-                onTap: onTap,
-                child: Center(
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    style: isDayName
-                        ? calendarSettings.calendarMonthDayStyle
-                        : (isTheSameMonth
-                            ? (isToday
-                                ? calendarSettings.calendarCurrentMonthTileStyle.apply(color: Colors.white)
-                                : calendarSettings.calendarCurrentMonthTileStyle)
-                            : calendarSettings.calendarNotCurrentMonthTileStyle),
+            child: SizedBox(
+              height: 24,
+              width: 24,
+              child: Material(
+                color: isToday ? calendarSettings.monthSelectedColor : null,
+                child: InkWell(
+                  onTap: onTap,
+                  child: Center(
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: isDayName
+                          ? calendarSettings.calendarMonthDayStyle
+                          : (isTheSameMonth
+                              ? (isToday
+                                  ? calendarSettings.calendarCurrentMonthTileStyle.apply(color: Colors.white)
+                                  : calendarSettings.calendarCurrentMonthTileStyle)
+                              : calendarSettings.calendarNotCurrentMonthTileStyle),
+                    ),
                   ),
                 ),
               ),
