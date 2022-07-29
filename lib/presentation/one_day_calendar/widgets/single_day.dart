@@ -78,7 +78,8 @@ class _SingleDayState extends State<SingleDay> {
                     onLongPressEnd: (details) {
                       final date = state.date;
                       widget.onLongPress(
-                          DateTime(date.year, date.month, date.day, details.localPosition.dy.toInt() ~/ 60));
+                          DateTime(date.year, date.month, date.day, (details.localPosition.dy.toInt() +
+                              (widget.calendarSettings.startHour * 60)) ~/ 60));
                     },
                     child: SingleDayTimelineWithEvents(
                       multipleEvents: state.dayWithEvents.multipleEvents,
