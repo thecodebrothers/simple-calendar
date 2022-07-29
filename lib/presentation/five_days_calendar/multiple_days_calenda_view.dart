@@ -80,11 +80,11 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
             FiveDaysNavigationBar(
               onTapLeft: () {
                 BlocProvider.of<MultipleDaysCalendarCubit>(context)
-                    .loadForDate(state.date.add(Duration(days: -(widget.daysAround * 2 + 1))));
+                    .loadForDate(state.date.add(const Duration(days: -1)));
               },
               onTapRight: () {
                 BlocProvider.of<MultipleDaysCalendarCubit>(context)
-                    .loadForDate(state.date.add(Duration(days: widget.daysAround * 2 + 1)));
+                    .loadForDate(state.date.add(const Duration(days: 1)));
               },
               rowWidth: rowWidth,
             ),

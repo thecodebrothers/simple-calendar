@@ -90,7 +90,7 @@ class MultipleDaysCalendarGetEventsUseCase {
 
       list.add(
         DayWithSingleAndMultipleItems(
-          date: date,
+          date: item,
           allDaysEvents: allDayEvents.map((element) => SingleEvent.fromCalendar(element)).toList(),
           multipleEvents:
               multipleEvents.map((element) => element.map((e) => SingleEvent.fromCalendar(e)).toList()).toList(),
