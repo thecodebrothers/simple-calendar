@@ -35,13 +35,13 @@ class SingleDayDate extends StatelessWidget {
     final today = DateTime.now();
     if (date.isSameDate(today)) {
       return "${format.format(date)}, ${calendarSettings.todayTranslation}";
-    } else if (date.isSameMonth(date) && date.day == today.day + 1) {
+    } else if (date.isSameMonth(today) && date.day == today.day + 1) {
       return "${format.format(date)}, ${calendarSettings.tomorrowTranslation}";
-    } else if (date.isSameMonth(date) && date.day == today.day + 2) {
+    } else if (date.isSameMonth(today) && date.day == today.day + 2) {
       return "${format.format(date)}, ${calendarSettings.dayAfterTomorrowTranslation}";
-    } else if (date.isSameMonth(date) && date.day == today.day - 1) {
+    } else if (date.isSameMonth(today) && date.day == today.day - 1) {
       return "${format.format(date)}, ${calendarSettings.yesterdayTranslation}";
-    } else if (date.isSameMonth(date) && date.day == today.day - 2) {
+    } else if (date.isSameMonth(today) && date.day == today.day - 2) {
       return "${format.format(date)}, ${calendarSettings.dayBeforeYesterdayTranslation}";
     } else {
       return format.format(date);
