@@ -26,6 +26,7 @@ class OneDayCalendarView extends StatefulWidget {
     required this.calendarSettings,
     required this.onEventTap,
     required this.onLongPress,
+    required this.onSelected,
     this.reloadController,
     Key? key,
   }) : super(key: key);
@@ -62,7 +63,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           onEventTap: widget.onEventTap,
           onLongPress: widget.onLongPress,
           onChanged: (date) {
-            widget.onSelectd.call(date);
+            widget.onSelected(date);
             BlocProvider.of<OneDayCalendarCubit>(pageContext).loadForDate(date);
           },
         ),
