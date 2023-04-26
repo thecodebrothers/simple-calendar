@@ -24,7 +24,7 @@ class CalendarSettings {
   final double rowHeight;
   final int startHour;
   final int endHour;
-
+  final double minimumHeight;
   CalendarSettings({
     required this.firstLineTileTextStyle,
     required this.secondLineTileTextStyle,
@@ -48,5 +48,6 @@ class CalendarSettings {
     this.rowHeight = 60.0,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
+    this.minimumHeight = 0.0,
   });
 }
