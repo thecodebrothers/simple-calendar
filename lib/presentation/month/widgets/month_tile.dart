@@ -44,9 +44,13 @@ class MonthTile extends StatelessWidget {
                           ? calendarSettings.calendarMonthDayStyle
                           : (isTheSameMonth
                               ? (isToday
-                                  ? calendarSettings.calendarCurrentMonthTileStyle.apply(color: Colors.white)
-                                  : calendarSettings.calendarCurrentMonthTileStyle)
-                              : calendarSettings.calendarNotCurrentMonthTileStyle),
+                                  ? calendarSettings
+                                      .calendarCurrentMonthTileStyle
+                                      .apply(color: Colors.white)
+                                  : calendarSettings
+                                      .calendarCurrentMonthTileStyle)
+                              : calendarSettings
+                                  .calendarNotCurrentMonthTileStyle),
                     ),
                   ),
                 ),
@@ -58,7 +62,9 @@ class MonthTile extends StatelessWidget {
             child: Container(
               height: 8,
               width: 8,
-              color: hasAnyTask ? calendarSettings.monthSelectedColor : Colors.transparent,
+              color: hasAnyTask
+                  ? calendarSettings.monthSelectedColor
+                  : Colors.transparent,
             ),
           )
         ],

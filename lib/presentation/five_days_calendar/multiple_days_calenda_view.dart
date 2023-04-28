@@ -37,11 +37,11 @@ class MultipleDaysCalendarView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MultipleDaysCalendarView> createState() => _MultipleDaysCalendarViewState();
+  State<MultipleDaysCalendarView> createState() =>
+      _MultipleDaysCalendarViewState();
 }
 
 class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MultipleDaysCalendarCubit>(
@@ -71,8 +71,12 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
 
   Widget _buildPage(MultipleDaysCalendarLoaded state) {
     return Scaffold(
-      body: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-        final rowWidth = (constraints.maxWidth - kHourCellWidth - kDayNameHeight - kHourCellSpaceRight) /
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        final rowWidth = (constraints.maxWidth -
+                kHourCellWidth -
+                kDayNameHeight -
+                kHourCellSpaceRight) /
             state.daysWithEvents.length;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -96,14 +100,17 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
   }
 
   Widget _buildCalendar(MultipleDaysCalendarLoaded state, double rowWidth) {
-    final maxNumberOfWholeDayTasks = state.daysWithEvents.map((e) => e.allDaysEvents.length).reduce(max);
+    final maxNumberOfWholeDayTasks =
+        state.daysWithEvents.map((e) => e.allDaysEvents.length).reduce(max);
     return Expanded(
       child: SingleChildScrollView(
         controller: widget.scrollController,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hours(numberOfConstantsTasks: maxNumberOfWholeDayTasks, calendarSettings: widget.calendarSettings),
+            Hours(
+                numberOfConstantsTasks: maxNumberOfWholeDayTasks,
+                calendarSettings: widget.calendarSettings),
             ...state.daysWithEvents
                 .map(
                   (e) => Column(
@@ -117,11 +124,19 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                       ),
                       SizedBox(
                         width: rowWidth,
-                        height: (widget.calendarSettings.endHour - widget.calendarSettings.startHour) * widget.calendarSettings.rowHeight + maxNumberOfWholeDayTasks * widget.calendarSettings.rowHeight,
+                        height: (widget.calendarSettings.endHour -
+                                    widget.calendarSettings.startHour) *
+                                widget.calendarSettings.rowHeight +
+                            maxNumberOfWholeDayTasks *
+                                widget.calendarSettings.rowHeight,
                         child: GestureDetector(
                           onLongPressEnd: (details) {
                             final date = state.date;
-                            widget.onLongPress(DateTime(date.year, date.month, date.day, details.localPosition.dy.toInt() ~/ 60));
+                            widget.onLongPress(DateTime(
+                                date.year,
+                                date.month,
+                                date.day,
+                                details.localPosition.dy.toInt() ~/ 60));
                           },
                           child: SingleDayTimelineWithEvents(
                             date: e.date,

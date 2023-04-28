@@ -13,7 +13,8 @@ class MultipleDaysCalendarGetEventsUseCase {
     this._calendarRepository,
   );
 
-  Future<List<DayWithSingleAndMultipleItems>> getMultipleDayEventsSorted(DateTime date, int daysAround) async {
+  Future<List<DayWithSingleAndMultipleItems>> getMultipleDayEventsSorted(
+      DateTime date, int daysAround) async {
     final List<DateTime> selectedDays = [];
     for (int i = -daysAround; i <= daysAround; i++) {
       selectedDays.add(date.add(Duration(days: i)));
@@ -45,7 +46,8 @@ class MultipleDaysCalendarGetEventsUseCase {
     final List<DayWithSingleAndMultipleItems> list = [];
 
     for (final item in selectedDays) {
-      final eventsForSelectedDay = allEvents.where((element) => element.eventStart.isSameDate(item));
+      final eventsForSelectedDay =
+          allEvents.where((element) => element.eventStart.isSameDate(item));
 
       final List<List<SingleCalendarEvent>> multipleEvents = [];
       final List<SingleCalendarEvent> allDayEvents = [];
@@ -64,20 +66,29 @@ class MultipleDaysCalendarGetEventsUseCase {
 
       while (eventsToSplit.isNotEmpty) {
         SingleCalendarEvent firstEvent = eventsToSplit.first;
-        startTimeFrame = firstEvent.eventStart.minute + firstEvent.eventStart.hour * 60;
-        endTimeFrame = firstEvent.eventEnd.minute + firstEvent.eventEnd.hour * 60;
+        startTimeFrame =
+            firstEvent.eventStart.minute + firstEvent.eventStart.hour * 60;
+        endTimeFrame =
+            firstEvent.eventEnd.minute + firstEvent.eventEnd.hour * 60;
         eventsToSplit.remove(firstEvent);
 
         List<SingleCalendarEvent> tmpEvents = [];
 
-        while (eventsToSplit.where((element) => eventIsInTimeFrame(startTimeFrame, endTimeFrame, element)).isNotEmpty) {
+        while (eventsToSplit
+            .where((element) =>
+                eventIsInTimeFrame(startTimeFrame, endTimeFrame, element))
+            .isNotEmpty) {
           for (final element in eventsToSplit) {
             if (eventIsInTimeFrame(startTimeFrame, endTimeFrame, element)) {
               tmpEvents.add(element);
             }
           }
-          startTimeFrame = tmpEvents.map((e) => e.eventStart.minute + e.eventStart.hour * 60.0).reduce(min);
-          endTimeFrame = tmpEvents.map((e) => e.eventEnd.minute + e.eventEnd.hour * 60.0).reduce(max);
+          startTimeFrame = tmpEvents
+              .map((e) => e.eventStart.minute + e.eventStart.hour * 60.0)
+              .reduce(min);
+          endTimeFrame = tmpEvents
+              .map((e) => e.eventEnd.minute + e.eventEnd.hour * 60.0)
+              .reduce(max);
           for (final item in tmpEvents) {
             eventsToSplit.remove(item);
           }
@@ -91,19 +102,27 @@ class MultipleDaysCalendarGetEventsUseCase {
       list.add(
         DayWithSingleAndMultipleItems(
           date: item,
-          allDaysEvents: allDayEvents.map((element) => SingleEvent.fromCalendar(element)).toList(),
-          multipleEvents:
-              multipleEvents.map((element) => element.map((e) => SingleEvent.fromCalendar(e)).toList()).toList(),
+          allDaysEvents: allDayEvents
+              .map((element) => SingleEvent.fromCalendar(element))
+              .toList(),
+          multipleEvents: multipleEvents
+              .map((element) =>
+                  element.map((e) => SingleEvent.fromCalendar(e)).toList())
+              .toList(),
         ),
       );
     }
     return list;
   }
 
-  bool eventIsInTimeFrame(double startTimeFrame, double endTimeFrame, SingleCalendarEvent event) {
-    final eventStartTimeFrame = event.eventStart.minute + event.eventStart.hour * 60;
+  bool eventIsInTimeFrame(
+      double startTimeFrame, double endTimeFrame, SingleCalendarEvent event) {
+    final eventStartTimeFrame =
+        event.eventStart.minute + event.eventStart.hour * 60;
     final eventEndTimeFrame = event.eventEnd.minute + event.eventEnd.hour * 60;
-    return (eventStartTimeFrame >= startTimeFrame && eventStartTimeFrame <= endTimeFrame ||
-        eventEndTimeFrame >= startTimeFrame && eventEndTimeFrame <= endTimeFrame);
+    return (eventStartTimeFrame >= startTimeFrame &&
+            eventStartTimeFrame <= endTimeFrame ||
+        eventEndTimeFrame >= startTimeFrame &&
+            eventEndTimeFrame <= endTimeFrame);
   }
 }

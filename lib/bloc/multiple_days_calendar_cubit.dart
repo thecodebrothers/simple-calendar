@@ -8,7 +8,8 @@ import 'package:simple_calendar/use_case/multiple_days_calendar_get_events_use_c
 part 'multiple_days_calendar_state.dart';
 
 class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
-  final MultipleDaysCalendarGetEventsUseCase _multipleDaysCalendarGetEventsUseCase;
+  final MultipleDaysCalendarGetEventsUseCase
+      _multipleDaysCalendarGetEventsUseCase;
   final DateTime _initialDate;
   final int _daysAround;
   final StreamController? _streamController;
@@ -34,15 +35,16 @@ class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
   }
 
   Future loadForDate(DateTime date) async {
-    final events = await _multipleDaysCalendarGetEventsUseCase.getMultipleDayEventsSorted(date, _daysAround);
+    final events = await _multipleDaysCalendarGetEventsUseCase
+        .getMultipleDayEventsSorted(date, _daysAround);
     emit(MultipleDaysCalendarLoaded(events, date));
   }
 
   Future _reload() async {
     final currentState = state;
     if (currentState is MultipleDaysCalendarLoaded) {
-      final events =
-          await _multipleDaysCalendarGetEventsUseCase.getMultipleDayEventsSorted(currentState.date, _daysAround);
+      final events = await _multipleDaysCalendarGetEventsUseCase
+          .getMultipleDayEventsSorted(currentState.date, _daysAround);
       emit(MultipleDaysCalendarLoaded(events, currentState.date));
     }
   }
