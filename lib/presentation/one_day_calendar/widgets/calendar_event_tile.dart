@@ -54,9 +54,8 @@ class CalendarEventTile extends StatelessWidget {
               children: [
                 if (calculatedRowWidth > minWidth)
                   SizedBox(width: calendarSettings.iconSpacingFromText),
-                if (eventWidth == null
-                    ? true
-                    : eventWidth > calendarSettings.tileIconSize)
+                if (eventWidth == null ||
+                    eventWidth > calendarSettings.tileIconSize)
                   CalendarTileImage(
                       event: event,
                       size: calendarSettings.tileIconSize,
