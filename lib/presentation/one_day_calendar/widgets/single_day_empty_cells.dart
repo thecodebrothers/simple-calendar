@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
-import 'package:simple_calendar/constants/constants.dart';
 
 class EmptyCells extends StatelessWidget {
   final DateTime date;
@@ -20,10 +19,14 @@ class EmptyCells extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SizedBox(height: numberOfConstantsTasks * calendarSettings.rowHeight),
-        for (int i = 0; i < (calendarSettings.endHour - calendarSettings.startHour); i++)
+        for (int i = 0;
+            i < (calendarSettings.endHour - calendarSettings.startHour);
+            i++)
           Container(
             height: calendarSettings.rowHeight,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade200),
+            ),
           )
       ],
     );

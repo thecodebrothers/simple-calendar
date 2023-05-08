@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const calendar_january = 'calendar.january';
   static const calendar_february = 'calendar.february';
   static const calendar_march = 'calendar.march';
@@ -21,5 +21,4 @@ abstract class  LocaleKeys {
   static const calendar_saturday = 'calendar.saturday';
   static const calendar_sunday = 'calendar.sunday';
   static const calendar = 'calendar';
-
 }

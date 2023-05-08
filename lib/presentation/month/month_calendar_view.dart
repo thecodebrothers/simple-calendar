@@ -61,12 +61,14 @@ class MonthCalendarView extends StatelessWidget {
                 MonthHeader(
                   calendarSettings: calendarSettings,
                   onTapLeft: () {
-                    BlocProvider.of<MonthCalendarCubit>(context)
-                        .loadForDate(DateTime(state.date.year, state.date.month - 1, state.date.day));
+                    BlocProvider.of<MonthCalendarCubit>(context).loadForDate(
+                        DateTime(state.date.year, state.date.month - 1,
+                            state.date.day));
                   },
                   onTapRight: () {
-                    BlocProvider.of<MonthCalendarCubit>(context)
-                        .loadForDate(DateTime(state.date.year, state.date.month + 1, state.date.day));
+                    BlocProvider.of<MonthCalendarCubit>(context).loadForDate(
+                        DateTime(state.date.year, state.date.month + 1,
+                            state.date.day));
                   },
                   dayFromMonth: state.date,
                 ),
@@ -85,10 +87,14 @@ class MonthCalendarView extends StatelessWidget {
                               onSelected(e.date);
                             },
                             calendarSettings: calendarSettings,
-                            text: e.isDayName ? _dayName(e.date) : e.date.day.toString(),
+                            text: e.isDayName
+                                ? _dayName(e.date)
+                                : e.date.day.toString(),
                             hasAnyTask: !e.isDayName && e.hasAnyEvents,
-                            isTheSameMonth: e.isDayName || state.date.isSameMonth(e.date),
-                            isToday: !e.isDayName && e.date.isSameDate(DateTime.now()),
+                            isTheSameMonth:
+                                e.isDayName || state.date.isSameMonth(e.date),
+                            isToday: !e.isDayName &&
+                                e.date.isSameDate(DateTime.now()),
                             isDayName: e.isDayName,
                           ),
                         )

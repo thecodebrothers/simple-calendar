@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
-import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hour_cell.dart';
 
 class Hours extends StatelessWidget {
@@ -18,7 +17,9 @@ class Hours extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: numberOfConstantsTasks * calendarSettings.rowHeight),
-        for (int i = calendarSettings.startHour; i < calendarSettings.endHour + 1; i++)
+        for (int i = calendarSettings.startHour;
+            i < calendarSettings.endHour + 1;
+            i++)
           CalendarHourCell(
             hour: i,
             calendarSettings: calendarSettings,

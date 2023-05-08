@@ -25,7 +25,9 @@ class CalendarEventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final minWidth = calendarSettings.tileIconSize + calendarSettings.iconSpacingFromText * 4 + 16;
+    final minWidth = calendarSettings.tileIconSize +
+        calendarSettings.iconSpacingFromText * 4 +
+        16;
     final calculatedRowWidth = (rowWidth ?? 0) / (numberOfEvents ?? 1);
     return Positioned(
       top: event.eventStart.toDouble() -
@@ -47,12 +49,15 @@ class CalendarEventTile extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
                 CalendarTileImage(
                     event: event,
                     size: calendarSettings.tileIconSize,
-                    iconBackgroundOpacity: calendarSettings.iconBackgroundOpacity),
-                if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
+                    iconBackgroundOpacity:
+                        calendarSettings.iconBackgroundOpacity),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +84,8 @@ class CalendarEventTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
                 if (calculatedRowWidth > minWidth)
                   Container(
                     width: 16,
@@ -89,7 +95,8 @@ class CalendarEventTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                if (calculatedRowWidth > minWidth) SizedBox(width: calendarSettings.iconSpacingFromText),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
               ],
             ),
           ),

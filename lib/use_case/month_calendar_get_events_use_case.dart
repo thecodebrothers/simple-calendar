@@ -14,9 +14,11 @@ class MonthCalendarGetEventsUseCase {
     final startOfCurrentMonth = DateTime(date.year, date.month);
     final weekdayOfFirstDay = startOfCurrentMonth.weekday;
     final endOfCurrentMonth = DateTime(date.year, date.month + 1);
-    final daysBetween = startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
+    final daysBetween =
+        startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
 
-    final events = await _calendarRepository.getEventsForMultipleDays(startOfCurrentMonth, endOfCurrentMonth);
+    final events = await _calendarRepository.getEventsForMultipleDays(
+        startOfCurrentMonth, endOfCurrentMonth);
 
     for (int i = -weekdayOfFirstDay + 1; i < daysBetween; i++) {
       days.add(startOfCurrentMonth.add(Duration(days: i)));
@@ -32,14 +34,17 @@ class MonthCalendarGetEventsUseCase {
         )
         .toList();
 
-    readyDates.insertAll(0, days
-        .sublist(0, 7)
-        .map((e) => MonthSingleDayItem(date: e, hasAnyEvents: hasAnyEvents(e, events), isDayName: true)));
+    readyDates.insertAll(
+        0,
+        days.sublist(0, 7).map((e) => MonthSingleDayItem(
+            date: e, hasAnyEvents: hasAnyEvents(e, events), isDayName: true)));
 
     return readyDates;
   }
 
   bool hasAnyEvents(DateTime date, List<SingleCalendarEvent> events) {
-    return events.where((element) => element.eventStart.isSameDate(date)).isNotEmpty;
+    return events
+        .where((element) => element.eventStart.isSameDate(date))
+        .isNotEmpty;
   }
 }

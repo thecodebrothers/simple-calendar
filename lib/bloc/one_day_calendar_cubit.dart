@@ -32,14 +32,16 @@ class OneDayCalendarCubit extends Cubit<OneDayCalendarState> {
   }
 
   Future loadForDate(DateTime date) async {
-    final events = await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(date);
+    final events =
+        await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(date);
     emit(OneDayCalendarChanged(events, date));
   }
 
   Future _reload() async {
     final currentState = state;
     if (currentState is OneDayCalendarChanged) {
-      final events = await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(currentState.date);
+      final events = await _oneDayCalendarGetEventsUseCase
+          .getOneDayEventsSorted(currentState.date);
       emit(OneDayCalendarChanged(events, currentState.date));
     }
   }

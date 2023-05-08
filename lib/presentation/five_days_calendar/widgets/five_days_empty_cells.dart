@@ -26,7 +26,8 @@ class FiveDaysEmptyCells extends StatelessWidget {
           Container(
             height: calendarSettings.rowHeight,
             width: rowWidth,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
+            decoration:
+                BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
           )
       ],
     );

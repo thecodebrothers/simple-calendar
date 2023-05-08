@@ -39,13 +39,19 @@ class WholeEventTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CalendarTileImage(event: event, size: 16, iconBackgroundOpacity: 0.2),
-                  if (event.networkIconName.isNotEmpty || event.localIconName.isNotEmpty) const SizedBox(width: 2),
+                  CalendarTileImage(
+                      event: event, size: 16, iconBackgroundOpacity: 0.2),
+                  if (event.networkIconName.isNotEmpty ||
+                      event.localIconName.isNotEmpty)
+                    const SizedBox(width: 2),
                   Expanded(
                     child: Text(
                       event.singleLine,
                       overflow: TextOverflow.fade,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
                     ),
                   ),
                 ],

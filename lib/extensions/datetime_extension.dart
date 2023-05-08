@@ -28,4 +28,3 @@ extension CalculateDaysBetween on DateTime {
     return (newTo.difference(this).inHours / 24).round();
   }
 }
-
