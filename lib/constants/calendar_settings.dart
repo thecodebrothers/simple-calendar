@@ -15,15 +15,16 @@ class CalendarSettings {
   final TextStyle calendarMonthDayStyle;
   final Color calendarDotColor;
   final Color monthSelectedColor;
-  final String dayBeforeYesterdayTranslation;
-  final String yesterdayTranslation;
-  final String todayTranslation;
-  final String tomorrowTranslation;
-  final String dayAfterTomorrowTranslation;
+  final String? dayBeforeYesterdayTranslation;
+  final String? yesterdayTranslation;
+  final String? todayTranslation;
+  final String? tomorrowTranslation;
+  final String? dayAfterTomorrowTranslation;
   final String dayNameFormat;
   final double rowHeight;
   final int startHour;
   final int endHour;
+  final double? minimumEventHeight;
 
   CalendarSettings({
     required this.firstLineTileTextStyle,
@@ -38,15 +39,16 @@ class CalendarSettings {
     required this.calendarHeaderStyle,
     required this.calendarMonthDayStyle,
     required this.calendarDotColor,
-    required this.dayBeforeYesterdayTranslation,
-    required this.yesterdayTranslation,
-    required this.todayTranslation,
-    required this.tomorrowTranslation,
-    required this.dayAfterTomorrowTranslation,
     required this.startHour,
     required this.endHour,
+    this.dayBeforeYesterdayTranslation,
+    this.yesterdayTranslation,
+    this.todayTranslation,
+    this.tomorrowTranslation,
+    this.dayAfterTomorrowTranslation,
     this.rowHeight = 60.0,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
+    this.minimumEventHeight,
   });
 }

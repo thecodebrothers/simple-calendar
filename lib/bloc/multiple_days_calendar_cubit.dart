@@ -13,7 +13,7 @@ class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
   final DateTime _initialDate;
   final int _daysAround;
   final StreamController? _streamController;
-
+  final double? minimumEventHeight;
   StreamSubscription? _subscription;
 
   MultipleDaysCalendarCubit(
@@ -21,6 +21,7 @@ class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
     this._initialDate,
     this._daysAround,
     this._streamController,
+    this.minimumEventHeight,
   ) : super(MultipleDaysCalendarLoading()) {
     _subscription = _streamController?.stream.listen((event) {
       _reload();
@@ -36,7 +37,7 @@ class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
 
   Future loadForDate(DateTime date) async {
     final events = await _multipleDaysCalendarGetEventsUseCase
-        .getMultipleDayEventsSorted(date, _daysAround);
+        .getMultipleDayEventsSorted(date, _daysAround, minimumEventHeight);
     emit(MultipleDaysCalendarLoaded(events, date));
   }
 
@@ -44,7 +45,8 @@ class MultipleDaysCalendarCubit extends Cubit<MultipleDaysCalendarState> {
     final currentState = state;
     if (currentState is MultipleDaysCalendarLoaded) {
       final events = await _multipleDaysCalendarGetEventsUseCase
-          .getMultipleDayEventsSorted(currentState.date, _daysAround);
+          .getMultipleDayEventsSorted(
+              currentState.date, _daysAround, minimumEventHeight);
       emit(MultipleDaysCalendarLoaded(events, currentState.date));
     }
   }

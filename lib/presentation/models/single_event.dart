@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/extensions/datetime_extension.dart';
-import 'package:simple_calendar/presentation/models/single_calendar_event.dart';
+import 'package:simple_calendar/presentation/models/single_calendar_event_internal.dart';
 
 class SingleEvent extends Equatable {
   final String singleLine;
@@ -16,6 +16,7 @@ class SingleEvent extends Equatable {
   final Map<String, String>? imageHeaders;
   final int? id;
   final dynamic object;
+  final double eventHeightThreshold;
 
   const SingleEvent({
     required this.singleLine,
@@ -30,9 +31,10 @@ class SingleEvent extends Equatable {
     required this.id,
     required this.tileBackgroundColor,
     required this.imageHeaders,
+    required this.eventHeightThreshold,
   });
 
-  SingleEvent.fromCalendar(SingleCalendarEvent element)
+  SingleEvent.fromCalendar(SingleCalendarEventInternal element)
       : singleLine = element.singleLine,
         secondLine = element.secondLine,
         eventStart = element.eventStart.toMinutes(),
@@ -44,8 +46,9 @@ class SingleEvent extends Equatable {
         object = element.object,
         tileBackgroundColor = element.tileBackgroundColor,
         imageHeaders = element.imageHeaders,
-        id = element.id;
-
+        id = element.id,
+        eventHeightThreshold =
+            element.eventHeightThreshold;
   @override
   List<Object?> get props => [
         singleLine,

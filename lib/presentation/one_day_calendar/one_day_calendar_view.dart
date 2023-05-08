@@ -43,6 +43,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
         OneDayCalendarGetEventsUseCase(widget.calendarEventsRepository),
         widget.initialDate ?? DateTime.now(),
         widget.reloadController,
+        widget.calendarSettings.minimumEventHeight,
       ),
       child: BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
         builder: (context, state) {
