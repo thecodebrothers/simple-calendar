@@ -12,13 +12,12 @@ class OneDayCalendarGetEventsUseCase {
 
   Future<DayWithSingleAndMultipleItems> getOneDayEventsSorted(
     DateTime date,
-    bool isMinimumEventHeightEnabled,
     double? minimumEventHeight,
   ) async {
     final stEvents = await _calendarRepository.getEventsForDay(date);
     final events = stEvents.map((element) {
       double? eventHeightThreshold;
-      if (isMinimumEventHeightEnabled && minimumEventHeight != null) {
+      if (minimumEventHeight != null) {
         if (element.eventEnd.difference(element.eventStart).inMinutes <
             minimumEventHeight) {
           final eventHeightThresholdDateTime = element.eventStart

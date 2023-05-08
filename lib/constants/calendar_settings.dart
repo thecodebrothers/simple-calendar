@@ -25,7 +25,6 @@ class CalendarSettings {
   final int startHour;
   final int endHour;
   final double? minimumEventHeight;
-  final bool isMinimumEventHeightEnabled;
 
   CalendarSettings({
     required this.firstLineTileTextStyle,
@@ -51,6 +50,5 @@ class CalendarSettings {
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
-    this.isMinimumEventHeightEnabled = false,
   });
 }

@@ -16,7 +16,6 @@ class MultipleDaysCalendarGetEventsUseCase {
   Future<List<DayWithSingleAndMultipleItems>> getMultipleDayEventsSorted(
       DateTime date,
       int daysAround,
-      bool isMinimumEventHeightEnabled,
       double? minimumEventHeight) async {
     final List<DateTime> selectedDays = [];
     for (int i = -daysAround; i <= daysAround; i++) {
@@ -30,7 +29,7 @@ class MultipleDaysCalendarGetEventsUseCase {
 
     final allEvents = stEvents.map((element) {
       double? eventHeightThreshold;
-      if (isMinimumEventHeightEnabled && minimumEventHeight != null) {
+      if (minimumEventHeight != null) {
         if (element.eventEnd.difference(element.eventStart).inMinutes <
             minimumEventHeight) {
           final eventHeightThresholdDateTime = element.eventStart
