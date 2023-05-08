@@ -11,14 +11,19 @@ class OneDayCalendarCubit extends Cubit<OneDayCalendarState> {
   final OneDayCalendarGetEventsUseCase _oneDayCalendarGetEventsUseCase;
   final DateTime _initialDate;
   final StreamController? _streamController;
-
+  final double? minimumEventHeight;
+  final bool isMinimumEventHeightEnabled;
   StreamSubscription? _subscription;
 
   OneDayCalendarCubit(
-    this._oneDayCalendarGetEventsUseCase,
-    this._initialDate,
-    this._streamController,
-  ) : super(OneDayCalendarLoading()) {
+      this._oneDayCalendarGetEventsUseCase,
+      this._initialDate,
+      this._streamController,
+      this.isMinimumEventHeightEnabled,
+      this.minimumEventHeight)
+      : assert(isMinimumEventHeightEnabled ? minimumEventHeight != null : true,
+            "minimumEventHeight must not be null when isMinimumHeightEnabled is true"),
+        super(OneDayCalendarLoading()) {
     _subscription = _streamController?.stream.listen((event) {
       _reload();
     });
@@ -32,16 +37,23 @@ class OneDayCalendarCubit extends Cubit<OneDayCalendarState> {
   }
 
   Future loadForDate(DateTime date) async {
-    final events =
-        await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(date);
+    final events = await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(
+      date,
+      isMinimumEventHeightEnabled,
+      minimumEventHeight,
+    );
     emit(OneDayCalendarChanged(events, date));
   }
 
   Future _reload() async {
     final currentState = state;
     if (currentState is OneDayCalendarChanged) {
-      final events = await _oneDayCalendarGetEventsUseCase
-          .getOneDayEventsSorted(currentState.date);
+      final events =
+          await _oneDayCalendarGetEventsUseCase.getOneDayEventsSorted(
+        currentState.date,
+        isMinimumEventHeightEnabled,
+        minimumEventHeight,
+      );
       emit(OneDayCalendarChanged(events, currentState.date));
     }
   }

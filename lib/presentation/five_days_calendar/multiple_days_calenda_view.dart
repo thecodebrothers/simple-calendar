@@ -50,6 +50,8 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
         widget.initialDate ?? DateTime.now(),
         widget.daysAround,
         widget.reloadController,
+        widget.calendarSettings.isMinimumEventHeightEnabled,
+        widget.calendarSettings.minimumEventHeight,
       ),
       child: BlocBuilder<MultipleDaysCalendarCubit, MultipleDaysCalendarState>(
         builder: (context, state) {
