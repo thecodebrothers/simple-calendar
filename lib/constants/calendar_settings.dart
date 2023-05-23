@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CalendarSettings {
@@ -13,42 +12,102 @@ class CalendarSettings {
   final TextStyle calendarNotCurrentMonthTileStyle;
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
+
+  /// color of a dot below a day in month view if there is any event
   final Color calendarDotColor;
+
+  /// color of a selected day in month view
   final Color monthSelectedColor;
-  final String? dayBeforeYesterdayTranslation;
-  final String? yesterdayTranslation;
-  final String? todayTranslation;
-  final String? tomorrowTranslation;
-  final String? dayAfterTomorrowTranslation;
+
+  /// format of a day name in one day calendar view
   final String dayNameFormat;
+
+  /// height of a row in one day and multiple days calendar views
   final double rowHeight;
+
+  /// start hour of a calendar in one day and multiple days calendar views
+  /// startHour must be greater or equal to 0 and less than endHour
+  /// and between 0 and 23
   final int startHour;
+
+  /// end hour of a calendar in one day and multiple days calendar views
+  ///
+  /// endHour must be greater than startHour and between 1 and 24
   final int endHour;
+
+  /// minimum height of an event in one day and multiple days calendar views
   final double? minimumEventHeight;
 
-  CalendarSettings({
-    required this.firstLineTileTextStyle,
-    required this.secondLineTileTextStyle,
-    required this.tileIconSize,
-    required this.iconSpacingFromText,
-    required this.iconBackgroundOpacity,
-    required this.fiveDaysHeaderTextStyle,
-    required this.oneDayHeaderTextStyle,
-    required this.calendarCurrentMonthTileStyle,
-    required this.calendarNotCurrentMonthTileStyle,
-    required this.calendarHeaderStyle,
-    required this.calendarMonthDayStyle,
-    required this.calendarDotColor,
-    required this.startHour,
-    required this.endHour,
-    this.dayBeforeYesterdayTranslation,
-    this.yesterdayTranslation,
-    this.todayTranslation,
-    this.tomorrowTranslation,
-    this.dayAfterTomorrowTranslation,
+  const CalendarSettings({
+    this.firstLineTileTextStyle = const TextStyle(),
+    this.secondLineTileTextStyle = const TextStyle(),
+    this.fiveDaysHeaderTextStyle = const TextStyle(),
+    this.oneDayHeaderTextStyle = const TextStyle(),
+    this.calendarCurrentMonthTileStyle = const TextStyle(),
+    this.calendarNotCurrentMonthTileStyle = const TextStyle(),
+    this.calendarHeaderStyle = const TextStyle(),
+    this.calendarMonthDayStyle = const TextStyle(),
+    this.tileIconSize = 24.0,
+    this.iconSpacingFromText = 8.0,
+    this.iconBackgroundOpacity = 0.2,
+    this.calendarDotColor = Colors.lightBlue,
+    this.startHour = 0,
+    this.endHour = 24,
     this.rowHeight = 60.0,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
-  });
+  })  : assert(startHour >= 0 && startHour < 24),
+        assert(endHour > 0 && endHour <= 24),
+        assert(startHour < endHour);
+
+  CalendarSettings copyWith({
+    TextStyle? firstLineTileTextStyle,
+    TextStyle? secondLineTileTextStyle,
+    double? tileIconSize,
+    double? iconSpacingFromText,
+    double? iconBackgroundOpacity,
+    TextStyle? fiveDaysHeaderTextStyle,
+    TextStyle? oneDayHeaderTextStyle,
+    TextStyle? calendarCurrentMonthTileStyle,
+    TextStyle? calendarNotCurrentMonthTileStyle,
+    TextStyle? calendarHeaderStyle,
+    TextStyle? calendarMonthDayStyle,
+    Color? calendarDotColor,
+    Color? monthSelectedColor,
+    String? dayNameFormat,
+    double? rowHeight,
+    int? startHour,
+    int? endHour,
+    double? minimumEventHeight,
+  }) {
+    return CalendarSettings(
+      firstLineTileTextStyle:
+          firstLineTileTextStyle ?? this.firstLineTileTextStyle,
+      secondLineTileTextStyle:
+          secondLineTileTextStyle ?? this.secondLineTileTextStyle,
+      tileIconSize: tileIconSize ?? this.tileIconSize,
+      iconSpacingFromText: iconSpacingFromText ?? this.iconSpacingFromText,
+      iconBackgroundOpacity:
+          iconBackgroundOpacity ?? this.iconBackgroundOpacity,
+      fiveDaysHeaderTextStyle:
+          fiveDaysHeaderTextStyle ?? this.fiveDaysHeaderTextStyle,
+      oneDayHeaderTextStyle:
+          oneDayHeaderTextStyle ?? this.oneDayHeaderTextStyle,
+      calendarCurrentMonthTileStyle:
+          calendarCurrentMonthTileStyle ?? this.calendarCurrentMonthTileStyle,
+      calendarNotCurrentMonthTileStyle: calendarNotCurrentMonthTileStyle ??
+          this.calendarNotCurrentMonthTileStyle,
+      calendarHeaderStyle: calendarHeaderStyle ?? this.calendarHeaderStyle,
+      calendarMonthDayStyle:
+          calendarMonthDayStyle ?? this.calendarMonthDayStyle,
+      calendarDotColor: calendarDotColor ?? this.calendarDotColor,
+      monthSelectedColor: monthSelectedColor ?? this.monthSelectedColor,
+      dayNameFormat: dayNameFormat ?? this.dayNameFormat,
+      rowHeight: rowHeight ?? this.rowHeight,
+      startHour: startHour ?? this.startHour,
+      endHour: endHour ?? this.endHour,
+      minimumEventHeight: minimumEventHeight ?? this.minimumEventHeight,
+    );
+  }
 }

@@ -9,25 +9,72 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/one_day_calendar_get_events_use_case.dart';
 
+/// Calendar widget that shows events for one day
 class OneDayCalendarView extends StatefulWidget {
   final ScrollController scrollController;
+
+  /// Repository that provides events for this calendar
   final CalendarEventsRepository calendarEventsRepository;
-  final DateTime? initialDate;
-  final CalendarSettings calendarSettings;
-  final Function(SingleEvent) onEventTap;
+
+  /// Provides ability to reload events
   final StreamController? reloadController;
-  final Function(DateTime) onLongPress;
-  final Function(DateTime) onSelected;
+
+  /// Indicates which day should be shown first
+  ///
+  /// Defaults to `DateTime.now`
+  final DateTime? initialDate;
+
+  /// Settings for calendar
+  /// that allow you to customize spacings, text styles, colors etc.
+  final CalendarSettings calendarSettings;
+
+  /// Locale for calendar, if not provided, then system locale will be used
+  ///
+  /// If you want to use 'locale' parameter in calendar widgets
+  /// and do not have provided GlobalMaterialLocalizations.delegate
+  /// you should call [initializeDateFormatting]
+  /// at least once at the beginning of your app
+  final Locale? locale;
+
+  /// Called when user taps on event
+  final Function(SingleEvent)? onEventTap;
+
+  /// Called when user long presses on hour
+  final Function(DateTime)? onLongPress;
+
+  /// Called when user selects new date
+  final Function(DateTime)? onSelected;
+
+  // Optional label after tomorrow date, ex. 25 May, `label`
+  final String Function(BuildContext)? tomorrowDayLabel;
+
+  // Optional label after today date, ex. 24 May, `label`
+  final String Function(BuildContext)? todayDayLabel;
+
+  // Optional label after yesterday date, ex. 23 May, `label`
+  final String Function(BuildContext)? yesterdayDayLabel;
+
+  // Optional label after day before yesterday date, ex. 22 May, `label`
+  final String Function(BuildContext)? beforeYesterdayDayLabel;
+
+  // Optional label after day after tomorrow date, ex. 26 May, `label`
+  final String Function(BuildContext)? dayAfterTomorrowDayLabel;
 
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
-    required this.initialDate,
-    required this.calendarSettings,
-    required this.onEventTap,
-    required this.onLongPress,
-    required this.onSelected,
+    this.initialDate,
+    this.calendarSettings = const CalendarSettings(),
+    this.onEventTap,
+    this.onLongPress,
+    this.onSelected,
     this.reloadController,
+    this.locale,
+    this.tomorrowDayLabel,
+    this.todayDayLabel,
+    this.yesterdayDayLabel,
+    this.beforeYesterdayDayLabel,
+    this.dayAfterTomorrowDayLabel,
     Key? key,
   }) : super(key: key);
 
@@ -59,12 +106,18 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: SingleDay(
+          locale: widget.locale,
+          tomorrowDayLabel: widget.tomorrowDayLabel,
+          todayDayLabel: widget.todayDayLabel,
+          yesterdayDayLabel: widget.yesterdayDayLabel,
+          beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+          dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
           calendarSettings: widget.calendarSettings,
           scrollController: widget.scrollController,
-          onEventTap: widget.onEventTap,
+          onEventTap: widget.onEventTap ?? (_) {},
           onLongPress: widget.onLongPress,
           onChanged: (date) {
-            widget.onSelected(date);
+            widget.onSelected?.call(date);
             BlocProvider.of<OneDayCalendarCubit>(pageContext).loadForDate(date);
           },
         ),

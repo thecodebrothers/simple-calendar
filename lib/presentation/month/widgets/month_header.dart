@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 
 class MonthHeader extends StatelessWidget {
@@ -7,12 +7,14 @@ class MonthHeader extends StatelessWidget {
   final Function() onTapRight;
   final DateTime dayFromMonth;
   final CalendarSettings calendarSettings;
+  final Locale? locale;
 
   const MonthHeader({
     required this.onTapLeft,
     required this.onTapRight,
     required this.dayFromMonth,
     required this.calendarSettings,
+    this.locale,
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +31,7 @@ class MonthHeader extends StatelessWidget {
           ),
         ),
         Text(
-          _monthName(),
+          _monthName(locale),
           style: calendarSettings.calendarHeaderStyle,
         ),
         InkWell(
@@ -43,8 +45,11 @@ class MonthHeader extends StatelessWidget {
     );
   }
 
-  String _monthName() {
-    final format = DateFormat.yMMMM();
+  String _monthName(Locale? locale) {
+    final format = locale != null
+        ? DateFormat.yMMMM(locale.toLanguageTag())
+        : DateFormat.yMMMM();
+
     return format.format(dayFromMonth);
   }
 }
