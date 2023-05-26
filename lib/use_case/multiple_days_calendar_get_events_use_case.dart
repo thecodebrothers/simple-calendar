@@ -14,9 +14,10 @@ class MultipleDaysCalendarGetEventsUseCase {
   );
 
   Future<List<DayWithSingleAndMultipleItems>> getMultipleDayEventsSorted(
-      DateTime date,
-      int daysAround,
-      double? minimumEventHeight) async {
+    DateTime date,
+    int daysAround,
+    double? minimumEventHeight,
+  ) async {
     final List<DateTime> selectedDays = [];
     for (int i = -daysAround; i <= daysAround; i++) {
       selectedDays.add(date.add(Duration(days: i)));
@@ -131,8 +132,13 @@ class MultipleDaysCalendarGetEventsUseCase {
     final eventStartTimeFrame =
         event.eventStart.minute + event.eventStart.hour * 60;
     final eventEndTimeFrame = event.eventHeightThreshold;
-    return (eventStartTimeFrame > startTimeFrame &&
-            eventStartTimeFrame < endTimeFrame ||
-        eventEndTimeFrame > startTimeFrame && eventEndTimeFrame < endTimeFrame);
+    if (eventEndTimeFrame == startTimeFrame ||
+        eventStartTimeFrame == endTimeFrame) {
+      return false;
+    }
+    return (eventStartTimeFrame >= startTimeFrame &&
+            eventStartTimeFrame <= endTimeFrame ||
+        eventEndTimeFrame >= startTimeFrame &&
+            eventEndTimeFrame <= endTimeFrame);
   }
 }
