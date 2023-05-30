@@ -47,8 +47,7 @@ class SingleEvent extends Equatable {
         tileBackgroundColor = element.tileBackgroundColor,
         imageHeaders = element.imageHeaders,
         id = element.id,
-        eventHeightThreshold =
-            element.eventHeightThreshold;
+        eventHeightThreshold = element.eventHeightThreshold;
   @override
   List<Object?> get props => [
         singleLine,

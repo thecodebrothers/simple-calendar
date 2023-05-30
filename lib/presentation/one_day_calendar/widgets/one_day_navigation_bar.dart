@@ -7,12 +7,25 @@ class OneDayNavigationBar extends StatefulWidget {
   final Function() onTapRight;
   final DateTime date;
   final CalendarSettings calendarSettings;
+  final Locale? locale;
+
+  final String Function(BuildContext)? tomorrowDayLabel;
+  final String Function(BuildContext)? todayDayLabel;
+  final String Function(BuildContext)? yesterdayDayLabel;
+  final String Function(BuildContext)? beforeYesterdayDayLabel;
+  final String Function(BuildContext)? dayAfterTomorrowDayLabel;
 
   const OneDayNavigationBar({
     required this.onTapLeft,
     required this.onTapRight,
     required this.date,
     required this.calendarSettings,
+    this.locale,
+    this.tomorrowDayLabel,
+    this.todayDayLabel,
+    this.yesterdayDayLabel,
+    this.beforeYesterdayDayLabel,
+    this.dayAfterTomorrowDayLabel,
     Key? key,
   }) : super(key: key);
 
@@ -37,6 +50,12 @@ class _OneDayNavigationBarState extends State<OneDayNavigationBar> {
           ),
           Expanded(
             child: SingleDayDate(
+              locale: widget.locale,
+              tomorrowDayLabel: widget.tomorrowDayLabel,
+              todayDayLabel: widget.todayDayLabel,
+              yesterdayDayLabel: widget.yesterdayDayLabel,
+              beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+              dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
               date: widget.date,
               calendarSettings: widget.calendarSettings,
             ),

@@ -12,7 +12,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   final List<List<SingleEvent>> multipleEvents;
   final List<SingleEvent> allDayEvents;
   final int maxNumberOfWholeDayTasks;
-  final Function(SingleEvent) action;
+  final void Function(SingleEvent) action;
   final CalendarSettings calendarSettings;
 
   const SingleDayTimelineWithEvents({

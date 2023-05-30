@@ -14,24 +14,55 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/multiple_days_calendar_get_events_use_case.dart';
 
+/// Calendar widget that shows events for multiple days
+///
+/// Typically used to show events for whole week
 class MultipleDaysCalendarView extends StatefulWidget {
   final ScrollController scrollController;
+
+  /// Repository that provides events for this calendar
   final CalendarEventsRepository calendarEventsRepository;
-  final DateTime? initialDate;
-  final int daysAround;
-  final CalendarSettings calendarSettings;
-  final Function(SingleEvent) onTap;
+
+  /// Provides ability to reload events
   final StreamController? reloadController;
-  final Function(DateTime) onLongPress;
+
+  /// Indicates which day should be shown in the center of the screen
+  ///
+  /// Defaults to `DateTime.now`
+  final DateTime? initialDate;
+
+  /// Indicates how many days should be shown between center day.
+  ///
+  /// Defaults to a whole week => `3`
+  final int daysAround;
+
+  /// Settings for calendar
+  /// that allow you to customize spacings, text styles, colors etc.
+  final CalendarSettings calendarSettings;
+
+  /// Locale for calendar, if not provided, then system locale will be used
+  ///
+  /// If you want to use 'locale' parameter in calendar widgets
+  /// and do not have provided GlobalMaterialLocalizations.delegate
+  /// you should call [initializeDateFormatting]
+  /// at least once at the beginning of your app
+  final Locale? locale;
+
+  /// Called when user taps on event
+  final void Function(SingleEvent)? onTap;
+
+  /// Called when user long presses on event
+  final void Function(DateTime)? onLongPress;
 
   const MultipleDaysCalendarView({
     required this.scrollController,
-    required this.initialDate,
     required this.calendarEventsRepository,
-    required this.daysAround,
-    required this.calendarSettings,
-    required this.onTap,
-    required this.onLongPress,
+    this.initialDate,
+    this.daysAround = 3,
+    this.calendarSettings = const CalendarSettings(),
+    this.locale,
+    this.onTap,
+    this.onLongPress,
     this.reloadController,
     Key? key,
   }) : super(key: key);
@@ -120,6 +151,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                         width: rowWidth,
                         child: SingleDayDate(
                           date: e.date,
+                          locale: widget.locale,
                           calendarSettings: widget.calendarSettings,
                         ),
                       ),
@@ -133,7 +165,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                         child: GestureDetector(
                           onLongPressEnd: (details) {
                             final date = state.date;
-                            widget.onLongPress(DateTime(
+                            widget.onLongPress?.call(DateTime(
                                 date.year,
                                 date.month,
                                 date.day,
@@ -144,7 +176,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                             multipleEvents: e.multipleEvents,
                             allDayEvents: e.allDaysEvents,
                             maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
-                            action: widget.onTap,
+                            action: (event) => widget.onTap?.call(event),
                             calendarSettings: widget.calendarSettings,
                           ),
                         ),
