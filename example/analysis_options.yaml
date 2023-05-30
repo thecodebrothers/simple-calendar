@@ -1,0 +1,3 @@
+dart_code_metrics:
+  extends:
+    - package:tcb_dcm_presets/presets/tcb_main.yaml
