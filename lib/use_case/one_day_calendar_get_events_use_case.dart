@@ -110,8 +110,13 @@ class OneDayCalendarGetEventsUseCase {
     final eventStartTimeFrame =
         event.eventStart.minute + event.eventStart.hour * 60;
     final eventEndTimeFrame = event.eventHeightThreshold;
-    return (eventStartTimeFrame > startTimeFrame &&
-            eventStartTimeFrame < endTimeFrame ||
-        eventEndTimeFrame > startTimeFrame && eventEndTimeFrame < endTimeFrame);
+    if (eventEndTimeFrame == startTimeFrame ||
+        eventStartTimeFrame == endTimeFrame) {
+      return false;
+    }
+    return (eventStartTimeFrame >= startTimeFrame &&
+            eventStartTimeFrame <= endTimeFrame ||
+        eventEndTimeFrame >= startTimeFrame &&
+            eventEndTimeFrame <= endTimeFrame);
   }
 }
