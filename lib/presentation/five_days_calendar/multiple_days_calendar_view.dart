@@ -31,9 +31,10 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Defaults to `DateTime.now`
   final DateTime? initialDate;
 
-  /// Indicates how many days should be shown between center day.
+  /// Indicates the number of days to be displayed around the central day.
   ///
-  /// Defaults to a whole week => `3`
+  /// Defaults to 3, meaning 3 days before and 3 days after the central day,
+  /// totaling 7 days - a full week.
   final int daysAround;
 
   /// Settings for calendar
