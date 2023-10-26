@@ -16,12 +16,18 @@ class MonthCalendarGetEventsUseCase {
     final endOfCurrentMonth = DateTime(date.year, date.month + 1);
     final daysBetween =
         startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
+    final polandUtcDateTime = DateTime(
+      startOfCurrentMonth.year,
+      startOfCurrentMonth.month,
+      startOfCurrentMonth.day,
+      startOfCurrentMonth.hour + 2,
+    ).toUtc();
 
     final events = await _calendarRepository.getEventsForMultipleDays(
         startOfCurrentMonth, endOfCurrentMonth);
 
-    for (int i = -weekdayOfFirstDay + 1; i < daysBetween; i++) {
-      days.add(startOfCurrentMonth.add(Duration(days: i)));
+    for (var i = -weekdayOfFirstDay + 1; i < daysBetween; i++) {
+      days.add(polandUtcDateTime.add(Duration(days: i)));
     }
 
     final readyDates = days
