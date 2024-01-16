@@ -13,6 +13,7 @@ class CalendarSettings {
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
   final double allDayEventHeight;
+  final double hourCustomHeight;
 
   /// color of a dot below a day in month view if there is any event
   final Color calendarDotColor;
@@ -55,10 +56,11 @@ class CalendarSettings {
     this.startHour = 0,
     this.endHour = 24,
     this.rowHeight = 60.0,
-    this.allDayEventHeight = 60.0,
+    this.allDayEventHeight = 60,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
+    this.hourCustomHeight = 60.0,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -83,6 +85,7 @@ class CalendarSettings {
     int? startHour,
     int? endHour,
     double? minimumEventHeight,
+    double? hourCustomHeight,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -112,6 +115,7 @@ class CalendarSettings {
       startHour: startHour ?? this.startHour,
       endHour: endHour ?? this.endHour,
       minimumEventHeight: minimumEventHeight ?? this.minimumEventHeight,
+      hourCustomHeight: hourCustomHeight ?? this.hourCustomHeight,
     );
   }
 }
