@@ -41,14 +41,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
                   numberOfConstantsTasks: maxNumberOfWholeDayTasks,
                   calendarSettings: calendarSettings),
             ..._getMultiple(constraints),
-            for (int i = 0; i < allDayEvents.length; i++)
-              WholeEventTile(
-                calendarSettings: calendarSettings,
-                event: allDayEvents[i],
-                rowWidth: constraints.maxWidth,
-                position: i,
-                action: () => action(allDayEvents[i]),
-              )
           ],
         );
       },

@@ -12,6 +12,7 @@ class CalendarSettings {
   final TextStyle calendarNotCurrentMonthTileStyle;
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
+  final double allDayEventHeight;
 
   /// color of a dot below a day in month view if there is any event
   final Color calendarDotColor;
@@ -54,6 +55,7 @@ class CalendarSettings {
     this.startHour = 0,
     this.endHour = 24,
     this.rowHeight = 60.0,
+    this.allDayEventHeight = 60.0,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
@@ -77,6 +79,7 @@ class CalendarSettings {
     Color? monthSelectedColor,
     String? dayNameFormat,
     double? rowHeight,
+    double? allDayEventHeight,
     int? startHour,
     int? endHour,
     double? minimumEventHeight,
@@ -104,6 +107,7 @@ class CalendarSettings {
       calendarDotColor: calendarDotColor ?? this.calendarDotColor,
       monthSelectedColor: monthSelectedColor ?? this.monthSelectedColor,
       dayNameFormat: dayNameFormat ?? this.dayNameFormat,
+      allDayEventHeight: allDayEventHeight ?? this.allDayEventHeight,
       rowHeight: rowHeight ?? this.rowHeight,
       startHour: startHour ?? this.startHour,
       endHour: endHour ?? this.endHour,

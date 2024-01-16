@@ -32,7 +32,7 @@ class OneDayCalendarGetEventsUseCase {
         secondLine: element.secondLine,
         eventStart: element.eventStart,
         id: element.id,
-        isAllDay: element.isAllDay,
+        isAllDay: true,
         localIconName: element.localIconName,
         networkIconName: element.networkIconName,
         iconBackgroundColor: element.iconBackgroundColor,
