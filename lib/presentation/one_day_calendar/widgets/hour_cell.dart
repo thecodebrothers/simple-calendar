@@ -5,17 +5,19 @@ import 'package:simple_calendar/constants/constants.dart';
 class CalendarHourCell extends StatelessWidget {
   final int hour;
   final CalendarSettings calendarSettings;
+  final double? height;
 
   const CalendarHourCell({
     required this.hour,
     required this.calendarSettings,
+    this.height,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: calendarSettings.rowHeight,
+      height: height,
       child: Row(
         children: [
           SizedBox(

@@ -25,6 +25,9 @@ class Hours extends StatelessWidget {
             i++)
           CalendarHourCell(
             hour: i,
+            height: !containsWholeDayEvent
+                ? calendarSettings.rowHeight
+                : calendarSettings.rowHeight - 3,
             calendarSettings: calendarSettings,
           ),
       ],
