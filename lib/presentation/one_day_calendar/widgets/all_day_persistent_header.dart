@@ -24,19 +24,20 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         for (int i = 0; i < events.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 50.0,
-            ),
-            child: WholeEventTile(
-              calendarSettings: calendarSettings,
-              event: events[i],
-              rowWidth: MediaQuery.of(context).size.width,
-              position: i,
-              action: () => onEventTap?.call(events[i]),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 50.0,
+              ),
+              child: WholeEventTile(
+                calendarSettings: calendarSettings,
+                event: events[i],
+                rowWidth: MediaQuery.of(context).size.width,
+                position: i,
+                action: () => onEventTap?.call(events[i]),
+              ),
             ),
           ),
       ],
