@@ -24,48 +24,44 @@ class WholeEventTile extends StatelessWidget {
         calendarSettings.iconSpacingFromText * 4 +
         16;
     final calculatedRowWidth = (rowWidth) / (1);
-    return SizedBox(
-      width: rowWidth,
-      height: calendarSettings.rowHeight,
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Material(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: Colors.white,
-          elevation: 6,
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            onTap: action,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                children: [
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: Colors.white,
+        elevation: 6,
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: action,
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              children: [
+                SizedBox(width: calendarSettings.iconSpacingFromText),
+                Expanded(
+                  child: Text(
+                    event.singleLine,
+                    overflow: TextOverflow.fade,
+                    style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                ),
+                if (calculatedRowWidth > minWidth)
                   SizedBox(width: calendarSettings.iconSpacingFromText),
-                  Expanded(
-                    child: Text(
-                      event.singleLine,
-                      overflow: TextOverflow.fade,
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black),
+                if (calculatedRowWidth > minWidth)
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: event.dotTileColor,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  if (calculatedRowWidth > minWidth)
-                    SizedBox(width: calendarSettings.iconSpacingFromText),
-                  if (calculatedRowWidth > minWidth)
-                    Container(
-                      width: 16,
-                      height: 16,
-                      decoration: BoxDecoration(
-                        color: event.dotTileColor,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  if (calculatedRowWidth > minWidth)
-                    SizedBox(width: calendarSettings.iconSpacingFromText),
-                ],
-              ),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
+              ],
             ),
           ),
         ),

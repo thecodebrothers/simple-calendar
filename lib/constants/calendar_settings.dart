@@ -13,7 +13,8 @@ class CalendarSettings {
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
   final double allDayEventHeight;
-  final double hourCustomHeight;
+  final TextStyle expandableTextButtonStyle;
+  final Color expandableIconColor;
 
   /// color of a dot below a day in month view if there is any event
   final Color calendarDotColor;
@@ -49,6 +50,8 @@ class CalendarSettings {
     this.calendarNotCurrentMonthTileStyle = const TextStyle(),
     this.calendarHeaderStyle = const TextStyle(),
     this.calendarMonthDayStyle = const TextStyle(),
+    this.expandableTextButtonStyle = const TextStyle(),
+    this.expandableIconColor = Colors.black,
     this.tileIconSize = 24.0,
     this.iconSpacingFromText = 8.0,
     this.iconBackgroundOpacity = 0.2,
@@ -60,7 +63,6 @@ class CalendarSettings {
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
-    this.hourCustomHeight = 60.0,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -77,6 +79,8 @@ class CalendarSettings {
     TextStyle? calendarNotCurrentMonthTileStyle,
     TextStyle? calendarHeaderStyle,
     TextStyle? calendarMonthDayStyle,
+    TextStyle? expandableTextButtonStyle,
+    Color? expandableIconColor,
     Color? calendarDotColor,
     Color? monthSelectedColor,
     String? dayNameFormat,
@@ -115,7 +119,8 @@ class CalendarSettings {
       startHour: startHour ?? this.startHour,
       endHour: endHour ?? this.endHour,
       minimumEventHeight: minimumEventHeight ?? this.minimumEventHeight,
-      hourCustomHeight: hourCustomHeight ?? this.hourCustomHeight,
+      expandableTextButtonStyle:
+          expandableTextButtonStyle ?? this.expandableTextButtonStyle,
     );
   }
 }

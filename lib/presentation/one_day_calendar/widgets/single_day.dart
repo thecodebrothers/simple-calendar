@@ -41,6 +41,8 @@ class SingleDay extends StatefulWidget {
 }
 
 class _SingleDayState extends State<SingleDay> {
+  bool isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
@@ -61,6 +63,10 @@ class _SingleDayState extends State<SingleDay> {
   }
 
   Widget _buildSinglePage(OneDayCalendarChanged state) {
+    final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
+        ? 3
+        : state.dayWithEvents.allDaysEvents.length.toDouble() + 1);
+
     return CustomScrollView(
       controller: widget.scrollController,
       slivers: [
@@ -87,18 +93,28 @@ class _SingleDayState extends State<SingleDay> {
         if (state.dayWithEvents.allDaysEvents.isNotEmpty)
           SliverPersistentHeader(
             delegate: AllDayPersistentHeader(
+              updateCallback: (val) {
+                setState(() {
+                  isExpanded = val;
+                });
+              },
+              isExpanded: isExpanded,
               calendarSettings: widget.calendarSettings,
               events: state.dayWithEvents.allDaysEvents,
               onEventTap: (event) => widget.onEventTap?.call(event),
-              minExtent: widget.calendarSettings.allDayEventHeight *
-                  state.dayWithEvents.allDaysEvents.length.toDouble(),
-              maxExtent: widget.calendarSettings.allDayEventHeight *
-                  state.dayWithEvents.allDaysEvents.length.toDouble(),
+              minExtent: (widget.calendarSettings.allDayEventHeight * height),
+              maxExtent: (widget.calendarSettings.allDayEventHeight * height),
             ),
             pinned: true,
           ),
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 24,
+          ),
+        ),
         SliverToBoxAdapter(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hours(
                 containsWholeDayEvent:

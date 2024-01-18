@@ -23,10 +23,13 @@ class CalendarHourCell extends StatelessWidget {
           SizedBox(
               width: kHourCellWidth,
               child: Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.topCenter,
                   child: Text(
                     '$hour:00',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade500,
+                    ),
                   ))),
           const SizedBox(width: kHourCellSpaceRight),
         ],

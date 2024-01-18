@@ -5,7 +5,6 @@ import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_event_tile.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/current_time.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_empty_cells.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_event.dart';
 
 class SingleDayTimelineWithEvents extends StatelessWidget {
   final DateTime date;
@@ -33,7 +32,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
           children: [
             EmptyCells(
               date: date,
-              numberOfConstantsTasks: maxNumberOfWholeDayTasks,
+              numberOfConstantsTasks: 0,
               calendarSettings: calendarSettings,
             ),
             if (date.isSameDate(DateTime.now()))
@@ -52,7 +51,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     for (final events in multipleEvents) {
       for (int i = 0; i < events.length; i++) {
         widgets.add(CalendarEventTile(
-          numberOfAllDayEvents: maxNumberOfWholeDayTasks,
+          numberOfAllDayEvents: 0,
           event: events[i],
           rowWidth: constraints.maxWidth,
           position: i,
