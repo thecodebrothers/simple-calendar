@@ -61,9 +61,10 @@ class _SingleDayState extends State<SingleDay> {
   }
 
   Widget _buildSinglePage(OneDayCalendarChanged state) {
-    // final heightVariable = state.dayWithEvents.allDaysEvents.isNotEmpty
-    //     ? widget.calendarSettings.hourCustomHeight
-    //     : 0.0;
+    final heightVariable = state.dayWithEvents.allDaysEvents.isNotEmpty
+        ? state.dayWithEvents.allDaysEvents.length *
+            widget.calendarSettings.rowHeight
+        : 0.0;
 
     return CustomScrollView(
       controller: widget.scrollController,
@@ -103,7 +104,6 @@ class _SingleDayState extends State<SingleDay> {
           ),
         SliverToBoxAdapter(
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hours(
                 containsWholeDayEvent:
@@ -118,7 +118,8 @@ class _SingleDayState extends State<SingleDay> {
                               widget.calendarSettings.startHour) *
                           widget.calendarSettings.rowHeight +
                       state.dayWithEvents.allDaysEvents.length *
-                          widget.calendarSettings.rowHeight,
+                          widget.calendarSettings.rowHeight +
+                      heightVariable,
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
