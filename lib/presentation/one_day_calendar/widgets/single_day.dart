@@ -104,6 +104,7 @@ class _SingleDayState extends State<SingleDay> {
           ),
         SliverToBoxAdapter(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hours(
                 containsWholeDayEvent:
