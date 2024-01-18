@@ -65,11 +65,6 @@ class _SingleDayState extends State<SingleDay> {
     //     ? widget.calendarSettings.hourCustomHeight
     //     : 0.0;
 
-    final variable = state.dayWithEvents.allDaysEvents.isNotEmpty
-        ? state.dayWithEvents.allDaysEvents.length *
-            widget.calendarSettings.rowHeight
-        : 0.0;
-
     return CustomScrollView(
       controller: widget.scrollController,
       slivers: [
@@ -108,29 +103,35 @@ class _SingleDayState extends State<SingleDay> {
           ),
         SliverToBoxAdapter(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hours(
-                  containsWholeDayEvent:
-                      state.dayWithEvents.allDaysEvents.isNotEmpty,
-                  numberOfConstantsTasks:
-                      state.dayWithEvents.allDaysEvents.length,
-                  calendarSettings: widget.calendarSettings),
+                containsWholeDayEvent:
+                    state.dayWithEvents.allDaysEvents.isNotEmpty,
+                numberOfConstantsTasks:
+                    state.dayWithEvents.allDaysEvents.length,
+                calendarSettings: widget.calendarSettings,
+              ),
               Expanded(
                 child: SizedBox(
                   height: (widget.calendarSettings.endHour -
                               widget.calendarSettings.startHour) *
                           widget.calendarSettings.rowHeight +
-                      variable,
+                      state.dayWithEvents.allDaysEvents.length *
+                          widget.calendarSettings.rowHeight,
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
-                      widget.onLongPress?.call(DateTime(
+                      widget.onLongPress?.call(
+                        DateTime(
                           date.year,
                           date.month,
                           date.day,
                           (details.localPosition.dy.toInt() +
                                   (widget.calendarSettings.startHour * 60)) ~/
-                              60));
+                              60,
+                        ),
+                      );
                     },
                     child: SingleDayTimelineWithEvents(
                       multipleEvents: state.dayWithEvents.multipleEvents,
