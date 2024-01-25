@@ -107,11 +107,6 @@ class _SingleDayState extends State<SingleDay> {
             ),
             pinned: true,
           ),
-        const SliverToBoxAdapter(
-          child: SizedBox(
-            height: 24,
-          ),
-        ),
         SliverToBoxAdapter(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

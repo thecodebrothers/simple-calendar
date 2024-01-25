@@ -43,9 +43,10 @@ class WholeEventTile extends StatelessWidget {
                     event.singleLine,
                     overflow: TextOverflow.fade,
                     style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 if (calculatedRowWidth > minWidth)
