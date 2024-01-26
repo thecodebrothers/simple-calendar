@@ -107,6 +107,12 @@ class _SingleDayState extends State<SingleDay> {
             ),
             pinned: true,
           ),
+        if (state.dayWithEvents.allDaysEvents.isEmpty)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 24,
+            ),
+          ),
         SliverToBoxAdapter(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
