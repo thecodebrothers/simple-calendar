@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/all_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
@@ -40,6 +41,8 @@ class SingleDay extends StatefulWidget {
 }
 
 class _SingleDayState extends State<SingleDay> {
+  bool isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
@@ -60,35 +63,67 @@ class _SingleDayState extends State<SingleDay> {
   }
 
   Widget _buildSinglePage(OneDayCalendarChanged state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        OneDayNavigationBar(
-          locale: widget.locale,
-          tomorrowDayLabel: widget.tomorrowDayLabel,
-          todayDayLabel: widget.todayDayLabel,
-          yesterdayDayLabel: widget.yesterdayDayLabel,
-          beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
-          dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
-          onTapLeft: () {
-            final newDate = state.date.add(const Duration(days: -1));
-            widget.onChanged?.call(newDate);
-          },
-          onTapRight: () {
-            final newDate = state.date.add(const Duration(days: 1));
-            widget.onChanged?.call(newDate);
-          },
-          date: state.date,
-          calendarSettings: widget.calendarSettings,
+    final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
+        ? 3
+        : state.dayWithEvents.allDaysEvents.length.toDouble() + 1);
+
+    return CustomScrollView(
+      controller: widget.scrollController,
+      slivers: [
+        SliverToBoxAdapter(
+          child: OneDayNavigationBar(
+            locale: widget.locale,
+            tomorrowDayLabel: widget.tomorrowDayLabel,
+            todayDayLabel: widget.todayDayLabel,
+            yesterdayDayLabel: widget.yesterdayDayLabel,
+            beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+            dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
+            onTapLeft: () {
+              final newDate = state.date.add(const Duration(days: -1));
+              widget.onChanged?.call(newDate);
+            },
+            onTapRight: () {
+              final newDate = state.date.add(const Duration(days: 1));
+              widget.onChanged?.call(newDate);
+            },
+            date: state.date,
+            calendarSettings: widget.calendarSettings,
+          ),
         ),
-        Expanded(
-          child: SingleChildScrollView(
-            controller: widget.scrollController,
-            child: Row(children: [
+        if (state.dayWithEvents.allDaysEvents.isNotEmpty)
+          SliverPersistentHeader(
+            delegate: AllDayPersistentHeader(
+              updateCallback: (val) {
+                setState(() {
+                  isExpanded = val;
+                });
+              },
+              isExpanded: isExpanded,
+              calendarSettings: widget.calendarSettings,
+              events: state.dayWithEvents.allDaysEvents,
+              onEventTap: (event) => widget.onEventTap?.call(event),
+              minExtent: (widget.calendarSettings.allDayEventHeight * height),
+              maxExtent: (widget.calendarSettings.allDayEventHeight * height),
+            ),
+            pinned: true,
+          ),
+        if (state.dayWithEvents.allDaysEvents.isEmpty)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 24,
+            ),
+          ),
+        SliverToBoxAdapter(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Hours(
-                  numberOfConstantsTasks:
-                      state.dayWithEvents.allDaysEvents.length,
-                  calendarSettings: widget.calendarSettings),
+                containsWholeDayEvent:
+                    state.dayWithEvents.allDaysEvents.isNotEmpty,
+                numberOfConstantsTasks:
+                    state.dayWithEvents.allDaysEvents.length,
+                calendarSettings: widget.calendarSettings,
+              ),
               Expanded(
                 child: SizedBox(
                   height: (widget.calendarSettings.endHour -
@@ -99,13 +134,16 @@ class _SingleDayState extends State<SingleDay> {
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
-                      widget.onLongPress?.call(DateTime(
+                      widget.onLongPress?.call(
+                        DateTime(
                           date.year,
                           date.month,
                           date.day,
                           (details.localPosition.dy.toInt() +
                                   (widget.calendarSettings.startHour * 60)) ~/
-                              60));
+                              60,
+                        ),
+                      );
                     },
                     child: SingleDayTimelineWithEvents(
                       multipleEvents: state.dayWithEvents.multipleEvents,
@@ -119,7 +157,7 @@ class _SingleDayState extends State<SingleDay> {
                   ),
                 ),
               ),
-            ]),
+            ],
           ),
         ),
       ],

@@ -12,6 +12,9 @@ class CalendarSettings {
   final TextStyle calendarNotCurrentMonthTileStyle;
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
+  final double allDayEventHeight;
+  final TextStyle expandableTextButtonStyle;
+  final Color expandableIconColor;
 
   /// color of a dot below a day in month view if there is any event
   final Color calendarDotColor;
@@ -47,6 +50,8 @@ class CalendarSettings {
     this.calendarNotCurrentMonthTileStyle = const TextStyle(),
     this.calendarHeaderStyle = const TextStyle(),
     this.calendarMonthDayStyle = const TextStyle(),
+    this.expandableTextButtonStyle = const TextStyle(),
+    this.expandableIconColor = Colors.black,
     this.tileIconSize = 24.0,
     this.iconSpacingFromText = 8.0,
     this.iconBackgroundOpacity = 0.2,
@@ -54,6 +59,7 @@ class CalendarSettings {
     this.startHour = 0,
     this.endHour = 24,
     this.rowHeight = 60.0,
+    this.allDayEventHeight = 60,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
@@ -73,13 +79,17 @@ class CalendarSettings {
     TextStyle? calendarNotCurrentMonthTileStyle,
     TextStyle? calendarHeaderStyle,
     TextStyle? calendarMonthDayStyle,
+    TextStyle? expandableTextButtonStyle,
+    Color? expandableIconColor,
     Color? calendarDotColor,
     Color? monthSelectedColor,
     String? dayNameFormat,
     double? rowHeight,
+    double? allDayEventHeight,
     int? startHour,
     int? endHour,
     double? minimumEventHeight,
+    double? hourCustomHeight,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -104,10 +114,13 @@ class CalendarSettings {
       calendarDotColor: calendarDotColor ?? this.calendarDotColor,
       monthSelectedColor: monthSelectedColor ?? this.monthSelectedColor,
       dayNameFormat: dayNameFormat ?? this.dayNameFormat,
+      allDayEventHeight: allDayEventHeight ?? this.allDayEventHeight,
       rowHeight: rowHeight ?? this.rowHeight,
       startHour: startHour ?? this.startHour,
       endHour: endHour ?? this.endHour,
       minimumEventHeight: minimumEventHeight ?? this.minimumEventHeight,
+      expandableTextButtonStyle:
+          expandableTextButtonStyle ?? this.expandableTextButtonStyle,
     );
   }
 }

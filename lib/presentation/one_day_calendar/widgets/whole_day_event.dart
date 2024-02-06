@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
 
 class WholeEventTile extends StatelessWidget {
   final SingleEvent event;
@@ -21,41 +20,49 @@ class WholeEventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: position * calendarSettings.rowHeight,
-      width: rowWidth,
-      height: calendarSettings.rowHeight,
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Material(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: Colors.white,
-          elevation: 6,
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            onTap: action,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CalendarTileImage(
-                      event: event, size: 16, iconBackgroundOpacity: 0.2),
-                  if (event.networkIconName.isNotEmpty ||
-                      event.localIconName.isNotEmpty)
-                    const SizedBox(width: 2),
-                  Expanded(
-                    child: Text(
-                      event.singleLine,
-                      overflow: TextOverflow.fade,
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black),
+    final minWidth = calendarSettings.tileIconSize +
+        calendarSettings.iconSpacingFromText * 4 +
+        16;
+    final calculatedRowWidth = (rowWidth) / (1);
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: Colors.white,
+        elevation: 6,
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: action,
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              children: [
+                SizedBox(width: calendarSettings.iconSpacingFromText),
+                Expanded(
+                  child: Text(
+                    event.singleLine,
+                    overflow: TextOverflow.fade,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
                   ),
-                ],
-              ),
+                ),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
+                if (calculatedRowWidth > minWidth)
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: event.dotTileColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                if (calculatedRowWidth > minWidth)
+                  SizedBox(width: calendarSettings.iconSpacingFromText),
+              ],
             ),
           ),
         ),
