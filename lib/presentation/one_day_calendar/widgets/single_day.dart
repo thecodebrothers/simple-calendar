@@ -5,7 +5,7 @@ import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/all_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
 
 class SingleDay extends StatefulWidget {
@@ -70,25 +70,23 @@ class _SingleDayState extends State<SingleDay> {
     return CustomScrollView(
       controller: widget.scrollController,
       slivers: [
-        SliverToBoxAdapter(
-          child: OneDayNavigationBar(
-            locale: widget.locale,
-            tomorrowDayLabel: widget.tomorrowDayLabel,
-            todayDayLabel: widget.todayDayLabel,
-            yesterdayDayLabel: widget.yesterdayDayLabel,
-            beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
-            dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
-            onTapLeft: () {
-              final newDate = state.date.add(const Duration(days: -1));
-              widget.onChanged?.call(newDate);
-            },
-            onTapRight: () {
-              final newDate = state.date.add(const Duration(days: 1));
-              widget.onChanged?.call(newDate);
-            },
-            date: state.date,
-            calendarSettings: widget.calendarSettings,
-          ),
+        SingleDayHeader(
+          locale: widget.locale,
+          tomorrowDayLabel: widget.tomorrowDayLabel,
+          todayDayLabel: widget.todayDayLabel,
+          yesterdayDayLabel: widget.yesterdayDayLabel,
+          beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+          dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
+          onTapLeft: () {
+            final newDate = state.date.add(const Duration(days: -1));
+            widget.onChanged?.call(newDate);
+          },
+          onTapRight: () {
+            final newDate = state.date.add(const Duration(days: 1));
+            widget.onChanged?.call(newDate);
+          },
+          calendarSettings: widget.calendarSettings,
+          state: state,
         ),
         if (state.dayWithEvents.allDaysEvents.isNotEmpty)
           SliverPersistentHeader(

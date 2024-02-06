@@ -107,6 +107,7 @@ class OneDayCalendarTab extends StatelessWidget {
       child: OneDayCalendarView(
         scrollController: scrollController,
         calendarEventsRepository: calendarRepository,
+        calendarSettings: CalendarSettings(isDaySwitcherPinned: false),
         // Optional locale for translations
         // locale: <your current locale>,
 
@@ -148,7 +149,7 @@ class MultipleDaysCalendarTab extends StatelessWidget {
         child: MultipleDaysCalendarView(
             scrollController: scrollController,
             calendarEventsRepository: calendarRepository,
-
+            calendarSettings: CalendarSettings(isDaySwitcherPinned: true),
             // Optionally, you can customize calendar settings - text styles, etc.
             // calendarSettings: <CalendarSettings>,
 

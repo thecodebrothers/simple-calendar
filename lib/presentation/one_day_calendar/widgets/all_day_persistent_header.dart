@@ -21,6 +21,7 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
     required this.isExpanded,
     required this.updateCallback,
   });
+
   @override
   Widget build(
     BuildContext context,
