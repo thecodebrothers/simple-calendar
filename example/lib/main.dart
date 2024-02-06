@@ -107,7 +107,11 @@ class OneDayCalendarTab extends StatelessWidget {
       child: OneDayCalendarView(
         scrollController: scrollController,
         calendarEventsRepository: calendarRepository,
-        calendarSettings: CalendarSettings(isDaySwitcherPinned: false),
+        calendarSettings: CalendarSettings(
+          isDaySwitcherPinned: true,
+          daySwitcherBackgroundColor: Colors.blue,
+        ),
+
         // Optional locale for translations
         // locale: <your current locale>,
 

@@ -38,36 +38,39 @@ class _OneDayNavigationBarState extends State<OneDayNavigationBar> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: widget.onTapLeft,
-            child: const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Icon(Icons.keyboard_arrow_left),
+      child: ColoredBox(
+        color: widget.calendarSettings.daySwitcherBackgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: widget.onTapLeft,
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Icon(Icons.keyboard_arrow_left),
+              ),
             ),
-          ),
-          Expanded(
-            child: SingleDayDate(
-              locale: widget.locale,
-              tomorrowDayLabel: widget.tomorrowDayLabel,
-              todayDayLabel: widget.todayDayLabel,
-              yesterdayDayLabel: widget.yesterdayDayLabel,
-              beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
-              dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
-              date: widget.date,
-              calendarSettings: widget.calendarSettings,
+            Expanded(
+              child: SingleDayDate(
+                locale: widget.locale,
+                tomorrowDayLabel: widget.tomorrowDayLabel,
+                todayDayLabel: widget.todayDayLabel,
+                yesterdayDayLabel: widget.yesterdayDayLabel,
+                beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+                dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
+                date: widget.date,
+                calendarSettings: widget.calendarSettings,
+              ),
             ),
-          ),
-          InkWell(
-            onTap: widget.onTapRight,
-            child: const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Icon(Icons.keyboard_arrow_right),
+            InkWell(
+              onTap: widget.onTapRight,
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Icon(Icons.keyboard_arrow_right),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
