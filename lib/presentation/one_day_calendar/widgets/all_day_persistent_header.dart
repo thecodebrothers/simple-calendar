@@ -34,73 +34,79 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildDefault(BuildContext context) {
-    return Column(
-      children: [
-        for (int i = 0; i < events.length; i++)
-          SizedBox(
-            height: calendarSettings.allDayEventHeight,
-            child: WholeEventTile(
-              calendarSettings: calendarSettings,
-              event: events[i],
-              rowWidth: MediaQuery.of(context).size.width,
-              position: i,
-              action: () => onEventTap?.call(events[i]),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          for (int i = 0; i < events.length; i++)
+            SizedBox(
+              height: calendarSettings.allDayEventHeight,
+              child: WholeEventTile(
+                calendarSettings: calendarSettings,
+                event: events[i],
+                rowWidth: MediaQuery.of(context).size.width,
+                position: i,
+                action: () => onEventTap?.call(events[i]),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildExpandable(BuildContext context) {
     final displayableEvents = isExpanded ? events : events.take(2).toList();
 
-    return Column(
-      children: [
-        for (int i = 0; i < displayableEvents.length; i++)
-          SizedBox(
-            height: calendarSettings.allDayEventHeight,
-            child: WholeEventTile(
-              calendarSettings: calendarSettings,
-              event: displayableEvents[i],
-              rowWidth: MediaQuery.of(context).size.width,
-              position: i,
-              action: () => onEventTap?.call(displayableEvents[i]),
-            ),
-          ),
-        !isExpanded
-            ? InkWell(
-                onTap: () => updateCallback.call(true),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'jeszcze ${events.length - displayableEvents.length}',
-                      style: calendarSettings.expandableTextButtonStyle,
-                    ),
-                    Icon(
-                      Icons.expand_more,
-                      color: calendarSettings.expandableIconColor,
-                    ),
-                  ],
-                ),
-              )
-            : InkWell(
-                onTap: () => updateCallback.call(false),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Ukryj',
-                      style: calendarSettings.expandableTextButtonStyle,
-                    ),
-                    Icon(
-                      Icons.expand_less,
-                      color: calendarSettings.expandableIconColor,
-                    ),
-                  ],
-                ),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          for (int i = 0; i < displayableEvents.length; i++)
+            SizedBox(
+              height: calendarSettings.allDayEventHeight,
+              child: WholeEventTile(
+                calendarSettings: calendarSettings,
+                event: displayableEvents[i],
+                rowWidth: MediaQuery.of(context).size.width,
+                position: i,
+                action: () => onEventTap?.call(displayableEvents[i]),
               ),
-      ],
+            ),
+          !isExpanded
+              ? InkWell(
+                  onTap: () => updateCallback.call(true),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'jeszcze ${events.length - displayableEvents.length}',
+                        style: calendarSettings.expandableTextButtonStyle,
+                      ),
+                      Icon(
+                        Icons.expand_more,
+                        color: calendarSettings.expandableIconColor,
+                      ),
+                    ],
+                  ),
+                )
+              : InkWell(
+                  onTap: () => updateCallback.call(false),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Ukryj',
+                        style: calendarSettings.expandableTextButtonStyle,
+                      ),
+                      Icon(
+                        Icons.expand_less,
+                        color: calendarSettings.expandableIconColor,
+                      ),
+                    ],
+                  ),
+                ),
+        ],
+      ),
     );
   }
 
