@@ -37,19 +37,14 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
     return Column(
       children: [
         for (int i = 0; i < events.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 50.0,
-            ),
-            child: SizedBox(
-              height: calendarSettings.allDayEventHeight,
-              child: WholeEventTile(
-                calendarSettings: calendarSettings,
-                event: events[i],
-                rowWidth: MediaQuery.of(context).size.width,
-                position: i,
-                action: () => onEventTap?.call(events[i]),
-              ),
+          SizedBox(
+            height: calendarSettings.allDayEventHeight,
+            child: WholeEventTile(
+              calendarSettings: calendarSettings,
+              event: events[i],
+              rowWidth: MediaQuery.of(context).size.width,
+              position: i,
+              action: () => onEventTap?.call(events[i]),
             ),
           ),
       ],
@@ -62,19 +57,14 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
     return Column(
       children: [
         for (int i = 0; i < displayableEvents.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 50.0,
-            ),
-            child: SizedBox(
-              height: calendarSettings.allDayEventHeight,
-              child: WholeEventTile(
-                calendarSettings: calendarSettings,
-                event: displayableEvents[i],
-                rowWidth: MediaQuery.of(context).size.width,
-                position: i,
-                action: () => onEventTap?.call(displayableEvents[i]),
-              ),
+          SizedBox(
+            height: calendarSettings.allDayEventHeight,
+            child: WholeEventTile(
+              calendarSettings: calendarSettings,
+              event: displayableEvents[i],
+              rowWidth: MediaQuery.of(context).size.width,
+              position: i,
+              action: () => onEventTap?.call(displayableEvents[i]),
             ),
           ),
         !isExpanded

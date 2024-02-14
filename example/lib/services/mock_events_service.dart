@@ -55,7 +55,7 @@ class MockEventsService {
         name: 'Event 1',
         eventStart: _today.add(Duration(hours: 1)),
         eventEnd: _today.add(Duration(hours: 5)),
-        isAllDay: false);
+        isAllDay: true);
 
     final todayEvent2 = EventItem(
         id: 2,
@@ -69,7 +69,7 @@ class MockEventsService {
         name: 'Event 3',
         eventStart: _yesterday.add(Duration(hours: 4)),
         eventEnd: _yesterday.add(Duration(hours: 8)),
-        isAllDay: false);
+        isAllDay: true);
 
     final yesterdayEvent2 = EventItem(
         id: 4,

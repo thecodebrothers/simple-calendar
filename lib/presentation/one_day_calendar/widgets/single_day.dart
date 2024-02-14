@@ -116,8 +116,6 @@ class _SingleDayState extends State<SingleDay> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hours(
-                containsWholeDayEvent:
-                    state.dayWithEvents.allDaysEvents.isNotEmpty,
                 numberOfConstantsTasks:
                     state.dayWithEvents.allDaysEvents.length,
                 calendarSettings: widget.calendarSettings,
