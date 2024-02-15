@@ -37,8 +37,8 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
             ),
             if (date.isSameDate(DateTime.now()))
               CurrentTime(
-                  numberOfConstantsTasks: maxNumberOfWholeDayTasks,
-                  calendarSettings: calendarSettings),
+                calendarSettings: calendarSettings,
+              ),
             ..._getMultiple(constraints),
           ],
         );
