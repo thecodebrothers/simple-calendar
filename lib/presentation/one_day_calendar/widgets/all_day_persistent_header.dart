@@ -21,6 +21,7 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
     required this.isExpanded,
     required this.updateCallback,
   });
+
   @override
   Widget build(
     BuildContext context,
@@ -33,14 +34,12 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildDefault(BuildContext context) {
-    return Column(
-      children: [
-        for (int i = 0; i < events.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 50.0,
-            ),
-            child: SizedBox(
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          for (int i = 0; i < events.length; i++)
+            SizedBox(
               height: calendarSettings.allDayEventHeight,
               child: WholeEventTile(
                 calendarSettings: calendarSettings,
@@ -50,22 +49,20 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
                 action: () => onEventTap?.call(events[i]),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildExpandable(BuildContext context) {
     final displayableEvents = isExpanded ? events : events.take(2).toList();
 
-    return Column(
-      children: [
-        for (int i = 0; i < displayableEvents.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 50.0,
-            ),
-            child: SizedBox(
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          for (int i = 0; i < displayableEvents.length; i++)
+            SizedBox(
               height: calendarSettings.allDayEventHeight,
               child: WholeEventTile(
                 calendarSettings: calendarSettings,
@@ -75,41 +72,41 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
                 action: () => onEventTap?.call(displayableEvents[i]),
               ),
             ),
-          ),
-        !isExpanded
-            ? InkWell(
-                onTap: () => updateCallback.call(true),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'jeszcze ${events.length - displayableEvents.length}',
-                      style: calendarSettings.expandableTextButtonStyle,
-                    ),
-                    Icon(
-                      Icons.expand_more,
-                      color: calendarSettings.expandableIconColor,
-                    ),
-                  ],
+          !isExpanded
+              ? InkWell(
+                  onTap: () => updateCallback.call(true),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'jeszcze ${events.length - displayableEvents.length}',
+                        style: calendarSettings.expandableTextButtonStyle,
+                      ),
+                      Icon(
+                        Icons.expand_more,
+                        color: calendarSettings.expandableIconColor,
+                      ),
+                    ],
+                  ),
+                )
+              : InkWell(
+                  onTap: () => updateCallback.call(false),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Ukryj',
+                        style: calendarSettings.expandableTextButtonStyle,
+                      ),
+                      Icon(
+                        Icons.expand_less,
+                        color: calendarSettings.expandableIconColor,
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            : InkWell(
-                onTap: () => updateCallback.call(false),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Ukryj',
-                      style: calendarSettings.expandableTextButtonStyle,
-                    ),
-                    Icon(
-                      Icons.expand_less,
-                      color: calendarSettings.expandableIconColor,
-                    ),
-                  ],
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 

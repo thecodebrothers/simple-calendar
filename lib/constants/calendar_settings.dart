@@ -16,6 +16,10 @@ class CalendarSettings {
   final TextStyle expandableTextButtonStyle;
   final Color expandableIconColor;
 
+  // Settings for day switcher
+  final bool isDaySwitcherPinned;
+  final Color daySwitcherBackgroundColor;
+
   /// color of a dot below a day in month view if there is any event
   final Color calendarDotColor;
 
@@ -60,6 +64,8 @@ class CalendarSettings {
     this.endHour = 24,
     this.rowHeight = 60.0,
     this.allDayEventHeight = 60,
+    this.isDaySwitcherPinned = false,
+    this.daySwitcherBackgroundColor = Colors.transparent,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
