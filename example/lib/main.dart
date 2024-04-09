@@ -124,7 +124,17 @@ class OneDayCalendarTab extends StatelessWidget {
         tomorrowDayLabel: (_) => 'Tomorrow',
         todayDayLabel: (_) => 'Today',
         yesterdayDayLabel: (_) => 'Yesterday',
-
+        dragEnabled: true,
+        onDragCompleted: (minutes, event) {
+          print('Event ${event.singleLine} was dragged to $minutes minutes');
+        },
+        onDragUpdate: (
+          details,
+          event,
+        ) {
+          print(
+              'Event ${event.singleLine} is hovering above ${details.globalPosition.dy} y coordinate');
+        },
         // Optional callbacks
         onEventTap: (event) => ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
