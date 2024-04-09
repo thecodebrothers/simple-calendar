@@ -5,7 +5,6 @@ import 'package:simple_calendar/presentation/models/single_event.dart';
 class DraggableTile extends StatefulWidget {
   final Widget child;
   final CalendarSettings calendarSettings;
-  final bool dragEnabled;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(DragUpdateDetails details, SingleEvent object)? onDragUpdate;
   final SingleEvent data;
@@ -20,7 +19,6 @@ class DraggableTile extends StatefulWidget {
     required this.width,
     required this.height,
     required this.calendarKey,
-    this.dragEnabled = false,
     this.onDragUpdate,
   });
 
@@ -31,7 +29,7 @@ class DraggableTile extends StatefulWidget {
 class _DraggableTileState extends State<DraggableTile> {
   @override
   Widget build(BuildContext context) {
-    if (widget.dragEnabled == false) return widget.child;
+    if (widget.calendarSettings.dragEnabled == false) return widget.child;
 
     return Draggable<SingleEvent>(
       data: widget.data,

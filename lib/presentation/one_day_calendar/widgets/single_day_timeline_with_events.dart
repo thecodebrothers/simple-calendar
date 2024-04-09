@@ -14,7 +14,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   final void Function(SingleEvent) action;
   final CalendarSettings calendarSettings;
   final GlobalKey calendarKey;
-  final bool dragEnabled;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(
     DragUpdateDetails details,
@@ -32,7 +31,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     required this.calendarSettings,
     required this.calendarKey,
     required this.onLongPress,
-    this.dragEnabled = false,
     this.onDragCompleted,
     this.onDragUpdate,
 
@@ -76,7 +74,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
           action: () => action(events[i]),
           calendarSettings: calendarSettings,
           date: date,
-          dragEnabled: dragEnabled,
           onDragCompleted: onDragCompleted,
           onDragUpdate: onDragUpdate,
         ));

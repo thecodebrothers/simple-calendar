@@ -14,7 +14,6 @@ class CalendarEventTile extends StatelessWidget {
   final CalendarSettings calendarSettings;
   final DateTime date;
   final GlobalKey calendarKey;
-  final bool dragEnabled;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(
     DragUpdateDetails details,
@@ -31,7 +30,6 @@ class CalendarEventTile extends StatelessWidget {
     this.position,
     this.numberOfEvents,
     required this.rowWidth,
-    this.dragEnabled = false,
     this.onDragCompleted,
     this.onDragUpdate,
     Key? key,
@@ -62,7 +60,6 @@ class CalendarEventTile extends StatelessWidget {
               event.eventStart.toDouble(),
           calendarSettings: calendarSettings,
           onDragCompleted: onDragCompleted,
-          dragEnabled: dragEnabled,
           onDragUpdate: onDragUpdate,
           child: Material(
             borderRadius: const BorderRadius.all(Radius.circular(8)),

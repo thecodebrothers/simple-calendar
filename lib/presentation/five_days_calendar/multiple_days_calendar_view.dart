@@ -55,6 +55,15 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Called when user long presses on event
   final void Function(DateTime)? onLongPress;
 
+  /// Called when user drags event to new position
+  final Function(int minutes, SingleEvent object)? onDragCompleted;
+
+  /// Called when user drags event
+  final Function(
+    DragUpdateDetails details,
+    SingleEvent object,
+  )? onDragUpdate;
+
   const MultipleDaysCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -65,6 +74,8 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.onTap,
     this.onLongPress,
     this.reloadController,
+    this.onDragCompleted,
+    this.onDragUpdate,
     Key? key,
   }) : super(key: key);
 
@@ -173,6 +184,8 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                       maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
                       action: (event) => widget.onTap?.call(event),
                       calendarSettings: widget.calendarSettings,
+                      onDragCompleted: widget.onDragCompleted,
+                      onDragUpdate: widget.onDragUpdate,
                     ),
                   ),
                 ],

@@ -42,9 +42,6 @@ class OneDayCalendarView extends StatefulWidget {
   /// Called when user long presses on hour
   final Function(DateTime)? onLongPress;
 
-  /// Indicates if user can drag events
-  final bool dragEnabled;
-
   /// Called when user selects new date
   final Function(DateTime)? onSelected;
 
@@ -89,7 +86,6 @@ class OneDayCalendarView extends StatefulWidget {
     this.dayAfterTomorrowDayLabel,
     this.onDragCompleted,
     this.onDragUpdate,
-    this.dragEnabled = false,
     Key? key,
   }) : super(key: key);
 
@@ -137,7 +133,6 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           },
           onDragCompleted: widget.onDragCompleted,
           onDragUpdate: widget.onDragUpdate,
-          dragEnabled: widget.dragEnabled,
         ),
       ),
     );

@@ -45,6 +45,9 @@ class CalendarSettings {
   /// minimum height of an event in one day and multiple days calendar views
   final double? minimumEventHeight;
 
+  /// enable drag and drop functionality
+  final bool dragEnabled;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -69,6 +72,7 @@ class CalendarSettings {
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
+    this.dragEnabled = false,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -96,6 +100,7 @@ class CalendarSettings {
     int? endHour,
     double? minimumEventHeight,
     double? hourCustomHeight,
+    bool? dragEnabled,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -127,6 +132,7 @@ class CalendarSettings {
       minimumEventHeight: minimumEventHeight ?? this.minimumEventHeight,
       expandableTextButtonStyle:
           expandableTextButtonStyle ?? this.expandableTextButtonStyle,
+      dragEnabled: dragEnabled ?? this.dragEnabled,
     );
   }
 }

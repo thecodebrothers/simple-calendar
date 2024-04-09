@@ -20,7 +20,6 @@ class SingleDay extends StatefulWidget {
   final String Function(BuildContext)? yesterdayDayLabel;
   final String Function(BuildContext)? beforeYesterdayDayLabel;
   final String Function(BuildContext)? dayAfterTomorrowDayLabel;
-  final bool dragEnabled;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(
     DragUpdateDetails details,
@@ -39,7 +38,6 @@ class SingleDay extends StatefulWidget {
     this.yesterdayDayLabel,
     this.beforeYesterdayDayLabel,
     this.dayAfterTomorrowDayLabel,
-    this.dragEnabled = false,
     this.onDragCompleted,
     this.onDragUpdate,
     Key? key,
@@ -151,7 +149,6 @@ class _SingleDayState extends State<SingleDay> {
                     calendarSettings: widget.calendarSettings,
                     onDragCompleted: widget.onDragCompleted,
                     onDragUpdate: widget.onDragUpdate,
-                    dragEnabled: widget.dragEnabled,
                   ),
                 ),
               ),
