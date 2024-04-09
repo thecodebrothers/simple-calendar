@@ -110,6 +110,7 @@ class OneDayCalendarTab extends StatelessWidget {
         calendarSettings: CalendarSettings(
           isDaySwitcherPinned: true,
           daySwitcherBackgroundColor: Colors.blue,
+          dragEnabled: true,
         ),
 
         // Optional locale for translations
@@ -124,7 +125,16 @@ class OneDayCalendarTab extends StatelessWidget {
         tomorrowDayLabel: (_) => 'Tomorrow',
         todayDayLabel: (_) => 'Today',
         yesterdayDayLabel: (_) => 'Yesterday',
-
+        onDragCompleted: (minutes, event) {
+          print('Event ${event.singleLine} was dragged to $minutes minutes');
+        },
+        onDragUpdate: (
+          details,
+          event,
+        ) {
+          print(
+              'Event ${event.singleLine} is hovering above ${details.globalPosition.dy} y coordinate');
+        },
         // Optional callbacks
         onEventTap: (event) => ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
@@ -150,25 +160,40 @@ class MultipleDaysCalendarTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: MultipleDaysCalendarView(
-            scrollController: scrollController,
-            calendarEventsRepository: calendarRepository,
-            calendarSettings: CalendarSettings(isDaySwitcherPinned: true),
-            // Optionally, you can customize calendar settings - text styles, etc.
-            // calendarSettings: <CalendarSettings>,
+      child: MultipleDaysCalendarView(
+        scrollController: scrollController,
+        calendarEventsRepository: calendarRepository,
+        calendarSettings:
+            CalendarSettings(isDaySwitcherPinned: true, dragEnabled: true),
+        // Optionally, you can customize calendar settings - text styles, etc.
+        // calendarSettings: <CalendarSettings>,
 
-            // Optional locale for translations
-            // locale: <your current locale>,
+        // Optional locale for translations
+        // locale: <your current locale>,
 
-            // Optional callbacks
-            onTap: (event) => ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                  SnackBar(content: Text("${event.singleLine} tapped"))),
-            onLongPress: (date) => ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                  SnackBar(content: Text("Day ${date.day} long pressed")))));
+        // Optional callbacks
+        onTap: (event) => ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text("${event.singleLine} tapped"))),
+        onLongPress: (date) => ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text("Day ${date.day} long pressed"),
+            ),
+          ),
+             onDragCompleted: (minutes, event) {
+          print('Event ${event.singleLine} was dragged to $minutes minutes');
+        },
+        onDragUpdate: (
+          details,
+          event,
+        ) {
+          print(
+              'Event ${event.singleLine} is hovering above ${details.globalPosition.dy} y coordinate');
+        },
+      ),
+    );
   }
 }
 

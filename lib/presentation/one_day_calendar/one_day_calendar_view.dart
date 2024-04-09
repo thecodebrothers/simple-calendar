@@ -45,6 +45,15 @@ class OneDayCalendarView extends StatefulWidget {
   /// Called when user selects new date
   final Function(DateTime)? onSelected;
 
+  /// Called when user drags event to new position
+  final Function(int minutes, SingleEvent object)? onDragCompleted;
+
+  /// Called when user drags event
+  final Function(
+    DragUpdateDetails details,
+    SingleEvent object,
+  )? onDragUpdate;
+
   // Optional label after tomorrow date, ex. 25 May, `label`
   final String Function(BuildContext)? tomorrowDayLabel;
 
@@ -75,6 +84,8 @@ class OneDayCalendarView extends StatefulWidget {
     this.yesterdayDayLabel,
     this.beforeYesterdayDayLabel,
     this.dayAfterTomorrowDayLabel,
+    this.onDragCompleted,
+    this.onDragUpdate,
     Key? key,
   }) : super(key: key);
 
@@ -120,6 +131,8 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
             widget.onSelected?.call(date);
             BlocProvider.of<OneDayCalendarCubit>(pageContext).loadForDate(date);
           },
+          onDragCompleted: widget.onDragCompleted,
+          onDragUpdate: widget.onDragUpdate,
         ),
       ),
     );

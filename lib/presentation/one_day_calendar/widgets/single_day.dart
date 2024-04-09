@@ -20,6 +20,11 @@ class SingleDay extends StatefulWidget {
   final String Function(BuildContext)? yesterdayDayLabel;
   final String Function(BuildContext)? beforeYesterdayDayLabel;
   final String Function(BuildContext)? dayAfterTomorrowDayLabel;
+  final Function(int minutes, SingleEvent object)? onDragCompleted;
+  final Function(
+    DragUpdateDetails details,
+    SingleEvent object,
+  )? onDragUpdate;
 
   const SingleDay({
     required this.onChanged,
@@ -33,6 +38,8 @@ class SingleDay extends StatefulWidget {
     this.yesterdayDayLabel,
     this.beforeYesterdayDayLabel,
     this.dayAfterTomorrowDayLabel,
+    this.onDragCompleted,
+    this.onDragUpdate,
     Key? key,
   }) : super(key: key);
 
@@ -66,6 +73,8 @@ class _SingleDayState extends State<SingleDay> {
     final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
         ? 3
         : state.dayWithEvents.allDaysEvents.length.toDouble() + 1);
+
+    final calendarKey = GlobalKey();
 
     return CustomScrollView(
       controller: widget.scrollController,
@@ -127,29 +136,19 @@ class _SingleDayState extends State<SingleDay> {
                           widget.calendarSettings.rowHeight +
                       state.dayWithEvents.allDaysEvents.length *
                           widget.calendarSettings.rowHeight,
-                  child: GestureDetector(
-                    onLongPressEnd: (details) {
-                      final date = state.date;
-                      widget.onLongPress?.call(
-                        DateTime(
-                          date.year,
-                          date.month,
-                          date.day,
-                          (details.localPosition.dy.toInt() +
-                                  (widget.calendarSettings.startHour * 60)) ~/
-                              60,
-                        ),
-                      );
-                    },
-                    child: SingleDayTimelineWithEvents(
-                      multipleEvents: state.dayWithEvents.multipleEvents,
-                      allDayEvents: state.dayWithEvents.allDaysEvents,
-                      date: state.date,
-                      maxNumberOfWholeDayTasks:
-                          state.dayWithEvents.allDaysEvents.length,
-                      action: (item) => widget.onEventTap?.call(item),
-                      calendarSettings: widget.calendarSettings,
-                    ),
+                  child: SingleDayTimelineWithEvents(
+                    onLongPress: widget.onLongPress,
+                    key: calendarKey,
+                    multipleEvents: state.dayWithEvents.multipleEvents,
+                    allDayEvents: state.dayWithEvents.allDaysEvents,
+                    date: state.date,
+                    calendarKey: calendarKey,
+                    maxNumberOfWholeDayTasks:
+                        state.dayWithEvents.allDaysEvents.length,
+                    action: (item) => widget.onEventTap?.call(item),
+                    calendarSettings: widget.calendarSettings,
+                    onDragCompleted: widget.onDragCompleted,
+                    onDragUpdate: widget.onDragUpdate,
                   ),
                 ),
               ),

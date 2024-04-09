@@ -55,6 +55,15 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Called when user long presses on event
   final void Function(DateTime)? onLongPress;
 
+  /// Called when user drags event to new position
+  final Function(int minutes, SingleEvent object)? onDragCompleted;
+
+  /// Called when user drags event
+  final Function(
+    DragUpdateDetails details,
+    SingleEvent object,
+  )? onDragUpdate;
+
   const MultipleDaysCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -65,6 +74,8 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.onTap,
     this.onLongPress,
     this.reloadController,
+    this.onDragCompleted,
+    this.onDragUpdate,
     Key? key,
   }) : super(key: key);
 
@@ -144,48 +155,42 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
             Hours(
                 numberOfConstantsTasks: maxNumberOfWholeDayTasks,
                 calendarSettings: widget.calendarSettings),
-            ...state.daysWithEvents
-                .map(
-                  (e) => Column(
-                    children: [
-                      SizedBox(
-                        width: rowWidth,
-                        child: SingleDayDate(
-                          date: e.date,
-                          locale: widget.locale,
-                          calendarSettings: widget.calendarSettings,
-                        ),
-                      ),
-                      SizedBox(
-                        width: rowWidth,
-                        height: (widget.calendarSettings.endHour -
-                                    widget.calendarSettings.startHour) *
-                                widget.calendarSettings.rowHeight +
-                            maxNumberOfWholeDayTasks *
-                                widget.calendarSettings.rowHeight,
-                        child: GestureDetector(
-                          onLongPressEnd: (details) {
-                            final date = state.date;
-                            widget.onLongPress?.call(DateTime(
-                                date.year,
-                                date.month,
-                                date.day,
-                                details.localPosition.dy.toInt() ~/ 60));
-                          },
-                          child: SingleDayTimelineWithEvents(
-                            date: e.date,
-                            multipleEvents: e.multipleEvents,
-                            allDayEvents: e.allDaysEvents,
-                            maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
-                            action: (event) => widget.onTap?.call(event),
-                            calendarSettings: widget.calendarSettings,
-                          ),
-                        ),
-                      ),
-                    ],
+            ...state.daysWithEvents.map((e) {
+              final calendarKey = GlobalKey();
+              return Column(
+                children: [
+                  SizedBox(
+                    width: rowWidth,
+                    child: SingleDayDate(
+                      date: e.date,
+                      locale: widget.locale,
+                      calendarSettings: widget.calendarSettings,
+                    ),
                   ),
-                )
-                .toList(),
+                  SizedBox(
+                    width: rowWidth,
+                    height: (widget.calendarSettings.endHour -
+                                widget.calendarSettings.startHour) *
+                            widget.calendarSettings.rowHeight +
+                        maxNumberOfWholeDayTasks *
+                            widget.calendarSettings.rowHeight,
+                    child: SingleDayTimelineWithEvents(
+                      onLongPress: widget.onLongPress,
+                      key: calendarKey,
+                      calendarKey: calendarKey,
+                      date: e.date,
+                      multipleEvents: e.multipleEvents,
+                      allDayEvents: e.allDaysEvents,
+                      maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
+                      action: (event) => widget.onTap?.call(event),
+                      calendarSettings: widget.calendarSettings,
+                      onDragCompleted: widget.onDragCompleted,
+                      onDragUpdate: widget.onDragUpdate,
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
           ],
         ),
       ),

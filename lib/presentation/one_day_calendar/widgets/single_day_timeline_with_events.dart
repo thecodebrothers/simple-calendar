@@ -13,6 +13,14 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   final int maxNumberOfWholeDayTasks;
   final void Function(SingleEvent) action;
   final CalendarSettings calendarSettings;
+  final GlobalKey calendarKey;
+  final Function(int minutes, SingleEvent object)? onDragCompleted;
+  final Function(
+    DragUpdateDetails details,
+    SingleEvent object,
+  )? onDragUpdate;
+
+  final Function(DateTime)? onLongPress;
 
   const SingleDayTimelineWithEvents({
     required this.date,
@@ -21,6 +29,11 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     required this.maxNumberOfWholeDayTasks,
     required this.action,
     required this.calendarSettings,
+    required this.calendarKey,
+    required this.onLongPress,
+    this.onDragCompleted,
+    this.onDragUpdate,
+
     Key? key,
   }) : super(key: key);
 
@@ -34,6 +47,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
               date: date,
               numberOfConstantsTasks: 0,
               calendarSettings: calendarSettings,
+              onLongPress: onLongPress,
             ),
             if (date.isSameDate(DateTime.now()))
               CurrentTime(
@@ -53,11 +67,15 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
         widgets.add(CalendarEventTile(
           numberOfAllDayEvents: 0,
           event: events[i],
+          calendarKey: calendarKey,
           rowWidth: constraints.maxWidth,
           position: i,
           numberOfEvents: events.length < 6 ? events.length : 5,
           action: () => action(events[i]),
           calendarSettings: calendarSettings,
+          date: date,
+          onDragCompleted: onDragCompleted,
+          onDragUpdate: onDragUpdate,
         ));
       }
     }
