@@ -64,6 +64,9 @@ class MultipleDaysCalendarView extends StatefulWidget {
     SingleEvent object,
   )? onDragUpdate;
 
+  /// Called when user starts dragging event
+  final Function()? onDragStarted;
+
   const MultipleDaysCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -76,6 +79,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.reloadController,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.onDragStarted,
     Key? key,
   }) : super(key: key);
 
@@ -177,6 +181,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
                     child: SingleDayTimelineWithEvents(
                       onLongPress: widget.onLongPress,
                       key: calendarKey,
+                      onDragStarted: widget.onDragStarted,
                       calendarKey: calendarKey,
                       date: e.date,
                       multipleEvents: e.multipleEvents,

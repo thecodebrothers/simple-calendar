@@ -54,6 +54,9 @@ class OneDayCalendarView extends StatefulWidget {
     SingleEvent object,
   )? onDragUpdate;
 
+  /// Called when user starts dragging event
+  final Function()? onDragStarted;
+
   // Optional label after tomorrow date, ex. 25 May, `label`
   final String Function(BuildContext)? tomorrowDayLabel;
 
@@ -72,6 +75,7 @@ class OneDayCalendarView extends StatefulWidget {
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
+    this.onDragStarted,
     this.initialDate,
     this.calendarSettings = const CalendarSettings(),
     this.onEventTap,
@@ -133,6 +137,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           },
           onDragCompleted: widget.onDragCompleted,
           onDragUpdate: widget.onDragUpdate,
+          onDragStarted: widget.onDragStarted,
         ),
       ),
     );

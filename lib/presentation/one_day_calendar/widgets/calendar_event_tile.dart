@@ -19,6 +19,7 @@ class CalendarEventTile extends StatelessWidget {
     DragUpdateDetails details,
     SingleEvent object,
   )? onDragUpdate;
+  final Function()? onDragStarted;
 
   const CalendarEventTile({
     required this.event,
@@ -27,11 +28,12 @@ class CalendarEventTile extends StatelessWidget {
     required this.calendarSettings,
     required this.date,
     required this.calendarKey,
+    required this.rowWidth,
     this.position,
     this.numberOfEvents,
-    required this.rowWidth,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.onDragStarted,
     Key? key,
   }) : super(key: key);
 
@@ -55,6 +57,7 @@ class CalendarEventTile extends StatelessWidget {
         child: DraggableTile(
           data: event,
           width: eventWidth,
+          onDragStarted: onDragStarted,
           calendarKey: calendarKey,
           height: event.eventHeightThreshold.toDouble() -
               event.eventStart.toDouble(),

@@ -21,6 +21,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   )? onDragUpdate;
 
   final Function(DateTime)? onLongPress;
+  final Function()? onDragStarted;
 
   const SingleDayTimelineWithEvents({
     required this.date,
@@ -31,9 +32,9 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     required this.calendarSettings,
     required this.calendarKey,
     required this.onLongPress,
+    this.onDragStarted,
     this.onDragCompleted,
     this.onDragUpdate,
-
     Key? key,
   }) : super(key: key);
 
@@ -66,6 +67,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
       for (int i = 0; i < events.length; i++) {
         widgets.add(CalendarEventTile(
           numberOfAllDayEvents: 0,
+          onDragStarted: onDragStarted,
           event: events[i],
           calendarKey: calendarKey,
           rowWidth: constraints.maxWidth,

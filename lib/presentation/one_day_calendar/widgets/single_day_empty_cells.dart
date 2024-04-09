@@ -19,7 +19,6 @@ class EmptyCells extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPressEnd: (details) {
-       
         onLongPress?.call(
           DateTime(
             date.year,
