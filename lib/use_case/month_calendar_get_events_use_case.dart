@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:simple_calendar/presentation/models/month_single_day_item.dart';
 import 'package:simple_calendar/presentation/models/single_calendar_event.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
@@ -36,6 +38,8 @@ class MonthCalendarGetEventsUseCase {
             date: e,
             hasAnyEvents: hasAnyEvents(e, events),
             isDayName: false,
+            schedulesCount: _getSchedulesCount(date, events),
+            scheduleColor: _getSchedulesColor(date, events),
           ),
         )
         .toList();
@@ -52,5 +56,23 @@ class MonthCalendarGetEventsUseCase {
     return events
         .where((element) => element.eventStart.isSameDate(date))
         .isNotEmpty;
+  }
+
+  int? _getSchedulesCount(DateTime date, List<SingleCalendarEvent> events) {
+    final count =
+        events.where((element) => element.eventStart.isSameDate(date)).length;
+
+    return count;
+  }
+
+  Color? _getSchedulesColor(DateTime date, List<SingleCalendarEvent> events) {
+    final availableSchedules =
+        events.where((element) => element.eventStart.isSameDate(date)).toList();
+
+    if (availableSchedules.isNotEmpty) {
+      return availableSchedules.first.dotTileColor;
+    }
+
+    return null;
   }
 }
