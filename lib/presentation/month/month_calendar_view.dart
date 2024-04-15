@@ -103,6 +103,9 @@ class MonthCalendarView extends StatelessWidget {
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return GridView.count(
+                  physics: !calendarSettings.isScrollable
+                      ? const NeverScrollableScrollPhysics()
+                      : null,
                   crossAxisCount: 7,
                   children: state.items
                       .map(

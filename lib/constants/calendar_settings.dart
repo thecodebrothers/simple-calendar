@@ -15,6 +15,7 @@ class CalendarSettings {
   final double allDayEventHeight;
   final TextStyle expandableTextButtonStyle;
   final Color expandableIconColor;
+  final bool isScrollable;
 
   // Settings for day switcher
   final bool isDaySwitcherPinned;
@@ -73,6 +74,7 @@ class CalendarSettings {
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
     this.dragEnabled = false,
+    this.isScrollable = true,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -101,6 +103,7 @@ class CalendarSettings {
     double? minimumEventHeight,
     double? hourCustomHeight,
     bool? dragEnabled,
+    bool? isScrollable,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -133,6 +136,7 @@ class CalendarSettings {
       expandableTextButtonStyle:
           expandableTextButtonStyle ?? this.expandableTextButtonStyle,
       dragEnabled: dragEnabled ?? this.dragEnabled,
+      isScrollable: isScrollable ?? this.isScrollable,
     );
   }
 }
