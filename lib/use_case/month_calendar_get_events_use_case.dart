@@ -39,7 +39,7 @@ class MonthCalendarGetEventsUseCase {
             hasAnyEvents: hasAnyEvents(e, events),
             isDayName: false,
             schedulesCount: _getSchedulesCount(e, events),
-            scheduleColor: _getSchedulesColor(e, events),
+            scheduleColors: _getSchedulesColor(e, events),
           ),
         )
         .toList();
@@ -65,12 +65,17 @@ class MonthCalendarGetEventsUseCase {
     return count;
   }
 
-  Color? _getSchedulesColor(DateTime date, List<SingleCalendarEvent> events) {
+  List<Color>? _getSchedulesColor(
+      DateTime date, List<SingleCalendarEvent> events) {
+    var colors = <Color>[];
     final availableSchedules =
         events.where((element) => element.eventStart.isSameDate(date)).toList();
 
     if (availableSchedules.isNotEmpty) {
-      return availableSchedules.first.dotTileColor;
+      for (final schedule in availableSchedules) {
+        colors.add(schedule.dotTileColor);
+      }
+      return colors;
     }
 
     return null;

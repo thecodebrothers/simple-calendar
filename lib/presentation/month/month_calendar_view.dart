@@ -120,7 +120,7 @@ class MonthCalendarView extends StatelessWidget {
                           isToday:
                               !e.isDayName && e.date.isSameDate(DateTime.now()),
                           isDayName: e.isDayName,
-                          scheduleColor: e.scheduleColor,
+                          scheduleColors: e.scheduleColors,
                           scheduleCount: e.schedulesCount,
                         ),
                       )

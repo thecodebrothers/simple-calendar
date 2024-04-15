@@ -9,7 +9,7 @@ class MonthTile extends StatelessWidget {
   final VoidCallback onTap;
   final bool isToday;
   final bool isDayName;
-  final Color? scheduleColor;
+  final List<Color>? scheduleColors;
   final int? scheduleCount;
 
   const MonthTile({
@@ -21,7 +21,7 @@ class MonthTile extends StatelessWidget {
     required this.isToday,
     required this.isDayName,
     this.scheduleCount,
-    this.scheduleColor,
+    this.scheduleColors,
     Key? key,
   }) : super(key: key);
 
@@ -74,7 +74,7 @@ class MonthTile extends StatelessWidget {
                         child: Container(
                           height: 5,
                           width: 5,
-                          color: scheduleColor,
+                          color: scheduleColors?[i],
                         ),
                       ),
                       const SizedBox(
