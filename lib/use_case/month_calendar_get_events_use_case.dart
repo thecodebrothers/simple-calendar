@@ -38,8 +38,8 @@ class MonthCalendarGetEventsUseCase {
             date: e,
             hasAnyEvents: hasAnyEvents(e, events),
             isDayName: false,
-            schedulesCount: _getSchedulesCount(date, events),
-            scheduleColor: _getScheduleColor(date, events),
+            schedulesCount: _getSchedulesCount(e, events),
+            scheduleColor: _getSchedulesColor(e, events),
           ),
         )
         .toList();
@@ -65,7 +65,7 @@ class MonthCalendarGetEventsUseCase {
     return count;
   }
 
-  Color? _getScheduleColor(DateTime date, List<SingleCalendarEvent> events) {
+  Color? _getSchedulesColor(DateTime date, List<SingleCalendarEvent> events) {
     final availableSchedules =
         events.where((element) => element.eventStart.isSameDate(date)).toList();
 
