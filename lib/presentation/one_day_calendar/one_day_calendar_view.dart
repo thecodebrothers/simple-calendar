@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
+import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day.dart';
@@ -100,13 +101,21 @@ class OneDayCalendarView extends StatefulWidget {
 class _OneDayCalendarViewState extends State<OneDayCalendarView> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<OneDayCalendarCubit>(
-      create: (context) => OneDayCalendarCubit(
-        OneDayCalendarGetEventsUseCase(widget.calendarEventsRepository),
-        widget.initialDate ?? DateTime.now(),
-        widget.reloadController,
-        widget.calendarSettings.minimumEventHeight,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<OneDayCalendarCubit>(
+          create: (context) => OneDayCalendarCubit(
+            OneDayCalendarGetEventsUseCase(widget.calendarEventsRepository),
+            widget.initialDate ?? DateTime.now(),
+            widget.reloadController,
+            widget.calendarSettings.minimumEventHeight,
+          ),
+        ),
+        BlocProvider<ScaleRowHeightCubit>(
+          create: (context) =>
+              ScaleRowHeightCubit(widget.calendarSettings.rowHeight),
+        ),
+      ],
       child: BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
         builder: (context, state) {
           return _buildPage(context);
