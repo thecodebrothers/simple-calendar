@@ -182,7 +182,7 @@ class MultipleDaysCalendarTab extends StatelessWidget {
               content: Text("Day ${date.day} long pressed"),
             ),
           ),
-             onDragCompleted: (minutes, event) {
+        onDragCompleted: (minutes, event) {
           print('Event ${event.singleLine} was dragged to $minutes minutes');
         },
         onDragUpdate: (

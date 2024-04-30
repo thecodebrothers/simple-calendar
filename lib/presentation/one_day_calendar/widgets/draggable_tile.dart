@@ -7,6 +7,7 @@ class DraggableTile extends StatefulWidget {
   final CalendarSettings calendarSettings;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(DragUpdateDetails details, SingleEvent object)? onDragUpdate;
+  final Function()? onDragStarted;
   final SingleEvent data;
   final double width;
   final double height;
@@ -19,6 +20,7 @@ class DraggableTile extends StatefulWidget {
     required this.width,
     required this.height,
     required this.calendarKey,
+    this.onDragStarted,
     this.onDragUpdate,
   });
 
@@ -33,6 +35,7 @@ class _DraggableTileState extends State<DraggableTile> {
 
     return Draggable<SingleEvent>(
       data: widget.data,
+      onDragStarted: () => widget.onDragStarted?.call(),
       onDragUpdate: (details) {
         widget.onDragUpdate?.call(details, widget.data);
       },

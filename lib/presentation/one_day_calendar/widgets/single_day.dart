@@ -25,6 +25,7 @@ class SingleDay extends StatefulWidget {
     DragUpdateDetails details,
     SingleEvent object,
   )? onDragUpdate;
+  final Function()? onDragStarted;
 
   const SingleDay({
     required this.onChanged,
@@ -32,6 +33,7 @@ class SingleDay extends StatefulWidget {
     required this.calendarSettings,
     required this.onEventTap,
     required this.onLongPress,
+    this.onDragStarted,
     this.locale,
     this.tomorrowDayLabel,
     this.todayDayLabel,
@@ -137,6 +139,7 @@ class _SingleDayState extends State<SingleDay> {
                       state.dayWithEvents.allDaysEvents.length *
                           widget.calendarSettings.rowHeight,
                   child: SingleDayTimelineWithEvents(
+                    onDragStarted: widget.onDragStarted,
                     onLongPress: widget.onLongPress,
                     key: calendarKey,
                     multipleEvents: state.dayWithEvents.multipleEvents,
