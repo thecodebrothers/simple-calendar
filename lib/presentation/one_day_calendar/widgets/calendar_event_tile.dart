@@ -10,6 +10,7 @@ class CalendarEventTile extends StatelessWidget {
   final int? position;
   final int? numberOfEvents;
   final double rowWidth;
+  final double rowHeight;
   final VoidCallback action;
   final CalendarSettings calendarSettings;
   final DateTime date;
@@ -29,6 +30,7 @@ class CalendarEventTile extends StatelessWidget {
     required this.date,
     required this.calendarKey,
     required this.rowWidth,
+    required this.rowHeight,
     this.position,
     this.numberOfEvents,
     this.onDragCompleted,
@@ -44,23 +46,26 @@ class CalendarEventTile extends StatelessWidget {
         16;
     final calculatedRowWidth = (rowWidth) / (numberOfEvents ?? 1);
     final eventWidth = (rowWidth) / (numberOfEvents ?? 1);
+    final rescaleFactor = rowHeight / 60;
+    final height =
+        (event.eventHeightThreshold.toDouble() - event.eventStart.toDouble()) *
+            rescaleFactor;
     return Positioned(
-      top: event.eventStart.toDouble() -
-          calendarSettings.startHour * calendarSettings.rowHeight +
-          numberOfAllDayEvents * calendarSettings.rowHeight,
+      top: (event.eventStart.toDouble() * rescaleFactor) -
+          calendarSettings.startHour * rowHeight +
+          numberOfAllDayEvents * rowHeight,
       left: _getPositionLeft(position ?? 0),
       width: eventWidth,
-      height:
-          event.eventHeightThreshold.toDouble() - event.eventStart.toDouble(),
+      height: height,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: DraggableTile(
+          rowHeight: rowHeight,
           data: event,
           width: eventWidth,
           onDragStarted: onDragStarted,
           calendarKey: calendarKey,
-          height: event.eventHeightThreshold.toDouble() -
-              event.eventStart.toDouble(),
+          height: height,
           calendarSettings: calendarSettings,
           onDragCompleted: onDragCompleted,
           onDragUpdate: onDragUpdate,

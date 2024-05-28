@@ -6,11 +6,13 @@ class FiveDaysEmptyCells extends StatelessWidget {
   final DateTime date;
   final double rowWidth;
   final CalendarSettings calendarSettings;
+  final double rowHeight;
 
   const FiveDaysEmptyCells({
     required this.date,
     required this.rowWidth,
     required this.calendarSettings,
+    required this.rowHeight,
     Key? key,
   }) : super(key: key);
 
@@ -24,7 +26,7 @@ class FiveDaysEmptyCells extends StatelessWidget {
         ),
         for (int i = 0; i < 24; i++)
           Container(
-            height: calendarSettings.rowHeight,
+            height: rowHeight,
             width: rowWidth,
             decoration:
                 BoxDecoration(border: Border.all(color: Colors.grey.shade200)),

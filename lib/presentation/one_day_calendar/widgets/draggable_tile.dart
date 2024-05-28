@@ -11,6 +11,7 @@ class DraggableTile extends StatefulWidget {
   final SingleEvent data;
   final double width;
   final double height;
+  final double rowHeight;
   final GlobalKey calendarKey;
   DraggableTile({
     required this.child,
@@ -20,6 +21,7 @@ class DraggableTile extends StatefulWidget {
     required this.width,
     required this.height,
     required this.calendarKey,
+    required this.rowHeight,
     this.onDragStarted,
     this.onDragUpdate,
   });
@@ -42,8 +44,10 @@ class _DraggableTileState extends State<DraggableTile> {
       onDragEnd: (details) {
         final dropPosition =
             details.offset.dy - _getGlobalCalendarPosition().dy;
+        final rescaled = 60 / widget.rowHeight;
 
-        widget.onDragCompleted?.call(dropPosition.toInt(), widget.data);
+        widget.onDragCompleted
+            ?.call((rescaled * dropPosition).toInt(), widget.data);
       },
       childWhenDragging: SizedBox(
         width: widget.width,

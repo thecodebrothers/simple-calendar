@@ -38,7 +38,7 @@ class MockEventsService {
     }
 
     final fixedFromDate = fromDate.dateOnly();
-    final fixedToDate = toDate.dateOnly();
+    final fixedToDate = toDate.dateOnly().add(Duration(hours: 23, minutes: 59));
 
     final sortedEvents = _events
         .where((element) =>
@@ -84,6 +84,12 @@ class MockEventsService {
         eventStart: _tomorrow.add(Duration(hours: 4)),
         eventEnd: _tomorrow.add(Duration(hours: 8)),
         isAllDay: false);
+    final tomorrowEvent2 = EventItem(
+        id: 5,
+        name: 'Event 5',
+        eventStart: _tomorrow.add(Duration(hours: 2)),
+        eventEnd: _tomorrow.add(Duration(minutes: 250)),
+        isAllDay: false);
 
     _events.addAll([
       todayEvent1,
@@ -91,6 +97,7 @@ class MockEventsService {
       yesterdayEvent1,
       yesterdayEvent2,
       tomorrowEvent1,
+      tomorrowEvent2,
     ]);
   }
 }
