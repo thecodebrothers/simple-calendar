@@ -93,26 +93,7 @@ class CalendarEventTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            event.singleLine,
-                            maxLines: event.secondLine == null ? 3 : 1,
-                            overflow: TextOverflow.fade,
-                            style: calendarSettings.firstLineTileTextStyle,
-                          ),
-                        ),
-                        if (event.secondLine != null) const SizedBox(height: 4),
-                        if (event.secondLine != null)
-                          Flexible(
-                            child: Text(
-                              event.secondLine!,
-                              maxLines: 1,
-                              overflow: TextOverflow.fade,
-                              style: calendarSettings.secondLineTileTextStyle,
-                            ),
-                          ),
-                      ],
+                      children: _columnChildren(),
                     ),
                   ),
                   if (calculatedRowWidth > minWidth)
@@ -135,6 +116,54 @@ class CalendarEventTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _columnChildren() {
+    return [
+      if (event.topLeftLine != null) ...[
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            event.topLeftLine!,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: calendarSettings.topLeftLineTileTextStyle,
+          ),
+        ),
+        const SizedBox(height: 6),
+      ],
+      Flexible(
+        child: Text(
+          event.singleLine,
+          maxLines: event.secondLine == null ? 3 : 1,
+          overflow: TextOverflow.fade,
+          style: calendarSettings.firstLineTileTextStyle,
+        ),
+      ),
+      if (event.secondLine != null) ...[
+        const SizedBox(height: 4),
+        Flexible(
+          child: Text(
+            event.secondLine!,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: calendarSettings.secondLineTileTextStyle,
+          ),
+        ),
+      ],
+      if (event.bottomRightLine != null) ...[
+        const SizedBox(height: 6),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Text(
+            event.bottomRightLine!,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: calendarSettings.bottomRightLineTileTextStyle,
+          ),
+        ),
+      ]
+    ];
   }
 
   double _getPositionLeft(int position) {

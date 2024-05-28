@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class CalendarSettings {
   final TextStyle firstLineTileTextStyle;
   final TextStyle secondLineTileTextStyle;
+  final TextStyle topLeftLineTileTextStyle;
+  final TextStyle bottomRightLineTileTextStyle;
   final double tileIconSize;
   final double iconSpacingFromText;
   final double iconBackgroundOpacity;
@@ -54,6 +56,8 @@ class CalendarSettings {
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
+    this.topLeftLineTileTextStyle = const TextStyle(),
+    this.bottomRightLineTileTextStyle = const TextStyle(),
     this.fiveDaysHeaderTextStyle = const TextStyle(),
     this.oneDayHeaderTextStyle = const TextStyle(),
     this.calendarCurrentMonthTileStyle = const TextStyle(),
@@ -84,6 +88,8 @@ class CalendarSettings {
   CalendarSettings copyWith({
     TextStyle? firstLineTileTextStyle,
     TextStyle? secondLineTileTextStyle,
+    TextStyle? topLeftLineTileTextStyle,
+    TextStyle? bottomRightLineTileTextStyle,
     double? tileIconSize,
     double? iconSpacingFromText,
     double? iconBackgroundOpacity,
@@ -111,6 +117,10 @@ class CalendarSettings {
           firstLineTileTextStyle ?? this.firstLineTileTextStyle,
       secondLineTileTextStyle:
           secondLineTileTextStyle ?? this.secondLineTileTextStyle,
+      topLeftLineTileTextStyle:
+          topLeftLineTileTextStyle ?? this.topLeftLineTileTextStyle,
+      bottomRightLineTileTextStyle:
+          bottomRightLineTileTextStyle ?? this.bottomRightLineTileTextStyle,
       tileIconSize: tileIconSize ?? this.tileIconSize,
       iconSpacingFromText: iconSpacingFromText ?? this.iconSpacingFromText,
       iconBackgroundOpacity:

@@ -4,6 +4,9 @@ class EventItem {
   final DateTime eventStart;
   final DateTime eventEnd;
   final bool isAllDay;
+  final String? secondLine;
+  final String? topLeftLine;
+  final String? bottomRightLine;
 
   EventItem({
     required this.id,
@@ -11,5 +14,8 @@ class EventItem {
     required this.eventStart,
     required this.eventEnd,
     required this.isAllDay,
+    this.secondLine,
+    this.topLeftLine,
+    this.bottomRightLine,
   });
 }

@@ -17,6 +17,8 @@ class SingleEvent extends Equatable {
   final int? id;
   final dynamic object;
   final double eventHeightThreshold;
+  final String? topLeftLine;
+  final String? bottomRightLine;
 
   const SingleEvent({
     required this.singleLine,
@@ -32,6 +34,8 @@ class SingleEvent extends Equatable {
     required this.tileBackgroundColor,
     required this.imageHeaders,
     required this.eventHeightThreshold,
+    required this.topLeftLine,
+    required this.bottomRightLine,
   });
 
   SingleEvent.fromCalendar(SingleCalendarEventInternal element)
@@ -47,7 +51,10 @@ class SingleEvent extends Equatable {
         tileBackgroundColor = element.tileBackgroundColor,
         imageHeaders = element.imageHeaders,
         id = element.id,
-        eventHeightThreshold = element.eventHeightThreshold;
+        eventHeightThreshold = element.eventHeightThreshold,
+        bottomRightLine = element.bottomRightLine,
+        topLeftLine = element.topLeftLine;
+
   @override
   List<Object?> get props => [
         singleLine,
@@ -62,5 +69,7 @@ class SingleEvent extends Equatable {
         id,
         object,
         imageHeaders,
+        topLeftLine,
+        bottomRightLine,
       ];
 }

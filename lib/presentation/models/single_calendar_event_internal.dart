@@ -17,6 +17,8 @@ class SingleCalendarEventInternal extends SingleCalendarEvent {
     imageHeaders,
     id,
     secondLine,
+    topLeftLine,
+    bottomRightLine,
   }) : super(
           id: id,
           singleLine: singleLine,
@@ -31,5 +33,7 @@ class SingleCalendarEventInternal extends SingleCalendarEvent {
           tileBackgroundColor: tileBackgroundColor,
           secondLine: secondLine,
           imageHeaders: imageHeaders,
+          topLeftLine: topLeftLine,
+          bottomRightLine: bottomRightLine,
         );
 }
