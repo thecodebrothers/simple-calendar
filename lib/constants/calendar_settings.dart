@@ -50,6 +50,9 @@ class CalendarSettings {
   /// enable drag and drop functionality
   final bool dragEnabled;
 
+  /// delay before drag and drop starts
+  final Duration dragDelay;
+
   /// enables zooming the calendar in and out
   final bool zoomEnabled;
 
@@ -80,6 +83,7 @@ class CalendarSettings {
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
     this.dragEnabled = false,
+    this.dragDelay = const Duration(milliseconds: 500),
     this.zoomEnabled = false,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),

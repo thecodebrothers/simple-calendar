@@ -37,7 +37,7 @@ class _DraggableTileState extends State<DraggableTile> {
 
     return LongPressDraggable<SingleEvent>(
       data: widget.data,
-      delay: const Duration(milliseconds: 1000),
+      delay: widget.calendarSettings.dragDelay,
       onDragStarted: () => widget.onDragStarted?.call(),
       onDragUpdate: (details) {
         widget.onDragUpdate?.call(details, widget.data);
