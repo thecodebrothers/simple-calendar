@@ -14,6 +14,8 @@ class SingleCalendarEvent {
   final Color tileBackgroundColor;
   final Map<String, String>? imageHeaders;
   final dynamic object;
+  final String? topLeftLine;
+  final String? bottomRightLine;
 
   SingleCalendarEvent({
     required this.singleLine,
@@ -29,5 +31,7 @@ class SingleCalendarEvent {
     this.imageHeaders,
     this.id,
     this.secondLine,
+    this.topLeftLine,
+    this.bottomRightLine,
   });
 }

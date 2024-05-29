@@ -42,6 +42,8 @@ class OneDayCalendarGetEventsUseCase {
         imageHeaders: element.imageHeaders,
         eventHeightThreshold: eventHeightThreshold ??
             element.eventEnd.minute + element.eventEnd.hour * 60,
+        topLeftLine: element.topLeftLine,
+        bottomRightLine: element.bottomRightLine,
       );
     }).toList();
 

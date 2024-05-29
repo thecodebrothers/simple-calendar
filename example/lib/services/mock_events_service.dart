@@ -81,14 +81,20 @@ class MockEventsService {
     final tomorrowEvent1 = EventItem(
         id: 5,
         name: 'Event 5',
+        bottomRightLine: 'Bottom Right Line',
+        topLeftLine: 'Top Left Line',
+        secondLine: 'Second Line',
         eventStart: _tomorrow.add(Duration(hours: 4)),
         eventEnd: _tomorrow.add(Duration(hours: 8)),
         isAllDay: false);
     final tomorrowEvent2 = EventItem(
-        id: 5,
-        name: 'Event 5',
+        id: 6,
+        name: 'Event 6',
+        bottomRightLine: 'Bottom Right Line',
+        topLeftLine: 'Top Left Line',
+        secondLine: 'Second Line',
         eventStart: _tomorrow.add(Duration(hours: 2)),
-        eventEnd: _tomorrow.add(Duration(minutes: 250)),
+        eventEnd: _tomorrow.add(Duration(minutes: 230)),
         isAllDay: false);
 
     _events.addAll([
