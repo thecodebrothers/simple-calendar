@@ -6,7 +6,7 @@ class MonthTile extends StatelessWidget {
   final String text;
   final bool hasAnyTask;
   final bool isTheSameMonth;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isToday;
   final bool isDayName;
   final List<Color>? scheduleColors;
@@ -32,7 +32,6 @@ class MonthTile extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipOval(

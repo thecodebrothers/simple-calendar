@@ -16,8 +16,19 @@ class MonthCalendarGetEventsUseCase {
     final startOfCurrentMonth = DateTime(date.year, date.month);
     final weekdayOfFirstDay = startOfCurrentMonth.weekday;
     final endOfCurrentMonth = DateTime(date.year, date.month + 1);
-    final daysBetween =
+
+    var daysBetween =
         startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
+
+    final isFirstDayOfNewMonthMonday = endOfCurrentMonth.weekday == 1;
+
+    if (!isFirstDayOfNewMonthMonday) {
+      final diff = DateTime.sunday - endOfCurrentMonth.weekday;
+      for (var i = 0; i <= diff; i++) {
+        daysBetween++;
+      }
+    }
+
     final polandUtcDateTime = DateTime(
       startOfCurrentMonth.year,
       startOfCurrentMonth.month,

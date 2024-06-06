@@ -115,7 +115,8 @@ class MonthCalendarView extends StatelessWidget {
                           },
                           calendarSettings: calendarSettings,
                           text: e.isDayName
-                              ? _dayName(context, e.date, locale)
+                              ? _dayName(
+                                  context, e.date, locale, e.date.weekday - 1)
                               : e.date.day.toString(),
                           hasAnyTask: !e.isDayName && e.hasAnyEvents,
                           isTheSameMonth:
@@ -137,15 +138,43 @@ class MonthCalendarView extends StatelessWidget {
     );
   }
 
-  String _dayName(BuildContext context, DateTime date, Locale? locale) {
-    final weekdayAbbreviation =
-        customWeekdayAbbreviation?.call(context, date.weekday);
+  String _dayName(
+    BuildContext context,
+    DateTime date,
+    Locale? locale,
+    int index,
+  ) {
+    if (locale != null && locale.languageCode == 'pl') {
+      final List<String> dayNames = ['Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'Sb', 'Nd'];
 
-    if (weekdayAbbreviation != null) {
-      return weekdayAbbreviation;
+      switch (index) {
+        case 0:
+          return dayNames[0];
+        case 1:
+          return dayNames[1];
+        case 2:
+          return dayNames[2];
+        case 3:
+          return dayNames[3];
+        case 4:
+          return dayNames[4];
+        case 5:
+          return dayNames[5];
+        case 6:
+          return dayNames[6];
+        default:
+          return '';
+      }
+    } else {
+      final weekdayAbbreviation =
+          customWeekdayAbbreviation?.call(context, date.weekday);
+
+      if (weekdayAbbreviation != null) {
+        return weekdayAbbreviation;
+      }
+
+      final format = DateFormat("EEE", locale?.toLanguageTag());
+      return format.format(date);
     }
-
-    final format = DateFormat("EEE", locale?.toLanguageTag());
-    return format.format(date);
   }
 }
