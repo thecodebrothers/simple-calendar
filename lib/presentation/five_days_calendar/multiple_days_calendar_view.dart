@@ -56,6 +56,9 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Called when user drags event to new position
   final Function(int minutes, SingleEvent object)? onDragCompleted;
 
+  /// Called when user changes day
+  final Function(DateTime)? onDayChanged;
+
   /// Called when user drags event
   final Function(
     DragUpdateDetails details,
@@ -78,6 +81,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.onDragCompleted,
     this.onDragUpdate,
     this.onDragStarted,
+    this.onDayChanged,
     Key? key,
   }) : super(key: key);
 
@@ -138,12 +142,16 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
           children: [
             FiveDaysNavigationBar(
               onTapLeft: () {
+                final dateToAdd = state.date.add(const Duration(days: -1));
                 BlocProvider.of<MultipleDaysCalendarCubit>(context)
-                    .loadForDate(state.date.add(const Duration(days: -1)));
+                    .loadForDate(dateToAdd);
+                widget.onDayChanged?.call(dateToAdd);
               },
               onTapRight: () {
+                final dateToAdd = state.date.add(const Duration(days: 1));
                 BlocProvider.of<MultipleDaysCalendarCubit>(context)
-                    .loadForDate(state.date.add(const Duration(days: 1)));
+                    .loadForDate(dateToAdd);
+                widget.onDayChanged?.call(dateToAdd);
               },
               rowWidth: rowWidth,
             ),

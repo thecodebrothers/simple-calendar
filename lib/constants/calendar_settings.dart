@@ -115,6 +115,8 @@ class CalendarSettings {
     double? minimumEventHeight,
     double? hourCustomHeight,
     bool? dragEnabled,
+    Duration? dragDelay,
+    bool? zoomEnabled,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -151,6 +153,8 @@ class CalendarSettings {
       expandableTextButtonStyle:
           expandableTextButtonStyle ?? this.expandableTextButtonStyle,
       dragEnabled: dragEnabled ?? this.dragEnabled,
+      dragDelay: dragDelay ?? this.dragDelay,
+      zoomEnabled: zoomEnabled ?? this.zoomEnabled,
     );
   }
 }
