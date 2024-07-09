@@ -11,7 +11,7 @@ class SingleEvent extends Equatable {
   final String localIconName;
   final String networkIconName;
   final Color iconBackgroundColor;
-  final Color dotTileColor;
+  final Color? dotTileColor;
   final Color tileBackgroundColor;
   final Map<String, String>? imageHeaders;
   final int? id;
@@ -19,6 +19,9 @@ class SingleEvent extends Equatable {
   final double eventHeightThreshold;
   final String? topLeftLine;
   final String? bottomRightLine;
+  final String? groupId;
+  final int? groupOrder;
+  final Color? groupColor;
 
   const SingleEvent({
     required this.singleLine,
@@ -36,6 +39,9 @@ class SingleEvent extends Equatable {
     required this.eventHeightThreshold,
     required this.topLeftLine,
     required this.bottomRightLine,
+    required this.groupId,
+    required this.groupOrder,
+    required this.groupColor,
   });
 
   SingleEvent.fromCalendar(SingleCalendarEventInternal element)
@@ -53,7 +59,10 @@ class SingleEvent extends Equatable {
         id = element.id,
         eventHeightThreshold = element.eventHeightThreshold,
         bottomRightLine = element.bottomRightLine,
-        topLeftLine = element.topLeftLine;
+        topLeftLine = element.topLeftLine,
+        groupId = element.groupId,
+        groupOrder = element.groupOrder,
+        groupColor = element.groupColor;
 
   @override
   List<Object?> get props => [
@@ -71,5 +80,8 @@ class SingleEvent extends Equatable {
         imageHeaders,
         topLeftLine,
         bottomRightLine,
+        groupId,
+        groupOrder,
+        groupColor,
       ];
 }

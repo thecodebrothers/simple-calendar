@@ -73,6 +73,10 @@ class OneDayCalendarView extends StatefulWidget {
   // Optional label after day after tomorrow date, ex. 26 May, `label`
   final String Function(BuildContext)? dayAfterTomorrowDayLabel;
 
+  final String Function(BuildContext, TimeOfDay)? timelineHourFormatter;
+
+  final bool showHeader;
+
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -91,6 +95,8 @@ class OneDayCalendarView extends StatefulWidget {
     this.dayAfterTomorrowDayLabel,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.timelineHourFormatter,
+    this.showHeader = true,
     Key? key,
   }) : super(key: key);
 
@@ -147,6 +153,8 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           onDragCompleted: widget.onDragCompleted,
           onDragUpdate: widget.onDragUpdate,
           onDragStarted: widget.onDragStarted,
+          timelineHourFormatter: widget.timelineHourFormatter,
+          showHeader: widget.showHeader,
         ),
       ),
     );

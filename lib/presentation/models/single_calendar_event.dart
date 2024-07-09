@@ -10,12 +10,15 @@ class SingleCalendarEvent {
   final String localIconName;
   final String networkIconName;
   final Color iconBackgroundColor;
-  final Color dotTileColor;
+  final Color? dotTileColor;
   final Color tileBackgroundColor;
   final Map<String, String>? imageHeaders;
   final dynamic object;
   final String? topLeftLine;
   final String? bottomRightLine;
+  final String? groupId;
+  final int? groupOrder;
+  final Color? groupColor;
 
   SingleCalendarEvent({
     required this.singleLine,
@@ -33,5 +36,8 @@ class SingleCalendarEvent {
     this.secondLine,
     this.topLeftLine,
     this.bottomRightLine,
+    this.groupId,
+    this.groupOrder,
+    this.groupColor,
   });
 }

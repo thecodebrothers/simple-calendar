@@ -4,9 +4,11 @@ import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/draggable_tile.dart';
 
-class CalendarEventTile extends StatelessWidget {
+class MultiDayCalendarEventTile extends StatelessWidget {
   final SingleEvent event;
   final int numberOfAllDayEvents;
+  final int? position;
+  final int? numberOfEvents;
   final double rowWidth;
   final double rowHeight;
   final VoidCallback action;
@@ -15,12 +17,12 @@ class CalendarEventTile extends StatelessWidget {
   final GlobalKey calendarKey;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(
-    DragUpdateDetails details,
-    SingleEvent object,
-  )? onDragUpdate;
+      DragUpdateDetails details,
+      SingleEvent object,
+      )? onDragUpdate;
   final Function()? onDragStarted;
 
-  const CalendarEventTile({
+  const MultiDayCalendarEventTile({
     required this.event,
     required this.numberOfAllDayEvents,
     required this.action,
@@ -29,6 +31,8 @@ class CalendarEventTile extends StatelessWidget {
     required this.calendarKey,
     required this.rowWidth,
     required this.rowHeight,
+    this.position,
+    this.numberOfEvents,
     this.onDragCompleted,
     this.onDragUpdate,
     this.onDragStarted,
@@ -40,20 +44,25 @@ class CalendarEventTile extends StatelessWidget {
     final minWidth = calendarSettings.tileIconSize +
         calendarSettings.iconSpacingFromText * 4 +
         16;
+    final calculatedRowWidth = (rowWidth) / (numberOfEvents ?? 1);
+    final eventWidth = (rowWidth) / (numberOfEvents ?? 1);
     final rescaleFactor = rowHeight / 60;
-    final height = (event.eventEnd - event.eventStart) * rescaleFactor;
-    final hasIcon =
-        event.localIconName.isNotEmpty || event.networkIconName.isNotEmpty;
-
-    return SizedBox(
-      width: rowWidth,
+    final height =
+        (event.eventHeightThreshold.toDouble() - event.eventStart.toDouble()) *
+            rescaleFactor;
+    return Positioned(
+      top: (event.eventStart.toDouble() * rescaleFactor) -
+          calendarSettings.startHour * rowHeight +
+          numberOfAllDayEvents * rowHeight,
+      left: _getPositionLeft(position ?? 0),
+      width: eventWidth,
       height: height,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: DraggableTile(
           rowHeight: rowHeight,
           data: event,
-          width: rowWidth,
+          width: eventWidth,
           onDragStarted: onDragStarted,
           calendarKey: calendarKey,
           height: height,
@@ -70,15 +79,15 @@ class CalendarEventTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (rowWidth > minWidth)
+                  if (calculatedRowWidth > minWidth)
                     SizedBox(width: calendarSettings.iconSpacingFromText),
-                  if (rowWidth > calendarSettings.tileIconSize && hasIcon)
+                  if (eventWidth > calendarSettings.tileIconSize)
                     CalendarTileImage(
                         event: event,
                         size: calendarSettings.tileIconSize,
                         iconBackgroundOpacity:
-                            calendarSettings.iconBackgroundOpacity),
-                  if (rowWidth > minWidth && hasIcon)
+                        calendarSettings.iconBackgroundOpacity),
+                  if (calculatedRowWidth > minWidth)
                     SizedBox(width: calendarSettings.iconSpacingFromText),
                   Expanded(
                     child: Column(
@@ -87,9 +96,9 @@ class CalendarEventTile extends StatelessWidget {
                       children: _columnChildren(),
                     ),
                   ),
-                  if (rowWidth > minWidth && event.dotTileColor != null)
+                  if (calculatedRowWidth > minWidth)
                     SizedBox(width: calendarSettings.iconSpacingFromText),
-                  if (rowWidth > minWidth && event.dotTileColor != null)
+                  if (calculatedRowWidth > minWidth)
                     Container(
                       width: 16,
                       height: 16,
@@ -98,7 +107,7 @@ class CalendarEventTile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                  if (rowWidth > minWidth)
+                  if (calculatedRowWidth > minWidth)
                     SizedBox(width: calendarSettings.iconSpacingFromText),
                 ],
               ),
@@ -110,8 +119,6 @@ class CalendarEventTile extends StatelessWidget {
   }
 
   List<Widget> _columnChildren() {
-    final textColor = _textColorForBackground(event.tileBackgroundColor);
-
     return [
       if (event.topLeftLine != null) ...[
         Align(
@@ -119,9 +126,8 @@ class CalendarEventTile extends StatelessWidget {
           child: Text(
             event.topLeftLine!,
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: calendarSettings.topLeftLineTileTextStyle
-                .copyWith(color: textColor),
+            overflow: TextOverflow.fade,
+            style: calendarSettings.topLeftLineTileTextStyle,
           ),
         ),
         const SizedBox(height: 6),
@@ -130,9 +136,8 @@ class CalendarEventTile extends StatelessWidget {
         child: Text(
           event.singleLine,
           maxLines: event.secondLine == null ? 3 : 1,
-          overflow: TextOverflow.ellipsis,
-          style: calendarSettings.firstLineTileTextStyle
-              .copyWith(color: textColor),
+          overflow: TextOverflow.fade,
+          style: calendarSettings.firstLineTileTextStyle,
         ),
       ),
       if (event.secondLine != null) ...[
@@ -141,9 +146,8 @@ class CalendarEventTile extends StatelessWidget {
           child: Text(
             event.secondLine!,
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: calendarSettings.secondLineTileTextStyle
-                .copyWith(color: textColor),
+            overflow: TextOverflow.fade,
+            style: calendarSettings.secondLineTileTextStyle,
           ),
         ),
       ],
@@ -154,21 +158,28 @@ class CalendarEventTile extends StatelessWidget {
           child: Text(
             event.bottomRightLine!,
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: calendarSettings.bottomRightLineTileTextStyle
-                .copyWith(color: textColor),
+            overflow: TextOverflow.fade,
+            style: calendarSettings.bottomRightLineTileTextStyle,
           ),
         ),
       ]
     ];
   }
 
-  Color _textColorForBackground(Color backgroundColor) {
-    if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
-        Brightness.dark) {
-      return Colors.white;
+  double _getPositionLeft(int position) {
+    switch (position) {
+      case 0:
+        return 3;
+      case 1:
+        return 3 + rowWidth / (numberOfEvents ?? 1);
+      case 2:
+        return 3 + (rowWidth / (numberOfEvents ?? 1) * 2);
+      case 3:
+        return 3 + (rowWidth / (numberOfEvents ?? 1) * 3);
+      case 4:
+        return 3 + (rowWidth / (numberOfEvents ?? 1) * 4);
+      default:
+        return 0;
     }
-
-    return Colors.black;
   }
 }

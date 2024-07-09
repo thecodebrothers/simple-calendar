@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class EventItem {
   final int id;
   final String name;
@@ -7,6 +9,9 @@ class EventItem {
   final String? secondLine;
   final String? topLeftLine;
   final String? bottomRightLine;
+  final String? groupId;
+  final int? groupOrder;
+  final Color? groupColor;
 
   EventItem({
     required this.id,
@@ -17,5 +22,8 @@ class EventItem {
     this.secondLine,
     this.topLeftLine,
     this.bottomRightLine,
+    this.groupId,
+    this.groupOrder,
+    this.groupColor,
   });
 }

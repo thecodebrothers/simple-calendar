@@ -2,6 +2,7 @@ import 'package:simple_calendar/presentation/models/single_calendar_event.dart';
 
 class SingleCalendarEventInternal extends SingleCalendarEvent {
   final double eventHeightThreshold;
+
   SingleCalendarEventInternal({
     required singleLine,
     required eventStart,
@@ -19,6 +20,9 @@ class SingleCalendarEventInternal extends SingleCalendarEvent {
     secondLine,
     topLeftLine,
     bottomRightLine,
+    groupId,
+    groupOrder,
+    groupColor,
   }) : super(
           id: id,
           singleLine: singleLine,
@@ -35,5 +39,8 @@ class SingleCalendarEventInternal extends SingleCalendarEvent {
           imageHeaders: imageHeaders,
           topLeftLine: topLeftLine,
           bottomRightLine: bottomRightLine,
+          groupId: groupId,
+          groupOrder: groupOrder,
+          groupColor: groupColor,
         );
 }

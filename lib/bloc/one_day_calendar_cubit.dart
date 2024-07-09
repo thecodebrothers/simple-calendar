@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:simple_calendar/presentation/models/day_with_single_multiple_items.dart';
+import 'package:simple_calendar/presentation/models/single_day_items.dart';
 import 'package:simple_calendar/use_case/one_day_calendar_get_events_use_case.dart';
 
 part 'one_day_calendar_state.dart';

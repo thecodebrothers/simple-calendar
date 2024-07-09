@@ -9,8 +9,8 @@ import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/models/day_with_single_multiple_items.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/multi_day_single_timeline_with_events.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_date.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
 
 class MultipleDaysCalendarContent extends StatelessWidget {
   const MultipleDaysCalendarContent({
@@ -103,7 +103,7 @@ class MultipleDaysCalendarContent extends StatelessWidget {
           height: (calendarSettings.endHour - calendarSettings.startHour) *
                   rowHeight +
               maxNumberOfWholeDayTasks * rowHeight,
-          child: SingleDayTimelineWithEvents(
+          child: MultiDaySingleTimelineWithEvents(
             rowHeight: rowHeight,
             onLongPress: onLongPress,
             key: calendarKey,

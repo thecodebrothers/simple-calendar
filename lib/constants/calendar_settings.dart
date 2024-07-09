@@ -14,6 +14,7 @@ class CalendarSettings {
   final TextStyle calendarNotCurrentMonthTileStyle;
   final TextStyle calendarHeaderStyle;
   final TextStyle calendarMonthDayStyle;
+  final TextStyle calendarGroupHeaderStyle;
   final double allDayEventHeight;
   final TextStyle expandableTextButtonStyle;
   final Color expandableIconColor;
@@ -67,6 +68,7 @@ class CalendarSettings {
     this.calendarNotCurrentMonthTileStyle = const TextStyle(),
     this.calendarHeaderStyle = const TextStyle(),
     this.calendarMonthDayStyle = const TextStyle(),
+    this.calendarGroupHeaderStyle = const TextStyle(),
     this.expandableTextButtonStyle = const TextStyle(),
     this.expandableIconColor = Colors.black,
     this.tileIconSize = 24.0,
@@ -103,6 +105,7 @@ class CalendarSettings {
     TextStyle? calendarNotCurrentMonthTileStyle,
     TextStyle? calendarHeaderStyle,
     TextStyle? calendarMonthDayStyle,
+    TextStyle? calendarGroupHeaderStyle,
     TextStyle? expandableTextButtonStyle,
     Color? expandableIconColor,
     Color? calendarDotColor,
@@ -140,6 +143,8 @@ class CalendarSettings {
       calendarNotCurrentMonthTileStyle: calendarNotCurrentMonthTileStyle ??
           this.calendarNotCurrentMonthTileStyle,
       calendarHeaderStyle: calendarHeaderStyle ?? this.calendarHeaderStyle,
+      calendarGroupHeaderStyle:
+          calendarGroupHeaderStyle ?? this.calendarGroupHeaderStyle,
       calendarMonthDayStyle:
           calendarMonthDayStyle ?? this.calendarMonthDayStyle,
       calendarDotColor: calendarDotColor ?? this.calendarDotColor,

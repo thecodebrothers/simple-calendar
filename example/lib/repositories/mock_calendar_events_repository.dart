@@ -40,11 +40,14 @@ class MockCalendarEventsRepository extends CalendarEventsRepository {
             localIconName: '',
             networkIconName: '',
             iconBackgroundColor: Colors.cyan,
-            dotTileColor: Colors.transparent,
-            tileBackgroundColor: Colors.white,
+            dotTileColor: null,
+            tileBackgroundColor: e.groupColor ?? Colors.white,
             secondLine: e.secondLine,
             topLeftLine: e.topLeftLine,
             bottomRightLine: e.bottomRightLine,
+            groupId: e.groupId,
+            groupOrder: e.groupOrder,
+            groupColor: e.groupColor,
           ),
         )
         .toList();

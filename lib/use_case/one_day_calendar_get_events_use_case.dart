@@ -1,7 +1,5 @@
-import 'dart:math';
-
-import 'package:simple_calendar/presentation/models/day_with_single_multiple_items.dart';
 import 'package:simple_calendar/presentation/models/single_calendar_event_internal.dart';
+import 'package:simple_calendar/presentation/models/single_day_items.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 
@@ -10,7 +8,7 @@ class OneDayCalendarGetEventsUseCase {
 
   OneDayCalendarGetEventsUseCase(this._calendarRepository);
 
-  Future<DayWithSingleAndMultipleItems> getOneDayEventsSorted(
+  Future<SingleDayItems> getOneDayEventsSorted(
     DateTime date,
     double? minimumEventHeight,
   ) async {
@@ -44,10 +42,38 @@ class OneDayCalendarGetEventsUseCase {
             element.eventEnd.minute + element.eventEnd.hour * 60,
         topLeftLine: element.topLeftLine,
         bottomRightLine: element.bottomRightLine,
+        groupId: element.groupId,
+        groupOrder: element.groupOrder,
+        groupColor: element.groupColor,
       );
     }).toList();
 
-    final List<List<SingleCalendarEventInternal>> multipleEvents = [];
+    final Map<String?, List<SingleCalendarEventInternal>> groupedEvents = {};
+    for (final event in events) {
+      final groupId = event.groupId ?? 'null';
+      if (!groupedEvents.containsKey(groupId)) {
+        groupedEvents[groupId] = [];
+      }
+      groupedEvents[groupId]!.add(event);
+    }
+
+    final sortedGroupKeys = groupedEvents.keys.toList()
+      ..sort((a, b) {
+        if (a == 'null' && b == 'null') return 0;
+        if (a == 'null') return 1;
+        if (b == 'null') return -1;
+
+        final groupA = groupedEvents[a]!.first.groupOrder;
+        final groupB = groupedEvents[b]!.first.groupOrder;
+
+        if (groupA == null && groupB == null) return 0;
+        if (groupA == null) return 1;
+        if (groupB == null) return -1;
+
+        return groupA.compareTo(groupB);
+      });
+
+    final List<List<SingleCalendarEventInternal>> multipleGroupedEvents = [];
     final List<SingleCalendarEventInternal> allDayEvents = [];
 
     for (final element in events) {
@@ -56,69 +82,30 @@ class OneDayCalendarGetEventsUseCase {
       }
     }
 
-    double startTimeFrame = 0;
-    double endTimeFrame = 0;
-
-    final List<SingleCalendarEventInternal> eventsToSplit =
-        events.where((element) => !element.isAllDay).toList();
-
-    while (eventsToSplit.isNotEmpty) {
-      SingleCalendarEventInternal firstEvent = eventsToSplit.first;
-      startTimeFrame =
-          firstEvent.eventStart.minute + firstEvent.eventStart.hour * 60;
-      endTimeFrame = firstEvent.eventHeightThreshold;
-      eventsToSplit.remove(firstEvent);
-
-      List<SingleCalendarEventInternal> tmpEvents = [];
-
-      while (eventsToSplit
-          .where((element) =>
-              eventIsInTimeFrame(startTimeFrame, endTimeFrame, element))
-          .isNotEmpty) {
-        for (final element in eventsToSplit) {
-          if (eventIsInTimeFrame(startTimeFrame, endTimeFrame, element)) {
-            tmpEvents.add(element);
-          }
-        }
-        startTimeFrame = tmpEvents
-            .map((e) => e.eventStart.minute + e.eventStart.hour * 60.0)
-            .reduce(min);
-
-        endTimeFrame = tmpEvents.map((e) => e.eventHeightThreshold).reduce(max);
-        for (final item in tmpEvents) {
-          eventsToSplit.remove(item);
-        }
-      }
-      tmpEvents.add(firstEvent);
-      if (tmpEvents.isNotEmpty) {
-        multipleEvents.add(tmpEvents);
-      }
+    for (final groupKey in sortedGroupKeys) {
+      final List<SingleCalendarEventInternal> groupEvents =
+          groupedEvents[groupKey]!;
+      multipleGroupedEvents.add(groupEvents);
     }
 
-    return DayWithSingleAndMultipleItems(
+    return SingleDayItems(
       date: date,
       allDaysEvents: allDayEvents
           .map((element) => SingleEvent.fromCalendar(element))
           .toList(),
-      multipleEvents: multipleEvents
-          .map((element) =>
-              element.map((e) => SingleEvent.fromCalendar(e)).toList())
+      multipleGroupedEvents: multipleGroupedEvents
+          .map(
+              (group) => group.map((e) => SingleEvent.fromCalendar(e)).toList())
           .toList(),
     );
   }
 
   bool eventIsInTimeFrame(double startTimeFrame, double endTimeFrame,
       SingleCalendarEventInternal event) {
-    final eventStartTimeFrame =
-        event.eventStart.minute + event.eventStart.hour * 60;
-    final eventEndTimeFrame = event.eventHeightThreshold;
-    if (eventEndTimeFrame == startTimeFrame ||
-        eventStartTimeFrame == endTimeFrame) {
-      return false;
-    }
-    return (eventStartTimeFrame >= startTimeFrame &&
-            eventStartTimeFrame <= endTimeFrame ||
-        eventEndTimeFrame >= startTimeFrame &&
-            eventEndTimeFrame <= endTimeFrame);
+    final eventStart = event.eventStart.minute + event.eventStart.hour * 60.0;
+    final eventEnd = event.eventHeightThreshold;
+    return (eventStart >= startTimeFrame && eventStart < endTimeFrame) ||
+        (eventEnd > startTimeFrame && eventEnd <= endTimeFrame) ||
+        (eventStart <= startTimeFrame && eventEnd >= endTimeFrame);
   }
 }

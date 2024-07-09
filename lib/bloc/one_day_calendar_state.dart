@@ -8,7 +8,7 @@ abstract class OneDayCalendarState extends Equatable {
 class OneDayCalendarLoading extends OneDayCalendarState {}
 
 class OneDayCalendarChanged extends OneDayCalendarState {
-  final DayWithSingleAndMultipleItems dayWithEvents;
+  final SingleDayItems dayWithEvents;
   final DateTime date;
 
   OneDayCalendarChanged(this.dayWithEvents, this.date);

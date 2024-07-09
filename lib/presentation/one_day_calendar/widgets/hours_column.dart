@@ -7,11 +7,13 @@ class Hours extends StatelessWidget {
   final CalendarSettings calendarSettings;
   final double topPadding;
   final double rowHeight;
+  final String Function(BuildContext, TimeOfDay)? timelineHourFormatter;
 
   const Hours({
     required this.numberOfConstantsTasks,
     required this.calendarSettings,
     required this.rowHeight,
+    this.timelineHourFormatter,
     this.topPadding = 0,
     Key? key,
   }) : super(key: key);
@@ -28,6 +30,7 @@ class Hours extends StatelessWidget {
             hour: i,
             height: rowHeight,
             calendarSettings: calendarSettings,
+            timelineHourFormatter: timelineHourFormatter,
           ),
       ],
     );
