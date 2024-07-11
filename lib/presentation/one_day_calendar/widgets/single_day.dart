@@ -244,6 +244,7 @@ class _SingleDayState extends State<SingleDay> {
                 numberOfConstantsTasks:
                     state.dayWithEvents.allDaysEvents.length,
                 calendarSettings: widget.calendarSettings,
+                timelineHourFormatter: widget.timelineHourFormatter,
               ),
               Expanded(
                 child: SizedBox(
