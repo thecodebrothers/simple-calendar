@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:simple_calendar/bloc/month_calendar_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/extensions/datetime_extension.dart';
+import 'package:simple_calendar/presentation/models/month_single_day_item.dart';
+import 'package:simple_calendar/presentation/models/single_calendar_event.dart';
 import 'package:simple_calendar/presentation/month/widgets/month_header.dart';
 import 'package:simple_calendar/presentation/month/widgets/month_tile.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
@@ -62,7 +64,8 @@ class MonthCalendarView extends StatelessWidget {
       child: BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
         builder: (ctx, state) {
           if (state is MonthCalendarChanged) {
-            return _buildPage(ctx, state);
+            final groupPositions = _calculateGroupPositions(state.items);
+            return _buildPage(ctx, state, groupPositions);
           } else {
             return const Center(
               child: SizedBox(
@@ -77,52 +80,57 @@ class MonthCalendarView extends StatelessWidget {
     );
   }
 
-  Widget _buildPage(BuildContext context, MonthCalendarChanged state) {
+  Widget _buildPage(
+    BuildContext context,
+    MonthCalendarChanged state,
+    Map<String, int> groupPositions,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(top: 24.0),
       child: Column(
         children: [
-          monthPicker?.call(context) ??
-              MonthHeader(
-                locale: locale,
-                calendarSettings: calendarSettings,
-                onTapLeft: () {
-                  BlocProvider.of<MonthCalendarCubit>(context).loadForDate(
-                      DateTime(state.date.year, state.date.month - 1,
-                          state.date.day));
-                },
-                onTapRight: () {
-                  BlocProvider.of<MonthCalendarCubit>(context).loadForDate(
-                      DateTime(state.date.year, state.date.month + 1,
-                          state.date.day));
-                },
-                dayFromMonth: state.date,
-              ),
+          _buildMonthHeader(context, state),
           const SizedBox(height: 24.0),
           Expanded(
             child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return GridView.count(
-                  crossAxisCount: 7,
-                  children: state.items
-                      .map(
-                        (e) => MonthTile(
-                          onTap: () {
-                            onSelected?.call(e.date);
-                          },
-                          calendarSettings: calendarSettings,
-                          text: e.isDayName
-                              ? _dayName(context, e.date, locale)
-                              : e.date.day.toString(),
-                          hasAnyTask: !e.isDayName && e.hasAnyEvents,
-                          isTheSameMonth:
-                              e.isDayName || state.date.isSameMonth(e.date),
-                          isToday:
-                              !e.isDayName && e.date.isSameDate(DateTime.now()),
-                          isDayName: e.isDayName,
-                        ),
-                      )
-                      .toList(),
+              builder: (context, constraints) {
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 7,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) {
+                    final item = state.items[index];
+                    final isFirstDayOfWeek = index % 7 == 0;
+                    final isLastDayOfWeek = index % 7 == 6;
+                    final previousDayEvents = index > 0
+                        ? state.items[index - 1].events
+                        : <SingleCalendarEvent>[];
+                    final nextDayEvents = index < state.items.length - 1
+                        ? state.items[index + 1].events
+                        : <SingleCalendarEvent>[];
+
+                    return MonthTile(
+                      onTap: () => onSelected?.call(item.date),
+                      calendarSettings: calendarSettings,
+                      text: item.isDayName
+                          ? _dayName(context, item.date, locale)
+                          : item.date.day.toString(),
+                      events: item.events,
+                      previousDayEvents: previousDayEvents,
+                      nextDayEvents: nextDayEvents,
+                      isTheSameMonth:
+                          item.isDayName || state.date.isSameMonth(item.date),
+                      isToday: !item.isDayName &&
+                          item.date.isSameDate(DateTime.now()),
+                      isDayName: item.isDayName,
+                      isFirstDayOfTheWeek: isFirstDayOfWeek,
+                      isLastDayOfTheWeek: isLastDayOfWeek,
+                      groupPositions: groupPositions,
+                      calendarWidth: constraints.maxWidth,
+                    );
+                  },
                 );
               },
             ),
@@ -132,15 +140,49 @@ class MonthCalendarView extends StatelessWidget {
     );
   }
 
+  Widget _buildMonthHeader(BuildContext context, MonthCalendarChanged state) {
+    return monthPicker?.call(context) ??
+        MonthHeader(
+          locale: locale,
+          calendarSettings: calendarSettings,
+          onTapLeft: () => _changeMonth(context, state, -1),
+          onTapRight: () => _changeMonth(context, state, 1),
+          dayFromMonth: state.date,
+        );
+  }
+
+  void _changeMonth(
+      BuildContext context, MonthCalendarChanged state, int monthDelta) {
+    BlocProvider.of<MonthCalendarCubit>(context).loadForDate(
+      DateTime(state.date.year, state.date.month + monthDelta, 1),
+    );
+  }
+
   String _dayName(BuildContext context, DateTime date, Locale? locale) {
     final weekdayAbbreviation =
         customWeekdayAbbreviation?.call(context, date.weekday);
-
-    if (weekdayAbbreviation != null) {
-      return weekdayAbbreviation;
-    }
-
+    if (weekdayAbbreviation != null) return weekdayAbbreviation;
     final format = DateFormat("EEE", locale?.toLanguageTag());
     return format.format(date);
+  }
+
+  Map<String, int> _calculateGroupPositions(List<MonthSingleDayItem> items) {
+    final groupPositions = <String, int>{};
+    var currentPosition = 0;
+
+    for (var i = 0; i < items.length; i++) {
+      final item = items[i];
+      if (item.isDayName) continue;
+
+      for (var event in item.events) {
+        final groupId = event.groupId ?? 'null';
+        if (!groupPositions.containsKey(groupId)) {
+          groupPositions[groupId] = currentPosition;
+          currentPosition++;
+        }
+      }
+    }
+
+    return groupPositions;
   }
 }

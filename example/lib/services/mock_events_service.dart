@@ -147,7 +147,20 @@ class MockEventsService {
       isAllDay: false,
       groupId: 'test4',
       groupOrder: 4,
-      groupColor: Colors.red,
+      groupColor: Colors.green,
+    );
+    final event6 = EventItem(
+      id: 9,
+      name: 'Event 10',
+      bottomRightLine: 'Bottom Right Line',
+      topLeftLine: 'Top Left Line',
+      secondLine: 'Second Line',
+      eventStart: _tomorrow.add(Duration(hours: 1, days: 0)),
+      eventEnd: _tomorrow.add(Duration(days: 5)),
+      isAllDay: false,
+      groupId: 'test5',
+      groupOrder: 5,
+      groupColor: Colors.deepOrange,
     );
 
     _events.addAll([
@@ -160,6 +173,7 @@ class MockEventsService {
       tomorrowEvent3,
       tomorrowEvent4,
       tomorrowEvent5,
+      event6,
     ]);
   }
 }

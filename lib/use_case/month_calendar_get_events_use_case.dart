@@ -13,9 +13,8 @@ class MonthCalendarGetEventsUseCase {
 
     final startOfCurrentMonth = DateTime(date.year, date.month);
     final weekdayOfFirstDay = startOfCurrentMonth.weekday;
-    final endOfCurrentMonth = DateTime(date.year, date.month + 1);
-    final daysBetween =
-        startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
+    final endOfCurrentMonth = DateTime(date.year, date.month + 1, 0);
+    final daysBetween = startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
     final polandUtcDateTime = DateTime(
       startOfCurrentMonth.year,
       startOfCurrentMonth.month,
@@ -24,33 +23,39 @@ class MonthCalendarGetEventsUseCase {
     ).toUtc();
 
     final events = await _calendarRepository.getEventsForMultipleDays(
-        startOfCurrentMonth, endOfCurrentMonth);
+      startOfCurrentMonth,
+      endOfCurrentMonth,
+    );
 
-    for (var i = -weekdayOfFirstDay + 1; i < daysBetween; i++) {
+    for (var i = -weekdayOfFirstDay + 1; i <= daysBetween; i++) {
       days.add(polandUtcDateTime.add(Duration(days: i)));
     }
 
-    final readyDates = days
-        .map(
-          (e) => MonthSingleDayItem(
-            date: e,
-            hasAnyEvents: hasAnyEvents(e, events),
-            isDayName: false,
-          ),
-        )
-        .toList();
+    final readyDates = days.map((e) {
+      final dayEvents = _getEventsForDay(e, events);
+      return MonthSingleDayItem(
+        date: e,
+        events: dayEvents,
+        isDayName: false,
+      );
+    }).toList();
 
     readyDates.insertAll(
-        0,
-        days.sublist(0, 7).map((e) => MonthSingleDayItem(
-            date: e, hasAnyEvents: hasAnyEvents(e, events), isDayName: true)));
+      0,
+      days.sublist(0, 7).map((e) => MonthSingleDayItem(
+        date: e,
+        events: [],
+        isDayName: true,
+      )),
+    );
 
     return readyDates;
   }
 
-  bool hasAnyEvents(DateTime date, List<SingleCalendarEvent> events) {
-    return events
-        .where((element) => element.eventStart.isSameDate(date))
-        .isNotEmpty;
+  List<SingleCalendarEvent> _getEventsForDay(DateTime date, List<SingleCalendarEvent> events) {
+    return events.where((event) {
+      return (event.eventStart.isSameDate(date) || event.eventStart.isBefore(date)) &&
+          (event.eventEnd.isSameDate(date) || event.eventEnd.isAfter(date));
+    }).toList();
   }
 }
