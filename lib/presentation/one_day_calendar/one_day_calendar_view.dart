@@ -6,6 +6,7 @@ import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
 import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/one_day_calendar_controller.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/one_day_calendar_get_events_use_case.dart';
@@ -77,6 +78,8 @@ class OneDayCalendarView extends StatefulWidget {
 
   final bool showHeader;
 
+  final OneDayCalendarController? controller;
+
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -97,6 +100,7 @@ class OneDayCalendarView extends StatefulWidget {
     this.onDragUpdate,
     this.timelineHourFormatter,
     this.showHeader = true,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -105,6 +109,27 @@ class OneDayCalendarView extends StatefulWidget {
 }
 
 class _OneDayCalendarViewState extends State<OneDayCalendarView> {
+  late OneDayCalendarController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ??
+        OneDayCalendarController(initialDate: widget.initialDate);
+    _controller.addListener(_onDateChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onDateChanged);
+    super.dispose();
+  }
+
+  void _onDateChanged() {
+    BlocProvider.of<OneDayCalendarCubit>(context)
+        .loadForDate(_controller.dateNotifier.value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -148,7 +173,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           onLongPress: widget.onLongPress,
           onChanged: (date) {
             widget.onSelected?.call(date);
-            BlocProvider.of<OneDayCalendarCubit>(pageContext).loadForDate(date);
+            _controller.updateDate(date);
           },
           onDragCompleted: widget.onDragCompleted,
           onDragUpdate: widget.onDragUpdate,
