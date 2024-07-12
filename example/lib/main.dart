@@ -2,6 +2,7 @@ import 'package:example/repositories/mock_calendar_events_repository.dart';
 import 'package:example/services/mock_events_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/one_day_calendar_controller.dart';
 import 'package:simple_calendar/simple_calendar.dart';
 
 class CalendarState {}
@@ -92,21 +93,30 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class OneDayCalendarTab extends StatelessWidget {
+class OneDayCalendarTab extends StatefulWidget {
   OneDayCalendarTab({
     super.key,
     required this.calendarRepository,
   });
 
-  final ScrollController scrollController = ScrollController();
   final CalendarEventsRepository calendarRepository;
+
+  @override
+  State<OneDayCalendarTab> createState() => _OneDayCalendarTabState();
+}
+
+class _OneDayCalendarTabState extends State<OneDayCalendarTab> {
+  final ScrollController scrollController = ScrollController();
+  final OneDayCalendarController calendarController =
+      OneDayCalendarController();
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: OneDayCalendarView(
         scrollController: scrollController,
-        calendarEventsRepository: calendarRepository,
+        controller: calendarController,
+        calendarEventsRepository: widget.calendarRepository,
         calendarSettings: CalendarSettings(
           isDaySwitcherPinned: true,
           daySwitcherBackgroundColor: Colors.blue,
@@ -138,9 +148,7 @@ class OneDayCalendarTab extends StatelessWidget {
               'Event ${event.singleLine} is hovering above ${details.globalPosition.dy} y coordinate');
         },
         // Optional callbacks
-        onEventTap: (event) => ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text("${event.singleLine} tapped"))),
+        onEventTap: (event) => calendarController.updateDate(DateTime.now().add(Duration(days: 2))),
         onLongPress: (date) => ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(

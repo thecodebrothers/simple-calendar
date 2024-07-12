@@ -7,7 +7,7 @@ import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/one_day_calendar_controller.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_calendar_page_view.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/one_day_calendar_get_events_use_case.dart';
 
@@ -116,18 +116,6 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
     super.initState();
     _controller = widget.controller ??
         OneDayCalendarController(initialDate: widget.initialDate);
-    _controller.addListener(_onDateChanged);
-  }
-
-  @override
-  void dispose() {
-    _controller.removeListener(_onDateChanged);
-    super.dispose();
-  }
-
-  void _onDateChanged() {
-    BlocProvider.of<OneDayCalendarCubit>(context)
-        .loadForDate(_controller.dateNotifier.value);
   }
 
   @override
@@ -149,38 +137,28 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
       ],
       child: BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
         builder: (context, state) {
-          return _buildPage(context);
+          return OneDayCalendarPageView(
+            controller: _controller,
+            scrollController: widget.scrollController,
+            calendarEventsRepository: widget.calendarEventsRepository,
+            calendarSettings: widget.calendarSettings,
+            showHeader: widget.showHeader,
+            onDragStarted: widget.onDragStarted,
+            onEventTap: widget.onEventTap,
+            onLongPress: widget.onLongPress,
+            onSelected: widget.onSelected,
+            reloadController: widget.reloadController,
+            locale: widget.locale,
+            tomorrowDayLabel: widget.tomorrowDayLabel,
+            todayDayLabel: widget.todayDayLabel,
+            yesterdayDayLabel: widget.yesterdayDayLabel,
+            beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+            dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
+            onDragCompleted: widget.onDragCompleted,
+            onDragUpdate: widget.onDragUpdate,
+            timelineHourFormatter: widget.timelineHourFormatter,
+          );
         },
-      ),
-    );
-  }
-
-  Widget _buildPage(BuildContext pageContext) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: SingleDay(
-          locale: widget.locale,
-          tomorrowDayLabel: widget.tomorrowDayLabel,
-          todayDayLabel: widget.todayDayLabel,
-          yesterdayDayLabel: widget.yesterdayDayLabel,
-          beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
-          dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
-          calendarSettings: widget.calendarSettings,
-          scrollController: widget.scrollController,
-          onEventTap: widget.onEventTap ?? (_) {},
-          onLongPress: widget.onLongPress,
-          onChanged: (date) {
-            widget.onSelected?.call(date);
-            _controller.updateDate(date);
-          },
-          onDragCompleted: widget.onDragCompleted,
-          onDragUpdate: widget.onDragUpdate,
-          onDragStarted: widget.onDragStarted,
-          timelineHourFormatter: widget.timelineHourFormatter,
-          showHeader: widget.showHeader,
-        ),
       ),
     );
   }
