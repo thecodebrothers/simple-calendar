@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +17,9 @@ import 'package:simple_calendar/use_case/month_calendar_get_events_use_case.dart
 class MonthCalendarView extends StatelessWidget {
   /// Repository that provides events for calendar
   final CalendarEventsRepository calendarEventsRepository;
+
+  /// Provides ability to reload events
+  final StreamController? reloadController;
 
   /// Indicates which month should be shown initially
   /// If not provided, then current month will be shown
@@ -45,6 +50,7 @@ class MonthCalendarView extends StatelessWidget {
 
   MonthCalendarView({
     required this.calendarEventsRepository,
+    this.reloadController,
     this.initialDate,
     this.calendarSettings = const CalendarSettings(),
     this.onSelected,
@@ -60,6 +66,7 @@ class MonthCalendarView extends StatelessWidget {
       create: (context) => MonthCalendarCubit(
         MonthCalendarGetEventsUseCase(calendarEventsRepository),
         initialDate ?? DateTime.now(),
+        reloadController,
       ),
       child: BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
         builder: (ctx, state) {
