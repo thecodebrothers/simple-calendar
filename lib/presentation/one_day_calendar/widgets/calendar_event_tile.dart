@@ -41,7 +41,11 @@ class CalendarEventTile extends StatelessWidget {
         calendarSettings.iconSpacingFromText * 4 +
         16;
     final rescaleFactor = rowHeight / 60;
-    final height = (event.eventEnd - event.eventStart) * rescaleFactor;
+    double height = (event.eventEnd - event.eventStart) * rescaleFactor;
+    if (height < 0) {
+      height = 24.0 * 60.0 - event.eventStart * rescaleFactor;
+    }
+
     final hasIcon =
         event.localIconName.isNotEmpty || event.networkIconName.isNotEmpty;
 

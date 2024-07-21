@@ -17,6 +17,7 @@ class SingleCalendarEvent {
   final String? topLeftLine;
   final String? bottomRightLine;
   final String? groupId;
+  final String? groupName;
   final int? groupOrder;
   final Color? groupColor;
 
@@ -37,6 +38,7 @@ class SingleCalendarEvent {
     this.topLeftLine,
     this.bottomRightLine,
     this.groupId,
+    this.groupName,
     this.groupOrder,
     this.groupColor,
   });

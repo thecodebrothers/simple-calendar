@@ -198,7 +198,7 @@ class _SingleDayState extends State<SingleDay> {
                   children: [
                     Center(
                       child: Text(
-                        group.first.groupId ?? '',
+                        group.first.groupName ?? '',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

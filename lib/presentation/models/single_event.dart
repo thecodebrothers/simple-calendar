@@ -20,6 +20,7 @@ class SingleEvent extends Equatable {
   final String? topLeftLine;
   final String? bottomRightLine;
   final String? groupId;
+  final String? groupName;
   final int? groupOrder;
   final Color? groupColor;
 
@@ -40,6 +41,7 @@ class SingleEvent extends Equatable {
     required this.topLeftLine,
     required this.bottomRightLine,
     required this.groupId,
+    required this.groupName,
     required this.groupOrder,
     required this.groupColor,
   });
@@ -61,6 +63,7 @@ class SingleEvent extends Equatable {
         bottomRightLine = element.bottomRightLine,
         topLeftLine = element.topLeftLine,
         groupId = element.groupId,
+        groupName = element.groupName,
         groupOrder = element.groupOrder,
         groupColor = element.groupColor;
 
@@ -81,6 +84,7 @@ class SingleEvent extends Equatable {
         topLeftLine,
         bottomRightLine,
         groupId,
+        groupName,
         groupOrder,
         groupColor,
       ];

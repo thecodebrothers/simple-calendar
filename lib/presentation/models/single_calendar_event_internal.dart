@@ -21,6 +21,7 @@ class SingleCalendarEventInternal extends SingleCalendarEvent {
     topLeftLine,
     bottomRightLine,
     groupId,
+    groupName,
     groupOrder,
     groupColor,
   }) : super(
@@ -40,6 +41,7 @@ class SingleCalendarEventInternal extends SingleCalendarEvent {
           topLeftLine: topLeftLine,
           bottomRightLine: bottomRightLine,
           groupId: groupId,
+          groupName: groupName,
           groupOrder: groupOrder,
           groupColor: groupColor,
         );
