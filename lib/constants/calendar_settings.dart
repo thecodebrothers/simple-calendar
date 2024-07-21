@@ -63,6 +63,8 @@ class CalendarSettings {
   /// aspect ratio of the month view
   final double monthViewAspectRatio;
 
+  final Widget Function(BuildContext context)? progressIndicatorBuilder;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -95,6 +97,7 @@ class CalendarSettings {
     this.dragDelay = const Duration(milliseconds: 500),
     this.zoomEnabled = false,
     this.monthViewAspectRatio = 1.0,
+    this.progressIndicatorBuilder,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -130,6 +133,7 @@ class CalendarSettings {
     bool? zoomEnabled,
     double? monthViewAspectRatio,
     Color? monthDefaultDayColor,
+    Widget Function(BuildContext context)? progressIndicatorBuilder,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -172,6 +176,8 @@ class CalendarSettings {
       zoomEnabled: zoomEnabled ?? this.zoomEnabled,
       monthDefaultDayColor: monthDefaultDayColor ?? this.monthDefaultDayColor,
       monthViewAspectRatio: monthViewAspectRatio ?? this.monthViewAspectRatio,
+      progressIndicatorBuilder:
+          progressIndicatorBuilder ?? this.progressIndicatorBuilder,
     );
   }
 }

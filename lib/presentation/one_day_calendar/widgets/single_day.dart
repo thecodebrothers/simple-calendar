@@ -67,13 +67,15 @@ class _SingleDayState extends State<SingleDay> {
         if (state is OneDayCalendarChanged) {
           return _buildSinglePage(state);
         } else {
-          return const Center(
-            child: SizedBox(
-              height: 50,
-              width: 50,
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return widget.calendarSettings.progressIndicatorBuilder != null
+              ? widget.calendarSettings.progressIndicatorBuilder!(context)
+              : Center(
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
         }
       },
     );

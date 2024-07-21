@@ -115,13 +115,15 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
           if (state is MultipleDaysCalendarLoaded) {
             return _buildPage(state);
           } else {
-            return const Center(
-              child: SizedBox(
-                height: 50,
-                width: 50,
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return widget.calendarSettings.progressIndicatorBuilder != null
+                ? widget.calendarSettings.progressIndicatorBuilder!(context)
+                : Center(
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
           }
         },
       ),

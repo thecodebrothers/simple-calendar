@@ -74,13 +74,15 @@ class MonthCalendarView extends StatelessWidget {
             final groupPositions = _calculateGroupPositions(state.items);
             return _buildPage(ctx, state, groupPositions);
           } else {
-            return const Center(
-              child: SizedBox(
-                height: 50,
-                width: 50,
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return calendarSettings.progressIndicatorBuilder != null
+                ? calendarSettings.progressIndicatorBuilder!(context)
+                : Center(
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
           }
         },
       ),
