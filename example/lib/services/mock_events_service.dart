@@ -94,6 +94,7 @@ class MockEventsService {
       eventEnd: _tomorrow.add(Duration(hours: 8)),
       isAllDay: false,
       groupId: 'test1',
+      groupName: 'test11',
       groupOrder: 1,
       groupColor: Colors.pink,
     );
@@ -107,6 +108,7 @@ class MockEventsService {
       eventEnd: _tomorrow.add(Duration(hours: 2, minutes: 60)),
       isAllDay: false,
       groupId: 'test1',
+      groupName: 'test11',
       groupOrder: 1,
       groupColor: Colors.pink,
     );
@@ -133,6 +135,7 @@ class MockEventsService {
       eventEnd: _tomorrow.add(Duration(minutes: 260)),
       isAllDay: false,
       groupId: 'test3',
+      groupName: 'test31',
       groupOrder: 3,
       groupColor: Colors.blue,
     );
@@ -146,6 +149,7 @@ class MockEventsService {
       eventEnd: _tomorrow.add(Duration(minutes: 260)),
       isAllDay: false,
       groupId: 'test4',
+      groupName: 'test41',
       groupOrder: 4,
       groupColor: Colors.green,
     );
@@ -159,6 +163,7 @@ class MockEventsService {
       eventEnd: _tomorrow.add(Duration(days: 5)),
       isAllDay: false,
       groupId: 'test5',
+      groupName: "test",
       groupOrder: 5,
       groupColor: Colors.deepOrange,
     );

@@ -46,6 +46,7 @@ class MockCalendarEventsRepository extends CalendarEventsRepository {
             topLeftLine: e.topLeftLine,
             bottomRightLine: e.bottomRightLine,
             groupId: e.groupId,
+            groupName: e.groupName,
             groupOrder: e.groupOrder,
             groupColor: e.groupColor,
           ),

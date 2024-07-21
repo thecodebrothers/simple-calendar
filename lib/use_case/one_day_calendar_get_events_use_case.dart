@@ -43,6 +43,7 @@ class OneDayCalendarGetEventsUseCase {
         topLeftLine: element.topLeftLine,
         bottomRightLine: element.bottomRightLine,
         groupId: element.groupId,
+        groupName: element.groupName,
         groupOrder: element.groupOrder,
         groupColor: element.groupColor,
       );
