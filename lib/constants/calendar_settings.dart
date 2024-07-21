@@ -29,6 +29,9 @@ class CalendarSettings {
   /// color of a selected day in month view
   final Color monthSelectedColor;
 
+  /// color of a default day in month view
+  final Color? monthDefaultDayColor;
+
   /// format of a day name in one day calendar view
   final String dayNameFormat;
 
@@ -57,6 +60,9 @@ class CalendarSettings {
   /// enables zooming the calendar in and out
   final bool zoomEnabled;
 
+  /// aspect ratio of the month view
+  final double monthViewAspectRatio;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -82,11 +88,13 @@ class CalendarSettings {
     this.isDaySwitcherPinned = false,
     this.daySwitcherBackgroundColor = Colors.transparent,
     this.monthSelectedColor = const Color(0xFF0474BB),
+    this.monthDefaultDayColor,
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
     this.dragEnabled = false,
     this.dragDelay = const Duration(milliseconds: 500),
     this.zoomEnabled = false,
+    this.monthViewAspectRatio = 1.0,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -120,6 +128,8 @@ class CalendarSettings {
     bool? dragEnabled,
     Duration? dragDelay,
     bool? zoomEnabled,
+    double? monthViewAspectRatio,
+    Color? monthDefaultDayColor,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -160,6 +170,8 @@ class CalendarSettings {
       dragEnabled: dragEnabled ?? this.dragEnabled,
       dragDelay: dragDelay ?? this.dragDelay,
       zoomEnabled: zoomEnabled ?? this.zoomEnabled,
+      monthDefaultDayColor: monthDefaultDayColor ?? this.monthDefaultDayColor,
+      monthViewAspectRatio: monthViewAspectRatio ?? this.monthViewAspectRatio,
     );
   }
 }

@@ -52,7 +52,7 @@ class MonthTile extends StatelessWidget {
       height: 28,
       width: 28,
       child: Material(
-        color: isToday ? calendarSettings.monthSelectedColor : null,
+        color: isToday ? calendarSettings.monthSelectedColor : calendarSettings.monthDefaultDayColor,
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
           onTap: onTap,

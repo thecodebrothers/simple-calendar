@@ -102,9 +102,9 @@ class MonthCalendarView extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 7,
-                    childAspectRatio: 1,
+                    childAspectRatio: calendarSettings.monthViewAspectRatio,
                   ),
                   itemCount: state.items.length,
                   itemBuilder: (context, index) {
