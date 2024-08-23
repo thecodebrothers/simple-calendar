@@ -6,12 +6,14 @@ class EmptyCells extends StatelessWidget {
   final int numberOfConstantsTasks;
   final CalendarSettings calendarSettings;
   final Function(DateTime)? onLongPress;
+  final double rowHeight;
 
   const EmptyCells({
     required this.date,
     required this.numberOfConstantsTasks,
     required this.calendarSettings,
     required this.onLongPress,
+    required this.rowHeight,
     Key? key,
   }) : super(key: key);
 
@@ -19,7 +21,6 @@ class EmptyCells extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPressEnd: (details) {
-       
         onLongPress?.call(
           DateTime(
             date.year,
@@ -27,19 +28,19 @@ class EmptyCells extends StatelessWidget {
             date.day,
             (details.localPosition.dy.toInt() +
                     (calendarSettings.startHour * 60)) ~/
-                60,
+                rowHeight,
           ),
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: numberOfConstantsTasks * calendarSettings.rowHeight),
+          SizedBox(height: numberOfConstantsTasks * rowHeight),
           for (int i = 0;
               i < (calendarSettings.endHour - calendarSettings.startHour);
               i++)
             Container(
-              height: calendarSettings.rowHeight,
+              height: rowHeight,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade200),
               ),

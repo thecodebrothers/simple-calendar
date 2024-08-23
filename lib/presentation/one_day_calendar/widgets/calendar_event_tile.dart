@@ -10,6 +10,7 @@ class CalendarEventTile extends StatelessWidget {
   final int? position;
   final int? numberOfEvents;
   final double rowWidth;
+  final double rowHeight;
   final VoidCallback action;
   final CalendarSettings calendarSettings;
   final DateTime date;
@@ -19,6 +20,7 @@ class CalendarEventTile extends StatelessWidget {
     DragUpdateDetails details,
     SingleEvent object,
   )? onDragUpdate;
+  final Function()? onDragStarted;
 
   const CalendarEventTile({
     required this.event,
@@ -27,11 +29,13 @@ class CalendarEventTile extends StatelessWidget {
     required this.calendarSettings,
     required this.date,
     required this.calendarKey,
+    required this.rowWidth,
+    required this.rowHeight,
     this.position,
     this.numberOfEvents,
-    required this.rowWidth,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.onDragStarted,
     Key? key,
   }) : super(key: key);
 
@@ -42,22 +46,26 @@ class CalendarEventTile extends StatelessWidget {
         16;
     final calculatedRowWidth = (rowWidth) / (numberOfEvents ?? 1);
     final eventWidth = (rowWidth) / (numberOfEvents ?? 1);
+    final rescaleFactor = rowHeight / 60;
+    final height =
+        (event.eventHeightThreshold.toDouble() - event.eventStart.toDouble()) *
+            rescaleFactor;
     return Positioned(
-      top: event.eventStart.toDouble() -
-          calendarSettings.startHour * calendarSettings.rowHeight +
-          numberOfAllDayEvents * calendarSettings.rowHeight,
+      top: (event.eventStart.toDouble() * rescaleFactor) -
+          calendarSettings.startHour * rowHeight +
+          numberOfAllDayEvents * rowHeight,
       left: _getPositionLeft(position ?? 0),
       width: eventWidth,
-      height:
-          event.eventHeightThreshold.toDouble() - event.eventStart.toDouble(),
+      height: height,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: DraggableTile(
+          rowHeight: rowHeight,
           data: event,
           width: eventWidth,
+          onDragStarted: onDragStarted,
           calendarKey: calendarKey,
-          height: event.eventHeightThreshold.toDouble() -
-              event.eventStart.toDouble(),
+          height: height,
           calendarSettings: calendarSettings,
           onDragCompleted: onDragCompleted,
           onDragUpdate: onDragUpdate,
@@ -85,26 +93,7 @@ class CalendarEventTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            event.singleLine,
-                            maxLines: event.secondLine == null ? 3 : 1,
-                            overflow: TextOverflow.fade,
-                            style: calendarSettings.firstLineTileTextStyle,
-                          ),
-                        ),
-                        if (event.secondLine != null) const SizedBox(height: 4),
-                        if (event.secondLine != null)
-                          Flexible(
-                            child: Text(
-                              event.secondLine!,
-                              maxLines: 1,
-                              overflow: TextOverflow.fade,
-                              style: calendarSettings.secondLineTileTextStyle,
-                            ),
-                          ),
-                      ],
+                      children: _columnChildren(),
                     ),
                   ),
                   if (calculatedRowWidth > minWidth)
@@ -127,6 +116,54 @@ class CalendarEventTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _columnChildren() {
+    return [
+      if (event.topLeftLine != null) ...[
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            event.topLeftLine!,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: calendarSettings.topLeftLineTileTextStyle,
+          ),
+        ),
+        const SizedBox(height: 6),
+      ],
+      Flexible(
+        child: Text(
+          event.singleLine,
+          maxLines: event.secondLine == null ? 3 : 1,
+          overflow: TextOverflow.fade,
+          style: calendarSettings.firstLineTileTextStyle,
+        ),
+      ),
+      if (event.secondLine != null) ...[
+        const SizedBox(height: 4),
+        Flexible(
+          child: Text(
+            event.secondLine!,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: calendarSettings.secondLineTileTextStyle,
+          ),
+        ),
+      ],
+      if (event.bottomRightLine != null) ...[
+        const SizedBox(height: 6),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Text(
+            event.bottomRightLine!,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: calendarSettings.bottomRightLineTileTextStyle,
+          ),
+        ),
+      ]
+    ];
   }
 
   double _getPositionLeft(int position) {

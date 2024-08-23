@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
+import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/all_day_persistent_header.dart';
@@ -25,6 +26,7 @@ class SingleDay extends StatefulWidget {
     DragUpdateDetails details,
     SingleEvent object,
   )? onDragUpdate;
+  final Function()? onDragStarted;
 
   const SingleDay({
     required this.onChanged,
@@ -32,6 +34,7 @@ class SingleDay extends StatefulWidget {
     required this.calendarSettings,
     required this.onEventTap,
     required this.onLongPress,
+    this.onDragStarted,
     this.locale,
     this.tomorrowDayLabel,
     this.todayDayLabel,
@@ -73,8 +76,6 @@ class _SingleDayState extends State<SingleDay> {
     final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
         ? 3
         : state.dayWithEvents.allDaysEvents.length.toDouble() + 1);
-
-    final calendarKey = GlobalKey();
 
     return CustomScrollView(
       controller: widget.scrollController,
@@ -121,10 +122,34 @@ class _SingleDayState extends State<SingleDay> {
             ),
           ),
         SliverToBoxAdapter(
+          child: _buildContent(context, state),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContent(BuildContext context, OneDayCalendarChanged state) {
+    final calendarKey = GlobalKey();
+
+    return BlocBuilder<ScaleRowHeightCubit, ScaleHeightState>(
+      builder: (context, rowState) {
+        final rowHeight = rowState.height;
+        return GestureDetector(
+          onScaleUpdate: widget.calendarSettings.zoomEnabled
+              ? (details) {
+                  final cubit = context.read<ScaleRowHeightCubit>();
+                  cubit.setRowHeight(
+                    details.scale * cubit.state.baseHeight,
+                  );
+                }
+              : null,
+          onScaleEnd: (details) =>
+              context.read<ScaleRowHeightCubit>().onScaleEnd(),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hours(
+                rowHeight: rowHeight,
                 numberOfConstantsTasks:
                     state.dayWithEvents.allDaysEvents.length,
                 calendarSettings: widget.calendarSettings,
@@ -133,10 +158,11 @@ class _SingleDayState extends State<SingleDay> {
                 child: SizedBox(
                   height: (widget.calendarSettings.endHour -
                               widget.calendarSettings.startHour) *
-                          widget.calendarSettings.rowHeight +
-                      state.dayWithEvents.allDaysEvents.length *
-                          widget.calendarSettings.rowHeight,
+                          rowHeight +
+                      state.dayWithEvents.allDaysEvents.length * rowHeight,
                   child: SingleDayTimelineWithEvents(
+                    rowHeight: rowHeight,
+                    onDragStarted: widget.onDragStarted,
                     onLongPress: widget.onLongPress,
                     key: calendarKey,
                     multipleEvents: state.dayWithEvents.multipleEvents,
@@ -154,8 +180,8 @@ class _SingleDayState extends State<SingleDay> {
               ),
             ],
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class CalendarSettings {
   final TextStyle firstLineTileTextStyle;
   final TextStyle secondLineTileTextStyle;
+  final TextStyle topLeftLineTileTextStyle;
+  final TextStyle bottomRightLineTileTextStyle;
   final double tileIconSize;
   final double iconSpacingFromText;
   final double iconBackgroundOpacity;
@@ -49,9 +51,17 @@ class CalendarSettings {
   /// enable drag and drop functionality
   final bool dragEnabled;
 
+  /// delay before drag and drop starts
+  final Duration dragDelay;
+
+  /// enables zooming the calendar in and out
+  final bool zoomEnabled;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
+    this.topLeftLineTileTextStyle = const TextStyle(),
+    this.bottomRightLineTileTextStyle = const TextStyle(),
     this.fiveDaysHeaderTextStyle = const TextStyle(),
     this.oneDayHeaderTextStyle = const TextStyle(),
     this.calendarCurrentMonthTileStyle = const TextStyle(),
@@ -75,6 +85,8 @@ class CalendarSettings {
     this.minimumEventHeight,
     this.dragEnabled = false,
     this.isScrollable = true,
+    this.dragDelay = const Duration(milliseconds: 500),
+    this.zoomEnabled = false,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -82,6 +94,8 @@ class CalendarSettings {
   CalendarSettings copyWith({
     TextStyle? firstLineTileTextStyle,
     TextStyle? secondLineTileTextStyle,
+    TextStyle? topLeftLineTileTextStyle,
+    TextStyle? bottomRightLineTileTextStyle,
     double? tileIconSize,
     double? iconSpacingFromText,
     double? iconBackgroundOpacity,
@@ -104,12 +118,18 @@ class CalendarSettings {
     double? hourCustomHeight,
     bool? dragEnabled,
     bool? isScrollable,
+    Duration? dragDelay,
+    bool? zoomEnabled,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
           firstLineTileTextStyle ?? this.firstLineTileTextStyle,
       secondLineTileTextStyle:
           secondLineTileTextStyle ?? this.secondLineTileTextStyle,
+      topLeftLineTileTextStyle:
+          topLeftLineTileTextStyle ?? this.topLeftLineTileTextStyle,
+      bottomRightLineTileTextStyle:
+          bottomRightLineTileTextStyle ?? this.bottomRightLineTileTextStyle,
       tileIconSize: tileIconSize ?? this.tileIconSize,
       iconSpacingFromText: iconSpacingFromText ?? this.iconSpacingFromText,
       iconBackgroundOpacity:
@@ -137,6 +157,8 @@ class CalendarSettings {
           expandableTextButtonStyle ?? this.expandableTextButtonStyle,
       dragEnabled: dragEnabled ?? this.dragEnabled,
       isScrollable: isScrollable ?? this.isScrollable,
+      dragDelay: dragDelay ?? this.dragDelay,
+      zoomEnabled: zoomEnabled ?? this.zoomEnabled,
     );
   }
 }

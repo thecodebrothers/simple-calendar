@@ -42,6 +42,9 @@ class MockCalendarEventsRepository extends CalendarEventsRepository {
             iconBackgroundColor: Colors.cyan,
             dotTileColor: Colors.transparent,
             tileBackgroundColor: Colors.white,
+            secondLine: e.secondLine,
+            topLeftLine: e.topLeftLine,
+            bottomRightLine: e.bottomRightLine,
           ),
         )
         .toList();

@@ -111,6 +111,8 @@ class OneDayCalendarTab extends StatelessWidget {
           isDaySwitcherPinned: true,
           daySwitcherBackgroundColor: Colors.blue,
           dragEnabled: true,
+          rowHeight: 45,
+          zoomEnabled: true,
         ),
 
         // Optional locale for translations
@@ -162,9 +164,14 @@ class MultipleDaysCalendarTab extends StatelessWidget {
     return Center(
       child: MultipleDaysCalendarView(
         scrollController: scrollController,
+        daysAround: 1,
         calendarEventsRepository: calendarRepository,
-        calendarSettings:
-            CalendarSettings(isDaySwitcherPinned: true, dragEnabled: true),
+        calendarSettings: CalendarSettings(
+          isDaySwitcherPinned: true,
+          dragEnabled: true,
+          rowHeight: 45,
+          zoomEnabled: true,
+        ),
         // Optionally, you can customize calendar settings - text styles, etc.
         // calendarSettings: <CalendarSettings>,
 
@@ -182,7 +189,7 @@ class MultipleDaysCalendarTab extends StatelessWidget {
               content: Text("Day ${date.day} long pressed"),
             ),
           ),
-             onDragCompleted: (minutes, event) {
+        onDragCompleted: (minutes, event) {
           print('Event ${event.singleLine} was dragged to $minutes minutes');
         },
         onDragUpdate: (

@@ -14,6 +14,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   final void Function(SingleEvent) action;
   final CalendarSettings calendarSettings;
   final GlobalKey calendarKey;
+  final double rowHeight;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(
     DragUpdateDetails details,
@@ -21,6 +22,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   )? onDragUpdate;
 
   final Function(DateTime)? onLongPress;
+  final Function()? onDragStarted;
 
   const SingleDayTimelineWithEvents({
     required this.date,
@@ -31,9 +33,10 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     required this.calendarSettings,
     required this.calendarKey,
     required this.onLongPress,
+    required this.rowHeight,
+    this.onDragStarted,
     this.onDragCompleted,
     this.onDragUpdate,
-
     Key? key,
   }) : super(key: key);
 
@@ -44,6 +47,7 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
         return Stack(
           children: [
             EmptyCells(
+              rowHeight: rowHeight,
               date: date,
               numberOfConstantsTasks: 0,
               calendarSettings: calendarSettings,
@@ -51,7 +55,8 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
             ),
             if (date.isSameDate(DateTime.now()))
               CurrentTime(
-                calendarSettings: calendarSettings,
+                rowHeight: rowHeight,
+                startHour: calendarSettings.startHour,
               ),
             ..._getMultiple(constraints),
           ],
@@ -65,7 +70,9 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
     for (final events in multipleEvents) {
       for (int i = 0; i < events.length; i++) {
         widgets.add(CalendarEventTile(
+          rowHeight: rowHeight,
           numberOfAllDayEvents: 0,
+          onDragStarted: onDragStarted,
           event: events[i],
           calendarKey: calendarKey,
           rowWidth: constraints.maxWidth,

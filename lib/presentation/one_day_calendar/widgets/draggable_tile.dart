@@ -7,9 +7,11 @@ class DraggableTile extends StatefulWidget {
   final CalendarSettings calendarSettings;
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(DragUpdateDetails details, SingleEvent object)? onDragUpdate;
+  final Function()? onDragStarted;
   final SingleEvent data;
   final double width;
   final double height;
+  final double rowHeight;
   final GlobalKey calendarKey;
   DraggableTile({
     required this.child,
@@ -19,6 +21,8 @@ class DraggableTile extends StatefulWidget {
     required this.width,
     required this.height,
     required this.calendarKey,
+    required this.rowHeight,
+    this.onDragStarted,
     this.onDragUpdate,
   });
 
@@ -31,16 +35,20 @@ class _DraggableTileState extends State<DraggableTile> {
   Widget build(BuildContext context) {
     if (widget.calendarSettings.dragEnabled == false) return widget.child;
 
-    return Draggable<SingleEvent>(
+    return LongPressDraggable<SingleEvent>(
       data: widget.data,
+      delay: widget.calendarSettings.dragDelay,
+      onDragStarted: () => widget.onDragStarted?.call(),
       onDragUpdate: (details) {
         widget.onDragUpdate?.call(details, widget.data);
       },
       onDragEnd: (details) {
         final dropPosition =
             details.offset.dy - _getGlobalCalendarPosition().dy;
+        final rescaled = 60 / widget.rowHeight;
 
-        widget.onDragCompleted?.call(dropPosition.toInt(), widget.data);
+        widget.onDragCompleted
+            ?.call((rescaled * dropPosition).toInt(), widget.data);
       },
       childWhenDragging: SizedBox(
         width: widget.width,

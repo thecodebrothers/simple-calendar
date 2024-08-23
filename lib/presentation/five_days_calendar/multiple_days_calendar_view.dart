@@ -1,16 +1,14 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/multiple_days_calendar_cubit.dart';
+import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/five_days_calendar/widgets/five_days_navigation_bar.dart';
+import 'package:simple_calendar/presentation/five_days_calendar/widgets/multiple_days_calendar_content.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_date.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/multiple_days_calendar_get_events_use_case.dart';
 
@@ -58,11 +56,17 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Called when user drags event to new position
   final Function(int minutes, SingleEvent object)? onDragCompleted;
 
+  /// Called when user changes day
+  final Function(DateTime)? onDayChanged;
+
   /// Called when user drags event
   final Function(
     DragUpdateDetails details,
     SingleEvent object,
   )? onDragUpdate;
+
+  /// Called when user starts dragging event
+  final Function()? onDragStarted;
 
   const MultipleDaysCalendarView({
     required this.scrollController,
@@ -76,6 +80,8 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.reloadController,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.onDragStarted,
+    this.onDayChanged,
     Key? key,
   }) : super(key: key);
 
@@ -87,14 +93,23 @@ class MultipleDaysCalendarView extends StatefulWidget {
 class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MultipleDaysCalendarCubit>(
-      create: (context) => MultipleDaysCalendarCubit(
-        MultipleDaysCalendarGetEventsUseCase(widget.calendarEventsRepository),
-        widget.initialDate ?? DateTime.now(),
-        widget.daysAround,
-        widget.reloadController,
-        widget.calendarSettings.minimumEventHeight,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MultipleDaysCalendarCubit>(
+          create: (context) => MultipleDaysCalendarCubit(
+            MultipleDaysCalendarGetEventsUseCase(
+                widget.calendarEventsRepository),
+            widget.initialDate ?? DateTime.now(),
+            widget.daysAround,
+            widget.reloadController,
+            widget.calendarSettings.minimumEventHeight,
+          ),
+        ),
+        BlocProvider<ScaleRowHeightCubit>(
+          create: (context) =>
+              ScaleRowHeightCubit(widget.calendarSettings.rowHeight),
+        ),
+      ],
       child: BlocBuilder<MultipleDaysCalendarCubit, MultipleDaysCalendarState>(
         builder: (context, state) {
           if (state is MultipleDaysCalendarLoaded) {
@@ -127,73 +142,41 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
           children: [
             FiveDaysNavigationBar(
               onTapLeft: () {
+                final dateToAdd = state.date.add(const Duration(days: -1));
                 BlocProvider.of<MultipleDaysCalendarCubit>(context)
-                    .loadForDate(state.date.add(const Duration(days: -1)));
+                    .loadForDate(dateToAdd);
+                widget.onDayChanged?.call(dateToAdd);
               },
               onTapRight: () {
+                final dateToAdd = state.date.add(const Duration(days: 1));
                 BlocProvider.of<MultipleDaysCalendarCubit>(context)
-                    .loadForDate(state.date.add(const Duration(days: 1)));
+                    .loadForDate(dateToAdd);
+                widget.onDayChanged?.call(dateToAdd);
               },
               rowWidth: rowWidth,
             ),
-            _buildCalendar(state, rowWidth),
+            _buildCalendar(state, rowWidth, context),
           ],
         );
       }),
     );
   }
 
-  Widget _buildCalendar(MultipleDaysCalendarLoaded state, double rowWidth) {
-    final maxNumberOfWholeDayTasks =
-        state.daysWithEvents.map((e) => e.allDaysEvents.length).reduce(max);
-    return Expanded(
-      child: SingleChildScrollView(
-        controller: widget.scrollController,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hours(
-                numberOfConstantsTasks: maxNumberOfWholeDayTasks,
-                calendarSettings: widget.calendarSettings),
-            ...state.daysWithEvents.map((e) {
-              final calendarKey = GlobalKey();
-              return Column(
-                children: [
-                  SizedBox(
-                    width: rowWidth,
-                    child: SingleDayDate(
-                      date: e.date,
-                      locale: widget.locale,
-                      calendarSettings: widget.calendarSettings,
-                    ),
-                  ),
-                  SizedBox(
-                    width: rowWidth,
-                    height: (widget.calendarSettings.endHour -
-                                widget.calendarSettings.startHour) *
-                            widget.calendarSettings.rowHeight +
-                        maxNumberOfWholeDayTasks *
-                            widget.calendarSettings.rowHeight,
-                    child: SingleDayTimelineWithEvents(
-                      onLongPress: widget.onLongPress,
-                      key: calendarKey,
-                      calendarKey: calendarKey,
-                      date: e.date,
-                      multipleEvents: e.multipleEvents,
-                      allDayEvents: e.allDaysEvents,
-                      maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
-                      action: (event) => widget.onTap?.call(event),
-                      calendarSettings: widget.calendarSettings,
-                      onDragCompleted: widget.onDragCompleted,
-                      onDragUpdate: widget.onDragUpdate,
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
-          ],
-        ),
-      ),
+  Widget _buildCalendar(
+    MultipleDaysCalendarLoaded state,
+    double rowWidth,
+    BuildContext context,
+  ) {
+    return MultipleDaysCalendarContent(
+      calendarState: state,
+      rowWidth: rowWidth,
+      scrollController: widget.scrollController,
+      calendarSettings: widget.calendarSettings,
+      locale: widget.locale,
+      onLongPress: widget.onLongPress,
+      onDragStarted: widget.onDragStarted,
+      onDragCompleted: widget.onDragCompleted,
+      onDragUpdate: widget.onDragUpdate,
     );
   }
 }
