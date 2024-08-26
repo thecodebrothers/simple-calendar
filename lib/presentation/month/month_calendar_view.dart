@@ -110,12 +110,14 @@ class MonthCalendarView extends StatelessWidget {
                   children: state.items
                       .map(
                         (e) => MonthTile(
-                          onTap: () {
-                            onSelected?.call(e.date);
-                            if (state.date != e.date)
-                              BlocProvider.of<MonthCalendarCubit>(context)
-                                  .loadForDate(e.date);
-                          },
+                          onTap: e.isDayName
+                              ? null
+                              : () {
+                                  onSelected?.call(e.date);
+                                  if (state.date != e.date)
+                                    BlocProvider.of<MonthCalendarCubit>(context)
+                                        .loadForDate(e.date);
+                                },
                           calendarSettings: calendarSettings,
                           text: e.isDayName
                               ? _dayName(context, e.date, locale)
