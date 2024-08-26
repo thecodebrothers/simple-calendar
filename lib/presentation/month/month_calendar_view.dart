@@ -41,6 +41,10 @@ class MonthCalendarView extends StatelessWidget {
   /// If not provided, default abbreviation will be used
   final String? Function(BuildContext, int)? customWeekdayAbbreviation;
 
+  /// Whether to reload data when user taps on a different date.
+  /// Additional action performed right after onSelected.
+  final bool shouldReloadIfDayHasChanged;
+
   MonthCalendarView({
     required this.calendarEventsRepository,
     this.initialDate,
@@ -49,6 +53,7 @@ class MonthCalendarView extends StatelessWidget {
     this.monthPicker,
     this.locale,
     this.customWeekdayAbbreviation,
+    this.shouldReloadIfDayHasChanged = false,
     Key? key,
   }) : super(key: key);
 
@@ -114,9 +119,11 @@ class MonthCalendarView extends StatelessWidget {
                               ? null
                               : () {
                                   onSelected?.call(e.date);
-                                  if (state.date != e.date)
+                                  if (shouldReloadIfDayHasChanged &&
+                                      state.date != e.date) {
                                     BlocProvider.of<MonthCalendarCubit>(context)
                                         .loadForDate(e.date);
+                                  }
                                 },
                           calendarSettings: calendarSettings,
                           text: e.isDayName

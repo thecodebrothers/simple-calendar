@@ -15,10 +15,5 @@ class MonthSingleDayItem extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        date,
-        hasAnyEvents,
-        isDayName,
-        eventColors,
-      ];
+  List<Object?> get props => [date, hasAnyEvents, isDayName, eventColors];
 }
