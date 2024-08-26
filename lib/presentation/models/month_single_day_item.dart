@@ -5,15 +5,13 @@ class MonthSingleDayItem extends Equatable {
   final DateTime date;
   final bool hasAnyEvents;
   final bool isDayName;
-  final int? schedulesCount;
-  final List<Color>? scheduleColors;
+  final List<Color> eventColors;
 
   const MonthSingleDayItem({
     required this.hasAnyEvents,
     required this.date,
     required this.isDayName,
-    this.schedulesCount,
-    this.scheduleColors,
+    this.eventColors = const [],
   });
 
   @override
@@ -21,7 +19,6 @@ class MonthSingleDayItem extends Equatable {
         date,
         hasAnyEvents,
         isDayName,
-        schedulesCount,
-        scheduleColors,
+        eventColors,
       ];
 }

@@ -9,8 +9,7 @@ class MonthTile extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isToday;
   final bool isDayName;
-  final List<Color>? scheduleColors;
-  final int? scheduleCount;
+  final List<Color> eventColors;
 
   const MonthTile({
     required this.hasAnyTask,
@@ -20,8 +19,7 @@ class MonthTile extends StatelessWidget {
     required this.onTap,
     required this.isToday,
     required this.isDayName,
-    this.scheduleCount,
-    this.scheduleColors,
+    this.eventColors = const [],
     Key? key,
   }) : super(key: key);
 
@@ -64,34 +62,32 @@ class MonthTile extends StatelessWidget {
                   ),
                 ),
               ),
-              if (scheduleCount != null && hasAnyTask)
+              if (calendarSettings.areMonthTileDotsOnTheRight && hasAnyTask)
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    for (var i = 0; i < scheduleCount!; i++) ...[
+                    for (var i = 0; i < eventColors.length; i++) ...[
                       ClipOval(
                         child: Container(
                           height: 5,
                           width: 5,
-                          color: scheduleColors?[i],
+                          color: eventColors[i],
                         ),
                       ),
-                      const SizedBox(
-                        height: 2,
-                      ),
+                      const SizedBox(height: 2),
                     ],
                   ],
                 ),
             ],
           ),
-          if (scheduleCount == null) ...[
+          if (!calendarSettings.areMonthTileDotsOnTheRight) ...[
             const SizedBox(height: 4),
             ClipOval(
               child: Container(
                 height: 8,
                 width: 8,
                 color: hasAnyTask
-                    ? calendarSettings.monthSelectedColor
+                    ? calendarSettings.calendarDotColor
                     : Colors.transparent,
               ),
             ),

@@ -47,48 +47,37 @@ class MonthCalendarGetEventsUseCase {
         .map(
           (e) => MonthSingleDayItem(
             date: e,
-            hasAnyEvents: hasAnyEvents(e, events),
+            hasAnyEvents: _hasAnyEvents(e, events),
+            eventColors: _getEventColors(e, events),
             isDayName: false,
-            schedulesCount: _getSchedulesCount(e, events),
-            scheduleColors: _getSchedulesColor(e, events),
           ),
         )
         .toList();
 
     readyDates.insertAll(
-        0,
-        days.sublist(0, 7).map((e) => MonthSingleDayItem(
-            date: e, hasAnyEvents: hasAnyEvents(e, events), isDayName: true)));
+      0,
+      days.sublist(0, 7).map((e) {
+        return MonthSingleDayItem(
+          date: e,
+          hasAnyEvents: _hasAnyEvents(e, events),
+          isDayName: true,
+        );
+      }),
+    );
 
     return readyDates;
   }
 
-  bool hasAnyEvents(DateTime date, List<SingleCalendarEvent> events) {
+  bool _hasAnyEvents(DateTime date, List<SingleCalendarEvent> events) {
     return events
         .where((element) => element.eventStart.isSameDate(date))
         .isNotEmpty;
   }
 
-  int? _getSchedulesCount(DateTime date, List<SingleCalendarEvent> events) {
-    final count =
-        events.where((element) => element.eventStart.isSameDate(date)).length;
-
-    return count;
-  }
-
-  List<Color>? _getSchedulesColor(
-      DateTime date, List<SingleCalendarEvent> events) {
-    var colors = <Color>[];
-    final availableSchedules =
-        events.where((element) => element.eventStart.isSameDate(date)).toList();
-
-    if (availableSchedules.isNotEmpty) {
-      for (final schedule in availableSchedules) {
-        colors.add(schedule.dotTileColor);
-      }
-      return colors;
-    }
-
-    return null;
+  List<Color> _getEventColors(DateTime date, List<SingleCalendarEvent> events) {
+    return events
+        .where((e) => e.eventStart.isSameDate(date))
+        .map((e) => e.dotTileColor)
+        .toList();
   }
 }
