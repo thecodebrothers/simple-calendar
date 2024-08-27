@@ -41,6 +41,10 @@ class MonthCalendarView extends StatelessWidget {
   /// If not provided, default abbreviation will be used
   final String? Function(BuildContext, int)? customWeekdayAbbreviation;
 
+  /// Whether to reload data when user taps on a different date.
+  /// Additional action performed right after onSelected.
+  final bool shouldReloadIfDayHasChanged;
+
   MonthCalendarView({
     required this.calendarEventsRepository,
     this.initialDate,
@@ -49,6 +53,7 @@ class MonthCalendarView extends StatelessWidget {
     this.monthPicker,
     this.locale,
     this.customWeekdayAbbreviation,
+    this.shouldReloadIfDayHasChanged = false,
     Key? key,
   }) : super(key: key);
 
@@ -103,13 +108,23 @@ class MonthCalendarView extends StatelessWidget {
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return GridView.count(
+                  physics: !calendarSettings.isScrollable
+                      ? const NeverScrollableScrollPhysics()
+                      : null,
                   crossAxisCount: 7,
                   children: state.items
                       .map(
                         (e) => MonthTile(
-                          onTap: () {
-                            onSelected?.call(e.date);
-                          },
+                          onTap: e.isDayName
+                              ? null
+                              : () {
+                                  onSelected?.call(e.date);
+                                  if (shouldReloadIfDayHasChanged &&
+                                      state.date != e.date) {
+                                    BlocProvider.of<MonthCalendarCubit>(context)
+                                        .loadForDate(e.date);
+                                  }
+                                },
                           calendarSettings: calendarSettings,
                           text: e.isDayName
                               ? _dayName(context, e.date, locale)
@@ -120,6 +135,7 @@ class MonthCalendarView extends StatelessWidget {
                           isToday:
                               !e.isDayName && e.date.isSameDate(DateTime.now()),
                           isDayName: e.isDayName,
+                          eventColors: e.eventColors,
                         ),
                       )
                       .toList(),

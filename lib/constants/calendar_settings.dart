@@ -17,6 +17,8 @@ class CalendarSettings {
   final double allDayEventHeight;
   final TextStyle expandableTextButtonStyle;
   final Color expandableIconColor;
+  final bool isScrollable;
+  final bool areMonthTileDotsOnTheRight;
 
   // Settings for day switcher
   final bool isDaySwitcherPinned;
@@ -83,6 +85,8 @@ class CalendarSettings {
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
     this.dragEnabled = false,
+    this.isScrollable = true,
+    this.areMonthTileDotsOnTheRight = false,
     this.dragDelay = const Duration(milliseconds: 500),
     this.zoomEnabled = false,
   })  : assert(startHour >= 0 && startHour < 24),
@@ -105,6 +109,8 @@ class CalendarSettings {
     TextStyle? calendarMonthDayStyle,
     TextStyle? expandableTextButtonStyle,
     Color? expandableIconColor,
+    bool? isDaySwitcherPinned,
+    Color? daySwitcherBackgroundColor,
     Color? calendarDotColor,
     Color? monthSelectedColor,
     String? dayNameFormat,
@@ -113,8 +119,9 @@ class CalendarSettings {
     int? startHour,
     int? endHour,
     double? minimumEventHeight,
-    double? hourCustomHeight,
     bool? dragEnabled,
+    bool? isScrollable,
+    bool? areMonthTileDotsOnTheRight,
     Duration? dragDelay,
     bool? zoomEnabled,
   }) {
@@ -142,6 +149,10 @@ class CalendarSettings {
       calendarHeaderStyle: calendarHeaderStyle ?? this.calendarHeaderStyle,
       calendarMonthDayStyle:
           calendarMonthDayStyle ?? this.calendarMonthDayStyle,
+      expandableIconColor: expandableIconColor ?? this.expandableIconColor,
+      isDaySwitcherPinned: isDaySwitcherPinned ?? this.isDaySwitcherPinned,
+      daySwitcherBackgroundColor:
+          daySwitcherBackgroundColor ?? this.daySwitcherBackgroundColor,
       calendarDotColor: calendarDotColor ?? this.calendarDotColor,
       monthSelectedColor: monthSelectedColor ?? this.monthSelectedColor,
       dayNameFormat: dayNameFormat ?? this.dayNameFormat,
@@ -153,6 +164,9 @@ class CalendarSettings {
       expandableTextButtonStyle:
           expandableTextButtonStyle ?? this.expandableTextButtonStyle,
       dragEnabled: dragEnabled ?? this.dragEnabled,
+      isScrollable: isScrollable ?? this.isScrollable,
+      areMonthTileDotsOnTheRight:
+          areMonthTileDotsOnTheRight ?? this.areMonthTileDotsOnTheRight,
       dragDelay: dragDelay ?? this.dragDelay,
       zoomEnabled: zoomEnabled ?? this.zoomEnabled,
     );
