@@ -40,15 +40,6 @@ class MonthCalendarGetEventsUseCase {
       );
     }).toList();
 
-    readyDates.insertAll(
-      0,
-      days.sublist(0, 7).map((e) => MonthSingleDayItem(
-        date: e,
-        events: [],
-        isDayName: true,
-      )),
-    );
-
     return readyDates;
   }
 

@@ -14,7 +14,7 @@ import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/month_calendar_get_events_use_case.dart';
 
 /// Calendar widget that shows events for a whole month
-class MonthCalendarView extends StatelessWidget {
+class MonthCalendarView extends StatefulWidget {
   /// Repository that provides events for calendar
   final CalendarEventsRepository calendarEventsRepository;
 
@@ -61,12 +61,40 @@ class MonthCalendarView extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<MonthCalendarView> createState() => _MonthCalendarViewState();
+}
+
+class _MonthCalendarViewState extends State<MonthCalendarView>
+    with SingleTickerProviderStateMixin {
+  final ValueNotifier<bool> _isExpanded = ValueNotifier(false);
+  late final AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      value: 1.0,
+      duration: const Duration(milliseconds: 300),
+      lowerBound: 0.7,
+      upperBound: 1.1,
+    );
+  }
+
+  @override
+  void dispose() {
+    _isExpanded.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<MonthCalendarCubit>(
       create: (context) => MonthCalendarCubit(
-        MonthCalendarGetEventsUseCase(calendarEventsRepository),
-        initialDate ?? DateTime.now(),
-        reloadController,
+        MonthCalendarGetEventsUseCase(widget.calendarEventsRepository),
+        widget.initialDate ?? DateTime.now(),
+        widget.reloadController,
       ),
       child: BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
         builder: (ctx, state) {
@@ -74,8 +102,8 @@ class MonthCalendarView extends StatelessWidget {
             final groupPositions = _calculateGroupPositions(state.items);
             return _buildPage(ctx, state, groupPositions);
           } else {
-            return calendarSettings.progressIndicatorBuilder != null
-                ? calendarSettings.progressIndicatorBuilder!(context)
+            return widget.calendarSettings.progressIndicatorBuilder != null
+                ? widget.calendarSettings.progressIndicatorBuilder!(context)
                 : Center(
                     child: SizedBox(
                       height: 50,
@@ -103,43 +131,101 @@ class MonthCalendarView extends StatelessWidget {
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 7,
-                    childAspectRatio: calendarSettings.monthViewAspectRatio,
-                  ),
-                  itemCount: state.items.length,
-                  itemBuilder: (context, index) {
-                    final item = state.items[index];
-                    final isFirstDayOfWeek = index % 7 == 0;
-                    final isLastDayOfWeek = index % 7 == 6;
-                    final previousDayEvents = index > 0
-                        ? state.items[index - 1].events
-                        : <SingleCalendarEvent>[];
-                    final nextDayEvents = index < state.items.length - 1
-                        ? state.items[index + 1].events
-                        : <SingleCalendarEvent>[];
+                return GestureDetector(
+                  onVerticalDragEnd: (details) {
+                    final velocity = details.primaryVelocity;
 
-                    return MonthTile(
-                      onTap: () => onSelected?.call(item.date),
-                      calendarSettings: calendarSettings,
-                      text: item.isDayName
-                          ? _dayName(context, item.date, locale)
-                          : item.date.day.toString(),
-                      events: item.events,
-                      previousDayEvents: previousDayEvents,
-                      nextDayEvents: nextDayEvents,
-                      isTheSameMonth:
-                          item.isDayName || state.date.isSameMonth(item.date),
-                      isToday: !item.isDayName &&
-                          item.date.isSameDate(DateTime.now()),
-                      isDayName: item.isDayName,
-                      isFirstDayOfTheWeek: isFirstDayOfWeek,
-                      isLastDayOfTheWeek: isLastDayOfWeek,
-                      groupPositions: groupPositions,
-                      calendarWidth: constraints.maxWidth,
-                    );
+                    if (velocity == null) return;
+
+                    if (velocity > 0) {
+                      _isExpanded.value = true;
+                      _animationController.reverse();
+                    } else {
+                      _isExpanded.value = false;
+                      _animationController.forward();
+                    }
                   },
+                  child: ValueListenableBuilder<bool>(
+                      valueListenable: _isExpanded,
+                      builder: (context, isExpanded, child) {
+                        return AnimatedBuilder(
+                            animation: _animationController,
+                            builder: (context, child) {
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      for (var i = 1; i <= 7; i++)
+                                        Expanded(
+                                          child: Container(
+                                            height: 24,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              _dayName(
+                                                context,
+                                                state.date.add(Duration(days: i)),
+                                                widget.locale,
+                                              ),
+                                              style: widget.calendarSettings.calendarMonthDayStyle,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Expanded(
+                                    child: GridView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 7,
+                                        childAspectRatio:
+                                            _animationController.value,
+                                      ),
+                                      itemCount: state.items.length,
+                                      itemBuilder: (context, index) {
+                                        final item = state.items[index];
+                                        final isFirstDayOfWeek = index % 7 == 0;
+                                        final isLastDayOfWeek = index % 7 == 6;
+                                        final previousDayEvents = index > 0
+                                            ? state.items[index - 1].events
+                                            : <SingleCalendarEvent>[];
+                                        final nextDayEvents =
+                                            index < state.items.length - 1
+                                                ? state.items[index + 1].events
+                                                : <SingleCalendarEvent>[];
+
+                                        return MonthTile(
+                                          onTap: () =>
+                                              widget.onSelected?.call(item.date),
+                                          calendarSettings:
+                                              widget.calendarSettings,
+                                          text: item.isDayName
+                                              ? _dayName(context, item.date,
+                                                  widget.locale)
+                                              : item.date.day.toString(),
+                                          events: item.events,
+                                          previousDayEvents: previousDayEvents,
+                                          nextDayEvents: nextDayEvents,
+                                          isTheSameMonth: item.isDayName ||
+                                              state.date.isSameMonth(item.date),
+                                          isToday: !item.isDayName &&
+                                              item.date
+                                                  .isSameDate(DateTime.now()),
+                                          isDayName: item.isDayName,
+                                          isFirstDayOfTheWeek: isFirstDayOfWeek,
+                                          isLastDayOfTheWeek: isLastDayOfWeek,
+                                          groupPositions: groupPositions,
+                                          calendarWidth: constraints.maxWidth,
+                                          isExpanded: isExpanded,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                      }),
                 );
               },
             ),
@@ -150,10 +236,10 @@ class MonthCalendarView extends StatelessWidget {
   }
 
   Widget _buildMonthHeader(BuildContext context, MonthCalendarChanged state) {
-    return monthPicker?.call(context) ??
+    return widget.monthPicker?.call(context) ??
         MonthHeader(
-          locale: locale,
-          calendarSettings: calendarSettings,
+          locale: widget.locale,
+          calendarSettings: widget.calendarSettings,
           onTapLeft: () => _changeMonth(context, state, -1),
           onTapRight: () => _changeMonth(context, state, 1),
           dayFromMonth: state.date,
@@ -169,7 +255,7 @@ class MonthCalendarView extends StatelessWidget {
 
   String _dayName(BuildContext context, DateTime date, Locale? locale) {
     final weekdayAbbreviation =
-        customWeekdayAbbreviation?.call(context, date.weekday);
+        widget.customWeekdayAbbreviation?.call(context, date.weekday);
     if (weekdayAbbreviation != null) return weekdayAbbreviation;
     final format = DateFormat("EEE", locale?.toLanguageTag());
     return format.format(date);

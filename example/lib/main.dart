@@ -224,6 +224,12 @@ class MonthCalendarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: MonthCalendarView(
+          calendarSettings: CalendarSettings(
+            firstLineTileTextStyle: const TextStyle(
+              fontSize: 11,
+              color: Colors.black,
+            ),
+          ),
       calendarEventsRepository: calendarRepository,
       onSelected: (date) => ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
