@@ -222,21 +222,20 @@ class MonthCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: MonthCalendarView(
-          calendarSettings: CalendarSettings(
-            firstLineTileTextStyle: const TextStyle(
-              fontSize: 11,
-              color: Colors.black,
-            ),
-          ),
+    return MonthCalendarView(
+      calendarSettings: CalendarSettings(
+        firstLineTileTextStyle: const TextStyle(
+          fontSize: 11,
+          color: Colors.black,
+        ),
+      ),
       isExpandable: true,
       isWeekModeEnabled: true,
       monthPicker: (context) => SizedBox.shrink(),
       calendarEventsRepository: calendarRepository,
       onSelected: (date) => ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text("Day ${date.day} tapped"))),
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text("Day ${date.day} tapped"))),
 
       // Optional locale for translations
       // locale: <your current locale>,
@@ -260,6 +259,6 @@ class MonthCalendarTab extends StatelessWidget {
 
       // Optionally, you can customize calendar settings - text styles, etc.
       // calendarSettings: <CalendarSettings>,
-    ));
+    );
   }
 }

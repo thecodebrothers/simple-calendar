@@ -153,80 +153,77 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
       child: Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             _buildMonthHeader(context, state),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return GestureDetector(
-                    onVerticalDragEnd: (details) {
-                      final velocity = details.primaryVelocity;
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return GestureDetector(
+                  onVerticalDragEnd: (details) {
+                    final velocity = details.primaryVelocity;
 
-                      if (velocity == null) return;
+                    if (velocity == null) return;
 
-                      if (velocity < 0 && !_isExpanded.value) {
-                        _enterWeekMode();
-                        return;
-                      }
+                    if (velocity < 0 && !_isExpanded.value) {
+                      _enterWeekMode();
+                      return;
+                    }
 
-                      if (velocity > 0 && _isWeekMode.value) {
-                        _exitWeekMode();
-                        return;
-                      }
+                    if (velocity > 0 && _isWeekMode.value) {
+                      _exitWeekMode();
+                      return;
+                    }
 
-                      if (!widget.isExpandable) return;
+                    if (!widget.isExpandable) return;
 
-                      if (velocity > 0) {
-                        _expandView();
-                      } else {
-                        _collapseView();
-                      }
-                    },
-                    child: ValueListenableBuilder<bool>(
-                      valueListenable: _isExpanded,
-                      builder: (context, isExpanded, child) {
-                        return AnimatedBuilder(
-                          animation: _expandedAnimationController,
-                          builder: (context, child) {
-                            return Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    for (var i = 1; i <= 7; i++)
-                                      Expanded(
-                                        child: Container(
-                                          height: 24,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            _dayName(
-                                              context,
-                                              state.date.add(Duration(days: i)),
-                                              widget.locale,
-                                            ),
-                                            style: widget.calendarSettings
-                                                .calendarMonthDayStyle,
+                    if (velocity > 0) {
+                      _expandView();
+                    } else {
+                      _collapseView();
+                    }
+                  },
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _isExpanded,
+                    builder: (context, isExpanded, child) {
+                      return AnimatedBuilder(
+                        animation: _expandedAnimationController,
+                        builder: (context, child) {
+                          return Column(
+                            children: [
+                              Row(
+                                children: [
+                                  for (var i = 1; i <= 7; i++)
+                                    Expanded(
+                                      child: Container(
+                                        height: 24,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          _dayName(
+                                            context,
+                                            state.date.add(Duration(days: i)),
+                                            widget.locale,
                                           ),
+                                          style: widget.calendarSettings
+                                              .calendarMonthDayStyle,
                                         ),
                                       ),
-                                  ],
-                                ),
-                                SizedBox(height: 8),
-                                Expanded(
-                                  child: _buildDays(
-                                    state,
-                                    groupPositions,
-                                    constraints,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+                                    ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              _buildDays(
+                                state,
+                                groupPositions,
+                                constraints,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -287,6 +284,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
     }
 
     return GridView.builder(
+      shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
@@ -334,6 +332,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
         valueListenable: _isExpanded,
         builder: (context, isExpanded, child) {
           return GridView.builder(
+            shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
