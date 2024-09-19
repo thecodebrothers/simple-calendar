@@ -81,6 +81,8 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   late final Animation<double> _weekModeScaleAnimation;
   late final Animation<double> _weekModeOpacityAnimation;
 
+  double width = 0;
+
   @override
   void initState() {
     super.initState();
@@ -112,6 +114,14 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
     _expandedAnimationController.dispose();
     _weekModeAnimationController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      width = context.size?.width ?? 0.0;
+    });
   }
 
   @override
@@ -156,74 +166,66 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildMonthHeader(context, state),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                return GestureDetector(
-                  onVerticalDragEnd: (details) {
-                    final velocity = details.primaryVelocity;
+            GestureDetector(
+              onVerticalDragEnd: (details) {
+                final velocity = details.primaryVelocity;
 
-                    if (velocity == null) return;
+                if (velocity == null) return;
 
-                    if (velocity < 0 && !_isExpanded.value) {
-                      _enterWeekMode();
-                      return;
-                    }
+                if (velocity < 0 && !_isExpanded.value) {
+                  _enterWeekMode();
+                  return;
+                }
 
-                    if (velocity > 0 && _isWeekMode.value) {
-                      _exitWeekMode();
-                      return;
-                    }
+                if (velocity > 0 && _isWeekMode.value) {
+                  _exitWeekMode();
+                  return;
+                }
 
-                    if (!widget.isExpandable) return;
+                if (!widget.isExpandable) return;
 
-                    if (velocity > 0) {
-                      _expandView();
-                    } else {
-                      _collapseView();
-                    }
-                  },
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: _isExpanded,
-                    builder: (context, isExpanded, child) {
-                      return AnimatedBuilder(
-                        animation: _expandedAnimationController,
-                        builder: (context, child) {
-                          return Column(
+                if (velocity > 0) {
+                  _expandView();
+                } else {
+                  _collapseView();
+                }
+              },
+              child: ValueListenableBuilder<bool>(
+                valueListenable: _isExpanded,
+                builder: (context, isExpanded, child) {
+                  return AnimatedBuilder(
+                    animation: _expandedAnimationController,
+                    builder: (context, child) {
+                      return Column(
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  for (var i = 1; i <= 7; i++)
-                                    Expanded(
-                                      child: Container(
-                                        height: 24,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          _dayName(
-                                            context,
-                                            state.date.add(Duration(days: i)),
-                                            widget.locale,
-                                          ),
-                                          style: widget.calendarSettings
-                                              .calendarMonthDayStyle,
-                                        ),
+                              for (var i = 1; i <= 7; i++)
+                                Expanded(
+                                  child: Container(
+                                    height: 24,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      _dayName(
+                                        context,
+                                        state.date.add(Duration(days: i)),
+                                        widget.locale,
                                       ),
+                                      style: widget.calendarSettings
+                                          .calendarMonthDayStyle,
                                     ),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              _buildDays(
-                                state,
-                                groupPositions,
-                                constraints,
-                              ),
+                                  ),
+                                ),
                             ],
-                          );
-                        },
+                          ),
+                          SizedBox(height: 8),
+                          _buildDays(state, groupPositions),
+                        ],
                       );
                     },
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -234,7 +236,6 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   Widget _buildDays(
     MonthCalendarChanged state,
     Map<String, int> groupPositions,
-    BoxConstraints constraints,
   ) {
     return AnimatedBuilder(
       animation: _weekModeAnimationController,
@@ -246,13 +247,13 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                 sizeFactor: _weekModeScaleAnimation,
                 child: FadeTransition(
                   opacity: _weekModeOpacityAnimation,
-                  child: _buildMonthView(state, groupPositions, constraints),
+                  child: _buildMonthView(state, groupPositions),
                 ),
               ),
             if (_weekModeAnimationController.value > 0)
               FadeTransition(
                 opacity: ReverseAnimation(_weekModeOpacityAnimation),
-                child: _buildWeekView(state, groupPositions, constraints),
+                child: _buildWeekView(state, groupPositions),
               ),
           ],
         );
@@ -263,7 +264,6 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   Widget _buildWeekView(
     MonthCalendarChanged state,
     Map<String, int> groupPositions,
-    BoxConstraints constraints,
   ) {
     DateTime today = DateTime.now();
     DateTime firstDayOfWeek = today.subtract(Duration(days: today.weekday - 1));
@@ -316,7 +316,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
           isFirstDayOfTheWeek: isFirstDayOfWeek,
           isLastDayOfTheWeek: isLastDayOfWeek,
           groupPositions: groupPositions,
-          calendarWidth: constraints.maxWidth,
+          calendarWidth: width,
           isExpanded: false,
         );
       },
@@ -326,59 +326,58 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   Widget _buildMonthView(
     MonthCalendarChanged state,
     Map<String, int> groupPositions,
-    BoxConstraints constraints,
   ) {
     return ValueListenableBuilder<bool>(
-        valueListenable: _isExpanded,
-        builder: (context, isExpanded, child) {
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-              childAspectRatio: _expandedAnimationController.value,
-            ),
-            itemCount: state.items.length,
-            itemBuilder: (context, index) {
-              final item = state.items[index];
-              final isFirstDayOfWeek = index % 7 == 0;
-              final isLastDayOfWeek = index % 7 == 6;
-              final previousDayEvents = index > 0
-                  ? state.items[index - 1].events
-                  : <SingleCalendarEvent>[];
-              final nextDayEvents = index < state.items.length - 1
-                  ? state.items[index + 1].events
-                  : <SingleCalendarEvent>[];
+      valueListenable: _isExpanded,
+      builder: (context, isExpanded, child) {
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 7,
+            childAspectRatio: _expandedAnimationController.value,
+          ),
+          itemCount: state.items.length,
+          itemBuilder: (context, index) {
+            final item = state.items[index];
+            final isFirstDayOfWeek = index % 7 == 0;
+            final isLastDayOfWeek = index % 7 == 6;
+            final previousDayEvents = index > 0
+                ? state.items[index - 1].events
+                : <SingleCalendarEvent>[];
+            final nextDayEvents = index < state.items.length - 1
+                ? state.items[index + 1].events
+                : <SingleCalendarEvent>[];
 
-              return MonthTile(
-                onTap: () {
-                  widget.onSelected?.call(item.date);
-                  if (widget.isWeekModeEnabled) {
-                    _enterWeekMode();
-                    _collapseView();
-                  }
-                },
-                calendarSettings: widget.calendarSettings,
-                text: item.isDayName
-                    ? _dayName(context, item.date, widget.locale)
-                    : item.date.day.toString(),
-                events: item.events,
-                previousDayEvents: previousDayEvents,
-                nextDayEvents: nextDayEvents,
-                isTheSameMonth:
-                    item.isDayName || state.date.isSameMonth(item.date),
-                isToday:
-                    !item.isDayName && item.date.isSameDate(DateTime.now()),
-                isDayName: item.isDayName,
-                isFirstDayOfTheWeek: isFirstDayOfWeek,
-                isLastDayOfTheWeek: isLastDayOfWeek,
-                groupPositions: groupPositions,
-                calendarWidth: constraints.maxWidth,
-                isExpanded: isExpanded,
-              );
-            },
-          );
-        });
+            return MonthTile(
+              onTap: () {
+                widget.onSelected?.call(item.date);
+                if (widget.isWeekModeEnabled) {
+                  _enterWeekMode();
+                  _collapseView();
+                }
+              },
+              calendarSettings: widget.calendarSettings,
+              text: item.isDayName
+                  ? _dayName(context, item.date, widget.locale)
+                  : item.date.day.toString(),
+              events: item.events,
+              previousDayEvents: previousDayEvents,
+              nextDayEvents: nextDayEvents,
+              isTheSameMonth:
+                  item.isDayName || state.date.isSameMonth(item.date),
+              isToday: !item.isDayName && item.date.isSameDate(DateTime.now()),
+              isDayName: item.isDayName,
+              isFirstDayOfTheWeek: isFirstDayOfWeek,
+              isLastDayOfTheWeek: isLastDayOfWeek,
+              groupPositions: groupPositions,
+              calendarWidth: width,
+              isExpanded: isExpanded,
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget _buildMonthHeader(BuildContext context, MonthCalendarChanged state) {
