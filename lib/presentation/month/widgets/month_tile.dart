@@ -40,13 +40,21 @@ class MonthTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2),
-      child: Column(
-        children: [
-          _buildDateTile(),
-          if (!isDayName) Expanded(child: _buildEventIndicators()),
-        ],
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        border: isExpanded
+            ? Border(bottom: BorderSide(color: Colors.grey.shade300))
+            : null,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(2),
+        child: Column(
+          children: [
+            _buildDateTile(),
+            if (!isDayName) Expanded(child: _buildEventIndicators()),
+          ],
+        ),
       ),
     );
   }

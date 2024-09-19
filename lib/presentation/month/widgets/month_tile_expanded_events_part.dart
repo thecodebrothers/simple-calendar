@@ -33,11 +33,14 @@ class MonthTileExpandedEventsPart extends StatelessWidget {
                 ),
                 const SizedBox(width: 1),
                 Expanded(
-                    child: Text(
-                  event.singleLine,
-                  style: calendarSettings.firstLineTileTextStyle
-                      .copyWith(fontSize: 11),
-                )),
+                  child: Text(
+                    event.singleLine,
+                    style: calendarSettings.firstLineTileTextStyle
+                        .copyWith(fontSize: 11),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),

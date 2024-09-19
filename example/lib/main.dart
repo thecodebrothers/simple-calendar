@@ -230,6 +230,9 @@ class MonthCalendarTab extends StatelessWidget {
               color: Colors.black,
             ),
           ),
+      isExpandable: true,
+      isWeekModeEnabled: true,
+      monthPicker: (context) => SizedBox.shrink(),
       calendarEventsRepository: calendarRepository,
       onSelected: (date) => ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
