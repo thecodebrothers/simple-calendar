@@ -381,14 +381,23 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   }
 
   Widget _buildMonthHeader(BuildContext context, MonthCalendarChanged state) {
-    return widget.monthPicker?.call(context) ??
-        MonthHeader(
-          locale: widget.locale,
-          calendarSettings: widget.calendarSettings,
-          onTapLeft: () => _changeMonth(context, state, -1),
-          onTapRight: () => _changeMonth(context, state, 1),
-          dayFromMonth: state.date,
-        );
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isWeekMode,
+      builder: (context, isWeekMode, child) {
+        if (isWeekMode) {
+          return SizedBox.shrink();
+        }
+
+        return widget.monthPicker?.call(context) ??
+            MonthHeader(
+              locale: widget.locale,
+              calendarSettings: widget.calendarSettings,
+              onTapLeft: () => _changeMonth(context, state, -1),
+              onTapRight: () => _changeMonth(context, state, 1),
+              dayFromMonth: state.date,
+            );
+      },
+    );
   }
 
   void _changeMonth(
