@@ -53,6 +53,8 @@ class MonthCalendarView extends StatefulWidget {
 
   final bool isWeekModeEnabled;
 
+  final bool isWeekViewInitially;
+
   MonthCalendarView({
     required this.calendarEventsRepository,
     this.reloadController,
@@ -64,6 +66,7 @@ class MonthCalendarView extends StatefulWidget {
     this.customWeekdayAbbreviation,
     this.isExpandable = false,
     this.isWeekModeEnabled = false,
+    this.isWeekViewInitially = false,
     Key? key,
   }) : super(key: key);
 
@@ -97,7 +100,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
 
     _weekModeAnimationController = AnimationController(
       vsync: this,
-      value: widget.isWeekModeEnabled ? 1 : 0,
+      value: widget.isWeekModeEnabled && widget.isWeekViewInitially ? 1 : 0,
       duration: const Duration(milliseconds: 400),
     );
 
@@ -352,7 +355,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
             return MonthTile(
               onTap: () {
                 widget.onSelected?.call(item.date);
-                if (widget.isWeekModeEnabled) {
+                if (widget.isWeekModeEnabled && widget.isWeekViewInitially) {
                   _enterWeekMode();
                   _collapseView();
                 }
