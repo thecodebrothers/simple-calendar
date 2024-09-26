@@ -20,6 +20,7 @@ class SingleCalendarEvent {
   final String? groupName;
   final int? groupOrder;
   final Color? groupColor;
+  final bool? isFullAccess;
 
   SingleCalendarEvent({
     required this.singleLine,
@@ -41,5 +42,6 @@ class SingleCalendarEvent {
     this.groupName,
     this.groupOrder,
     this.groupColor,
+    this.isFullAccess,
   });
 }

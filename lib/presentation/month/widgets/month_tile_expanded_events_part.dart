@@ -7,9 +7,11 @@ class MonthTileExpandedEventsPart extends StatelessWidget {
     required this.calendarSettings,
     required this.groupedEvents,
     required this.groupPositions,
+    this.onTap,
     super.key,
   });
 
+  final Function(SingleCalendarEvent)? onTap;
   final CalendarSettings calendarSettings;
   final Map<String, List<SingleCalendarEvent>> groupedEvents;
   final Map<String, int> groupPositions;
@@ -21,45 +23,36 @@ class MonthTileExpandedEventsPart extends StatelessWidget {
         final entry = groupedEvents.entries.elementAt(index);
         final event = entry.value.first;
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 2.0),
-          child: IntrinsicHeight(
-            child: Row(
-              children: [
-                Container(
-                  width: 3,
-                  color:
-                      event.groupColor ?? calendarSettings.monthSelectedColor,
-                ),
-                const SizedBox(width: 1),
-                Expanded(
-                  child: Text(
-                    event.singleLine,
-                    style: calendarSettings.firstLineTileTextStyle
-                        .copyWith(fontSize: 11),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+        return InkWell(
+          onTap: () => onTap?.call(event),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 2.0),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  Container(
+                    width: 3,
+                    color:
+                        event.groupColor ?? calendarSettings.monthSelectedColor,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 1),
+                  Expanded(
+                    child: Text(
+                      event.singleLine,
+                      style: calendarSettings.firstLineTileTextStyle
+                          .copyWith(fontSize: 11),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
       itemCount: groupedEvents.length,
       physics: const ClampingScrollPhysics(),
-    );
-  }
-
-  Widget _buildEventIndicator(SingleCalendarEvent event) {
-    return Center(
-      child: Container(
-        width: 16,
-        height: 4,
-        decoration: BoxDecoration(
-          color: event.groupColor ?? calendarSettings.monthSelectedColor,
-        ),
-      ),
     );
   }
 }

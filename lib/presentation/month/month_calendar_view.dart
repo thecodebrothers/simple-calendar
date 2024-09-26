@@ -34,6 +34,9 @@ class MonthCalendarView extends StatefulWidget {
   /// Called when user taps on a day
   final void Function(DateTime)? onSelected;
 
+  /// Called when user taps on a event
+  final void Function(SingleCalendarEvent)? onEventSelected;
+
   /// Custom header widget that will be shown above calendar
   final Widget Function(BuildContext)? monthPicker;
 
@@ -61,6 +64,7 @@ class MonthCalendarView extends StatefulWidget {
     this.initialDate,
     this.calendarSettings = const CalendarSettings(),
     this.onSelected,
+    this.onEventSelected,
     this.monthPicker,
     this.locale,
     this.customWeekdayAbbreviation,
@@ -362,6 +366,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                   _collapseView();
                 }
               },
+              onEventTap: widget.onEventSelected,
               calendarSettings: widget.calendarSettings,
               text: item.isDayName
                   ? _dayName(context, item.date, widget.locale)

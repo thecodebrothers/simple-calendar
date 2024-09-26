@@ -13,6 +13,7 @@ class MonthTile extends StatelessWidget {
   final Map<String, int> groupPositions;
   final bool isTheSameMonth;
   final VoidCallback onTap;
+  final Function(SingleCalendarEvent)? onEventTap;
   final bool isToday;
   final bool isDayName;
   final bool isFirstDayOfTheWeek;
@@ -35,6 +36,7 @@ class MonthTile extends StatelessWidget {
     required this.groupPositions,
     required this.calendarWidth,
     required this.isExpanded,
+    this.onEventTap,
     Key? key,
   }) : super(key: key);
 
@@ -92,6 +94,7 @@ class MonthTile extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       child: isExpanded
           ? MonthTileExpandedEventsPart(
+              onTap: onEventTap,
               calendarSettings: calendarSettings,
               groupedEvents: groupedEvents,
               groupPositions: groupPositions,
