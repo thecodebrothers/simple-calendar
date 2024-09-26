@@ -32,6 +32,9 @@ class CalendarSettings {
   /// color of a default day in month view
   final Color? monthDefaultDayColor;
 
+  /// color of a selected day in week view
+  final Color? weekSelectedColor;
+
   /// format of a day name in one day calendar view
   final String dayNameFormat;
 
@@ -91,6 +94,7 @@ class CalendarSettings {
     this.daySwitcherBackgroundColor = Colors.transparent,
     this.monthSelectedColor = const Color(0xFF0474BB),
     this.monthDefaultDayColor,
+    this.weekSelectedColor,
     this.dayNameFormat = "dd MMM",
     this.minimumEventHeight,
     this.dragEnabled = false,

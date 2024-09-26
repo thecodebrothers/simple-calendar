@@ -32,7 +32,19 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
 
   Future loadForDate(DateTime date) async {
     final events = await _monthCalendarGetEventsUseCase.getItems(date);
-    emit(MonthCalendarChanged(events, date));
+    final currentState = state;
+    if (currentState is MonthCalendarChanged) {
+      emit(
+        MonthCalendarChanged(
+          events,
+          date,
+          currentState.selectedDate,
+          currentState.weekItems,
+        ),
+      );
+    } else {
+      emit(MonthCalendarChanged(events, date, date, events));
+    }
   }
 
   Future _reload() async {
@@ -40,7 +52,28 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     if (currentState is MonthCalendarChanged) {
       final events =
           await _monthCalendarGetEventsUseCase.getItems(currentState.date);
-      emit(MonthCalendarChanged(events, currentState.date));
+      emit(MonthCalendarChanged(
+        events,
+        currentState.date,
+        currentState.selectedDate,
+        currentState.weekItems,
+      ));
+    }
+  }
+
+  Future<void> onDaySelected(DateTime date) async {
+    final currentState = state;
+    if (currentState is MonthCalendarChanged) {
+      final events =
+          await _monthCalendarGetEventsUseCase.getItems(currentState.date);
+      emit(
+        MonthCalendarChanged(
+          currentState.items,
+          currentState.date,
+          date,
+          events,
+        ),
+      );
     }
   }
 }

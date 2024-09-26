@@ -268,17 +268,15 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
     MonthCalendarChanged state,
     Map<String, int> groupPositions,
   ) {
-    DateTime today = DateTime.now();
-    DateTime firstDayOfWeek = today.subtract(Duration(days: today.weekday - 1));
-
-    bool isSameDate(DateTime a, DateTime b) {
-      return a.year == b.year && a.month == b.month && a.day == b.day;
-    }
+    final calendarSettings = widget.calendarSettings;
+    DateTime selectedDate = state.selectedDate ?? state.date;
+    DateTime firstDayOfWeek =
+        selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
 
     List<MonthSingleDayItem> weekItems = [];
     for (int i = 0; i < 7; i++) {
       DateTime date = firstDayOfWeek.add(Duration(days: i));
-      MonthSingleDayItem? item = state.items.firstWhereOrNull(
+      MonthSingleDayItem? item = state.weekItems.firstWhereOrNull(
         (item) => item.date.isSameDate(date),
       );
       if (item != null) {
@@ -306,7 +304,10 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
 
         return MonthTile(
           onTap: () => _exitWeekMode(),
-          calendarSettings: widget.calendarSettings,
+          calendarSettings: calendarSettings.copyWith(
+            monthSelectedColor: calendarSettings.weekSelectedColor ??
+                calendarSettings.monthSelectedColor,
+          ),
           text: item.isDayName
               ? _dayName(context, item.date, widget.locale)
               : item.date.day.toString(),
@@ -314,7 +315,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
           previousDayEvents: previousDayEvents,
           nextDayEvents: nextDayEvents,
           isTheSameMonth: item.isDayName || state.date.isSameMonth(item.date),
-          isToday: !item.isDayName && isSameDate(item.date, today),
+          isToday: !item.isDayName && item.date.isSameDate(selectedDate),
           isDayName: item.isDayName,
           isFirstDayOfTheWeek: isFirstDayOfWeek,
           isLastDayOfTheWeek: isLastDayOfWeek,
@@ -355,6 +356,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
             return MonthTile(
               onTap: () {
                 widget.onSelected?.call(item.date);
+                context.read<MonthCalendarCubit>().onDaySelected(item.date);
                 if (widget.isWeekModeEnabled && widget.isWeekViewInitially) {
                   _enterWeekMode();
                   _collapseView();
