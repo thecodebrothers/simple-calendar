@@ -93,7 +93,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   @override
   void initState() {
     super.initState();
-    _isWeekMode.value = widget.isWeekModeEnabled;
+    _isWeekMode.value = widget.isWeekModeEnabled && widget.isWeekViewInitially;
     _expandedAnimationController = AnimationController(
       vsync: this,
       value: 1.1,
