@@ -166,7 +166,10 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
     Map<String, int> groupPositions,
   ) {
     return GestureDetector(
-      onTap: () => _exitWeekMode(),
+      onTap: () {
+        _exitWeekMode();
+        _expandView();
+      },
       child: Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: Column(
