@@ -31,6 +31,9 @@ class MonthCalendarView extends StatefulWidget {
   /// Settings for calendar
   final CalendarSettings calendarSettings;
 
+  /// Called when user taps on a calendar area
+  final void Function()? onTap;
+
   /// Called when user taps on a day
   final void Function(DateTime)? onSelected;
 
@@ -63,6 +66,7 @@ class MonthCalendarView extends StatefulWidget {
     this.reloadController,
     this.initialDate,
     this.calendarSettings = const CalendarSettings(),
+    this.onTap,
     this.onSelected,
     this.onEventSelected,
     this.monthPicker,
@@ -167,8 +171,13 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   ) {
     return GestureDetector(
       onTap: () {
-        _exitWeekMode();
-        _expandView();
+        widget.onTap?.call();
+        if (widget.isWeekViewInitially && !_isWeekMode.value) {
+          _enterWeekMode();
+        } else {
+          _exitWeekMode();
+          _expandView();
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 24.0),
@@ -183,11 +192,13 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                 if (velocity == null) return;
 
                 if (velocity < 0 && !_isExpanded.value) {
+                  widget.onTap?.call();
                   _enterWeekMode();
                   return;
                 }
 
                 if (velocity > 0 && _isWeekMode.value) {
+                  widget.onTap?.call();
                   _exitWeekMode();
                   return;
                 }
@@ -195,8 +206,10 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                 if (!widget.isExpandable) return;
 
                 if (velocity > 0) {
+                  widget.onTap?.call();
                   _expandView();
                 } else {
+                  widget.onTap?.call();
                   _collapseView();
                 }
               },
@@ -310,7 +323,10 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
             : <SingleCalendarEvent>[];
 
         return MonthTile(
-          onTap: () => _exitWeekMode(),
+          onTap: () {
+            widget.onTap?.call();
+            _exitWeekMode();
+          },
           calendarSettings: calendarSettings.copyWith(
             monthSelectedColor: calendarSettings.weekSelectedColor ??
                 calendarSettings.monthSelectedColor,
