@@ -31,9 +31,6 @@ class MonthCalendarView extends StatefulWidget {
   /// Settings for calendar
   final CalendarSettings calendarSettings;
 
-  /// Called when user taps on a calendar area
-  final void Function()? onTap;
-
   /// Called when user taps on a day
   final void Function(DateTime)? onSelected;
 
@@ -42,6 +39,8 @@ class MonthCalendarView extends StatefulWidget {
 
   /// Custom header widget that will be shown above calendar
   final Widget Function(BuildContext)? monthPicker;
+
+  final void Function(bool)? isCalendarExpanded;
 
   /// Locale for calendar, if not provided, then system locale will be used
   ///
@@ -66,7 +65,6 @@ class MonthCalendarView extends StatefulWidget {
     this.reloadController,
     this.initialDate,
     this.calendarSettings = const CalendarSettings(),
-    this.onTap,
     this.onSelected,
     this.onEventSelected,
     this.monthPicker,
@@ -75,6 +73,7 @@ class MonthCalendarView extends StatefulWidget {
     this.isExpandable = false,
     this.isWeekModeEnabled = false,
     this.isWeekViewInitially = false,
+    this.isCalendarExpanded,
     Key? key,
   }) : super(key: key);
 
@@ -116,6 +115,8 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
         .animate(_weekModeAnimationController);
     _weekModeOpacityAnimation = Tween<double>(begin: 1.0, end: 0.0)
         .animate(_weekModeAnimationController);
+    _weekModeAnimationController.addListener(() => widget.isCalendarExpanded
+        ?.call(_weekModeAnimationController.value < 1));
   }
 
   @override
@@ -171,7 +172,6 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
   ) {
     return GestureDetector(
       onTap: () {
-        widget.onTap?.call();
         if (widget.isWeekViewInitially && !_isWeekMode.value) {
           _enterWeekMode();
         } else {
@@ -192,13 +192,11 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                 if (velocity == null) return;
 
                 if (velocity < 0 && !_isExpanded.value) {
-                  widget.onTap?.call();
                   _enterWeekMode();
                   return;
                 }
 
                 if (velocity > 0 && _isWeekMode.value) {
-                  widget.onTap?.call();
                   _exitWeekMode();
                   return;
                 }
@@ -206,10 +204,8 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                 if (!widget.isExpandable) return;
 
                 if (velocity > 0) {
-                  widget.onTap?.call();
                   _expandView();
                 } else {
-                  widget.onTap?.call();
                   _collapseView();
                 }
               },
@@ -324,7 +320,6 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
 
         return MonthTile(
           onTap: () {
-            widget.onTap?.call();
             _exitWeekMode();
           },
           calendarSettings: calendarSettings.copyWith(
