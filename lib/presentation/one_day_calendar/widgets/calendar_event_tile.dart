@@ -6,7 +6,6 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/draggable_
 
 class CalendarEventTile extends StatelessWidget {
   final SingleEvent event;
-  final int numberOfAllDayEvents;
   final int? position;
   final int? numberOfEvents;
   final double rowWidth;
@@ -24,7 +23,6 @@ class CalendarEventTile extends StatelessWidget {
 
   const CalendarEventTile({
     required this.event,
-    required this.numberOfAllDayEvents,
     required this.action,
     required this.calendarSettings,
     required this.date,
@@ -52,8 +50,7 @@ class CalendarEventTile extends StatelessWidget {
             rescaleFactor;
     return Positioned(
       top: (event.eventStart.toDouble() * rescaleFactor) -
-          calendarSettings.startHour * rowHeight +
-          numberOfAllDayEvents * rowHeight,
+          calendarSettings.startHour * rowHeight,
       left: _getPositionLeft(position ?? 0),
       width: eventWidth,
       height: height,

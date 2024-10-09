@@ -58,20 +58,24 @@ class OneDayCalendarView extends StatefulWidget {
   /// Called when user starts dragging event
   final Function()? onDragStarted;
 
-  // Optional label after tomorrow date, ex. 25 May, `label`
+  /// Optional label after tomorrow date, ex. 25 May, `label`
   final String Function(BuildContext)? tomorrowDayLabel;
 
-  // Optional label after today date, ex. 24 May, `label`
+  /// Optional label after today date, ex. 24 May, `label`
   final String Function(BuildContext)? todayDayLabel;
 
-  // Optional label after yesterday date, ex. 23 May, `label`
+  /// Optional label after yesterday date, ex. 23 May, `label`
   final String Function(BuildContext)? yesterdayDayLabel;
 
-  // Optional label after day before yesterday date, ex. 22 May, `label`
+  /// Optional label after day before yesterday date, ex. 22 May, `label`
   final String Function(BuildContext)? beforeYesterdayDayLabel;
 
-  // Optional label after day after tomorrow date, ex. 26 May, `label`
+  /// Optional label after day after tomorrow date, ex. 26 May, `label`
   final String Function(BuildContext)? dayAfterTomorrowDayLabel;
+
+  /// Whether to keep navigation bar and list of whole day events
+  /// always visible with usage of CustomScrollView and slivers
+  final bool useSlivers;
 
   const OneDayCalendarView({
     required this.scrollController,
@@ -91,6 +95,7 @@ class OneDayCalendarView extends StatefulWidget {
     this.dayAfterTomorrowDayLabel,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.useSlivers = false,
     Key? key,
   }) : super(key: key);
 
@@ -147,6 +152,7 @@ class _OneDayCalendarViewState extends State<OneDayCalendarView> {
           onDragCompleted: widget.onDragCompleted,
           onDragUpdate: widget.onDragUpdate,
           onDragStarted: widget.onDragStarted,
+          useSlivers: widget.useSlivers,
         ),
       ),
     );

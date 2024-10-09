@@ -5,14 +5,12 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_t
 
 class WholeEventTile extends StatelessWidget {
   final SingleEvent event;
-  final int position;
   final double rowWidth;
   final VoidCallback action;
   final CalendarSettings calendarSettings;
 
   const WholeEventTile({
     required this.event,
-    required this.position,
     required this.rowWidth,
     required this.action,
     required this.calendarSettings,

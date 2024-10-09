@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
 import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
+import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/all_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_header.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_event.dart';
 
 class SingleDay extends StatefulWidget {
   final Function(DateTime)? onChanged;
@@ -27,6 +30,7 @@ class SingleDay extends StatefulWidget {
     SingleEvent object,
   )? onDragUpdate;
   final Function()? onDragStarted;
+  final bool useSlivers;
 
   const SingleDay({
     required this.onChanged,
@@ -34,6 +38,7 @@ class SingleDay extends StatefulWidget {
     required this.calendarSettings,
     required this.onEventTap,
     required this.onLongPress,
+    required this.useSlivers,
     this.onDragStarted,
     this.locale,
     this.tomorrowDayLabel,
@@ -58,7 +63,7 @@ class _SingleDayState extends State<SingleDay> {
     return BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
       builder: (context, state) {
         if (state is OneDayCalendarChanged) {
-          return _buildSinglePage(state);
+          return _buildSinglePage(context, state);
         } else {
           return const Center(
             child: SizedBox(
@@ -72,7 +77,30 @@ class _SingleDayState extends State<SingleDay> {
     );
   }
 
-  Widget _buildSinglePage(OneDayCalendarChanged state) {
+  Widget _buildSinglePage(
+    BuildContext context,
+    OneDayCalendarChanged state,
+  ) {
+    if (!widget.useSlivers) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildHeader(context, state),
+          Expanded(
+            child: SingleChildScrollView(
+              controller: widget.scrollController,
+              child: Column(
+                children: [
+                  _buildWholeDayEvents(context, state),
+                  _buildShortEvents(context, state),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
         ? 3
         : state.dayWithEvents.allDaysEvents.length.toDouble() + 1);
@@ -80,32 +108,17 @@ class _SingleDayState extends State<SingleDay> {
     return CustomScrollView(
       controller: widget.scrollController,
       slivers: [
-        SingleDayHeader(
-          locale: widget.locale,
-          tomorrowDayLabel: widget.tomorrowDayLabel,
-          todayDayLabel: widget.todayDayLabel,
-          yesterdayDayLabel: widget.yesterdayDayLabel,
-          beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
-          dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
-          onTapLeft: () {
-            final newDate = state.date.add(const Duration(days: -1));
-            widget.onChanged?.call(newDate);
-          },
-          onTapRight: () {
-            final newDate = state.date.add(const Duration(days: 1));
-            widget.onChanged?.call(newDate);
-          },
-          calendarSettings: widget.calendarSettings,
-          state: state,
-        ),
+        if (widget.calendarSettings.isDaySwitcherPinned)
+          SliverPersistentHeader(
+            delegate: SingleDayPersistentHeader(_buildHeader(context, state)),
+            pinned: true,
+          )
+        else
+          SliverToBoxAdapter(child: _buildHeader(context, state)),
         if (state.dayWithEvents.allDaysEvents.isNotEmpty)
           SliverPersistentHeader(
             delegate: AllDayPersistentHeader(
-              updateCallback: (val) {
-                setState(() {
-                  isExpanded = val;
-                });
-              },
+              updateCallback: (val) => setState(() => isExpanded = val),
               isExpanded: isExpanded,
               calendarSettings: widget.calendarSettings,
               events: state.dayWithEvents.allDaysEvents,
@@ -114,21 +127,66 @@ class _SingleDayState extends State<SingleDay> {
               maxExtent: (widget.calendarSettings.allDayEventHeight * height),
             ),
             pinned: true,
-          ),
-        if (state.dayWithEvents.allDaysEvents.isEmpty)
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 24,
-            ),
-          ),
-        SliverToBoxAdapter(
-          child: _buildContent(context, state),
-        ),
+          )
+        else
+          SliverToBoxAdapter(child: SizedBox(height: 24)),
+        SliverToBoxAdapter(child: _buildShortEvents(context, state)),
       ],
     );
   }
 
-  Widget _buildContent(BuildContext context, OneDayCalendarChanged state) {
+  OneDayNavigationBar _buildHeader(
+    BuildContext context,
+    OneDayCalendarChanged state,
+  ) {
+    return OneDayNavigationBar(
+      locale: widget.locale,
+      tomorrowDayLabel: widget.tomorrowDayLabel,
+      todayDayLabel: widget.todayDayLabel,
+      yesterdayDayLabel: widget.yesterdayDayLabel,
+      beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+      dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
+      onTapLeft: () {
+        final newDate = state.date.add(const Duration(days: -1));
+        widget.onChanged?.call(newDate);
+      },
+      onTapRight: () {
+        final newDate = state.date.add(const Duration(days: 1));
+        widget.onChanged?.call(newDate);
+      },
+      calendarSettings: widget.calendarSettings,
+      date: state.date,
+    );
+  }
+
+  Widget _buildWholeDayEvents(
+    BuildContext context,
+    OneDayCalendarChanged state,
+  ) {
+    final events = state.dayWithEvents.allDaysEvents;
+    final marginLeft = kHourCellWidth + kHourCellSpaceRight;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        for (int i = 0; i < events.length; i++)
+          Container(
+            height: widget.calendarSettings.allDayEventHeight,
+            margin: EdgeInsets.only(left: marginLeft),
+            child: WholeEventTile(
+              calendarSettings: widget.calendarSettings,
+              event: events[i],
+              rowWidth: MediaQuery.of(context).size.width - marginLeft,
+              action: () => widget.onEventTap?.call(events[i]),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildShortEvents(
+    BuildContext context,
+    OneDayCalendarChanged state,
+  ) {
     final calendarKey = GlobalKey();
 
     return BlocBuilder<ScaleRowHeightCubit, ScaleHeightState>(
@@ -150,27 +208,21 @@ class _SingleDayState extends State<SingleDay> {
             children: [
               Hours(
                 rowHeight: rowHeight,
-                numberOfConstantsTasks:
-                    state.dayWithEvents.allDaysEvents.length,
                 calendarSettings: widget.calendarSettings,
               ),
               Expanded(
                 child: SizedBox(
                   height: (widget.calendarSettings.endHour -
-                              widget.calendarSettings.startHour) *
-                          rowHeight +
-                      state.dayWithEvents.allDaysEvents.length * rowHeight,
+                          widget.calendarSettings.startHour) *
+                      rowHeight,
                   child: SingleDayTimelineWithEvents(
                     rowHeight: rowHeight,
                     onDragStarted: widget.onDragStarted,
                     onLongPress: widget.onLongPress,
                     key: calendarKey,
                     multipleEvents: state.dayWithEvents.multipleEvents,
-                    allDayEvents: state.dayWithEvents.allDaysEvents,
                     date: state.date,
                     calendarKey: calendarKey,
-                    maxNumberOfWholeDayTasks:
-                        state.dayWithEvents.allDaysEvents.length,
                     action: (item) => widget.onEventTap?.call(item),
                     calendarSettings: widget.calendarSettings,
                     onDragCompleted: widget.onDragCompleted,
