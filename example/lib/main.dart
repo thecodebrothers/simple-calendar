@@ -113,6 +113,7 @@ class OneDayCalendarTab extends StatelessWidget {
           dragEnabled: true,
           rowHeight: 45,
           zoomEnabled: true,
+          showImagesInWholeDayEvents: true,
         ),
 
         // Optional locale for translations
