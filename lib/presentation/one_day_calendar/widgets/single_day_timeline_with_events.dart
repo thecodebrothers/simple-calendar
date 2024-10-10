@@ -9,8 +9,6 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day
 class SingleDayTimelineWithEvents extends StatelessWidget {
   final DateTime date;
   final List<List<SingleEvent>> multipleEvents;
-  final List<SingleEvent> allDayEvents;
-  final int maxNumberOfWholeDayTasks;
   final void Function(SingleEvent) action;
   final CalendarSettings calendarSettings;
   final GlobalKey calendarKey;
@@ -27,8 +25,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
   const SingleDayTimelineWithEvents({
     required this.date,
     required this.multipleEvents,
-    required this.allDayEvents,
-    required this.maxNumberOfWholeDayTasks,
     required this.action,
     required this.calendarSettings,
     required this.calendarKey,
@@ -49,7 +45,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
             EmptyCells(
               rowHeight: rowHeight,
               date: date,
-              numberOfConstantsTasks: 0,
               calendarSettings: calendarSettings,
               onLongPress: onLongPress,
             ),
@@ -71,7 +66,6 @@ class SingleDayTimelineWithEvents extends StatelessWidget {
       for (int i = 0; i < events.length; i++) {
         widgets.add(CalendarEventTile(
           rowHeight: rowHeight,
-          numberOfAllDayEvents: 0,
           onDragStarted: onDragStarted,
           event: events[i],
           calendarKey: calendarKey,

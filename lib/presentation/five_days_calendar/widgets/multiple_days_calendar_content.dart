@@ -65,7 +65,6 @@ class MultipleDaysCalendarContent extends StatelessWidget {
                 children: [
                   Hours(
                     rowHeight: rowHeight,
-                    numberOfConstantsTasks: maxNumberOfWholeDayTasks,
                     calendarSettings: calendarSettings,
                     topPadding: kDayNameHeight,
                   ),
@@ -111,8 +110,6 @@ class MultipleDaysCalendarContent extends StatelessWidget {
             calendarKey: calendarKey,
             date: e.date,
             multipleEvents: e.multipleEvents,
-            allDayEvents: e.allDaysEvents,
-            maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
             action: (event) => onTap?.call(event),
             calendarSettings: calendarSettings,
             onDragCompleted: onDragCompleted,

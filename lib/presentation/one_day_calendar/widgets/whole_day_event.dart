@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
 
 class WholeEventTile extends StatelessWidget {
   final SingleEvent event;
-  final int position;
   final double rowWidth;
   final VoidCallback action;
   final CalendarSettings calendarSettings;
 
   const WholeEventTile({
     required this.event,
-    required this.position,
     required this.rowWidth,
     required this.action,
     required this.calendarSettings,
@@ -37,6 +36,12 @@ class WholeEventTile extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: Row(
               children: [
+                if (calendarSettings.showImagesInWholeDayEvents)
+                  CalendarTileImage(
+                    event: event,
+                    size: 16,
+                    iconBackgroundOpacity: 0.2,
+                  ),
                 SizedBox(width: calendarSettings.iconSpacingFromText),
                 Expanded(
                   child: Text(

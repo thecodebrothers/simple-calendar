@@ -58,6 +58,9 @@ class CalendarSettings {
   /// enables zooming the calendar in and out
   final bool zoomEnabled;
 
+  /// enables images in one-day calendar's whole day events
+  final bool showImagesInWholeDayEvents;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -89,6 +92,7 @@ class CalendarSettings {
     this.areMonthTileDotsOnTheRight = false,
     this.dragDelay = const Duration(milliseconds: 500),
     this.zoomEnabled = false,
+    this.showImagesInWholeDayEvents = false,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
