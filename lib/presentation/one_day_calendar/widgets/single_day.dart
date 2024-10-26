@@ -31,6 +31,7 @@ class SingleDay extends StatefulWidget {
   )? onDragUpdate;
   final Function()? onDragStarted;
   final bool useSlivers;
+  final bool isPullToRefreshEnabled;
 
   const SingleDay({
     required this.onChanged,
@@ -39,6 +40,7 @@ class SingleDay extends StatefulWidget {
     required this.onEventTap,
     required this.onLongPress,
     required this.useSlivers,
+    required this.isPullToRefreshEnabled,
     this.onDragStarted,
     this.locale,
     this.tomorrowDayLabel,
@@ -63,7 +65,14 @@ class _SingleDayState extends State<SingleDay> {
     return BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
       builder: (context, state) {
         if (state is OneDayCalendarChanged) {
-          return _buildSinglePage(context, state);
+          return widget.isPullToRefreshEnabled
+              ? RefreshIndicator(
+                  onRefresh: () => context
+                      .read<OneDayCalendarCubit>()
+                      .loadForDate(state.date),
+                  child: _buildSinglePage(context, state),
+                )
+              : _buildSinglePage(context, state);
         } else {
           return const Center(
             child: SizedBox(
