@@ -28,7 +28,10 @@ class MonthCalendarView extends StatelessWidget {
   final void Function(DateTime)? onSelected;
 
   /// Custom header widget that will be shown above calendar
-  final Widget Function(BuildContext)? monthPicker;
+  final Widget Function(
+    BuildContext,
+    Future<void> Function() refresh,
+  )? monthPicker;
 
   /// Locale for calendar, if not provided, then system locale will be used
   ///
@@ -76,9 +79,7 @@ class MonthCalendarView extends StatelessWidget {
           if (state is MonthCalendarChanged) {
             return isPullToRefreshEnabled
                 ? RefreshIndicator(
-                    onRefresh: () => context
-                        .read<MonthCalendarCubit>()
-                        .loadForDate(state.date),
+                    onRefresh: () async => await _onRefresh(context, state),
                     child: _buildPage(context, state),
                   )
                 : _buildPage(context, state);
@@ -101,7 +102,11 @@ class MonthCalendarView extends StatelessWidget {
       padding: const EdgeInsets.only(top: 24.0),
       child: Column(
         children: [
-          monthPicker?.call(context) ?? _buildDefaultHeader(context, state),
+          monthPicker?.call(
+                context,
+                () async => await _onRefresh(context, state),
+              ) ??
+              _buildDefaultHeader(context, state),
           const SizedBox(height: 24.0),
           Expanded(child: _buildBody(context, state)),
         ],
@@ -175,5 +180,12 @@ class MonthCalendarView extends StatelessWidget {
 
     final format = DateFormat("EEE", locale?.toLanguageTag());
     return format.format(date);
+  }
+
+  Future<void> _onRefresh(
+    BuildContext context,
+    MonthCalendarChanged state,
+  ) async {
+    await context.read<MonthCalendarCubit>().loadForDate(state.date);
   }
 }
