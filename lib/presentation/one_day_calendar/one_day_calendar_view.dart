@@ -11,7 +11,7 @@ import 'package:simple_calendar/repositories/calendar_events_repository.dart';
 import 'package:simple_calendar/use_case/one_day_calendar_get_events_use_case.dart';
 
 /// Calendar widget that shows events for one day
-class OneDayCalendarView extends StatefulWidget {
+class OneDayCalendarView extends StatelessWidget {
   final ScrollController scrollController;
 
   /// Repository that provides events for this calendar
@@ -77,6 +77,11 @@ class OneDayCalendarView extends StatefulWidget {
   /// always visible with usage of CustomScrollView and slivers
   final bool useSlivers;
 
+  /// Whether to enable reloading data when user pulls down the calendar
+  ///
+  /// Make sure to set [isScrollable] in [calendarSettings] to true to make it work
+  final bool isPullToRefreshEnabled;
+
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -96,65 +101,52 @@ class OneDayCalendarView extends StatefulWidget {
     this.onDragCompleted,
     this.onDragUpdate,
     this.useSlivers = false,
+    this.isPullToRefreshEnabled = false,
     Key? key,
   }) : super(key: key);
 
-  @override
-  _OneDayCalendarViewState createState() => _OneDayCalendarViewState();
-}
-
-class _OneDayCalendarViewState extends State<OneDayCalendarView> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<OneDayCalendarCubit>(
-          create: (context) => OneDayCalendarCubit(
-            OneDayCalendarGetEventsUseCase(widget.calendarEventsRepository),
-            widget.initialDate ?? DateTime.now(),
-            widget.reloadController,
-            widget.calendarSettings.minimumEventHeight,
+          create: (_) => OneDayCalendarCubit(
+            OneDayCalendarGetEventsUseCase(calendarEventsRepository),
+            initialDate ?? DateTime.now(),
+            reloadController,
+            calendarSettings.minimumEventHeight,
           ),
         ),
         BlocProvider<ScaleRowHeightCubit>(
-          create: (context) =>
-              ScaleRowHeightCubit(widget.calendarSettings.rowHeight),
+          create: (_) => ScaleRowHeightCubit(calendarSettings.rowHeight),
         ),
       ],
-      child: BlocBuilder<OneDayCalendarCubit, OneDayCalendarState>(
-        builder: (context, state) {
-          return _buildPage(context);
-        },
-      ),
-    );
-  }
-
-  Widget _buildPage(BuildContext pageContext) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: SingleDay(
-          locale: widget.locale,
-          tomorrowDayLabel: widget.tomorrowDayLabel,
-          todayDayLabel: widget.todayDayLabel,
-          yesterdayDayLabel: widget.yesterdayDayLabel,
-          beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
-          dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
-          calendarSettings: widget.calendarSettings,
-          scrollController: widget.scrollController,
-          onEventTap: widget.onEventTap ?? (_) {},
-          onLongPress: widget.onLongPress,
-          onChanged: (date) {
-            widget.onSelected?.call(date);
-            BlocProvider.of<OneDayCalendarCubit>(pageContext).loadForDate(date);
-          },
-          onDragCompleted: widget.onDragCompleted,
-          onDragUpdate: widget.onDragUpdate,
-          onDragStarted: widget.onDragStarted,
-          useSlivers: widget.useSlivers,
-        ),
-      ),
+      child: Builder(builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: SingleDay(
+            locale: locale,
+            tomorrowDayLabel: tomorrowDayLabel,
+            todayDayLabel: todayDayLabel,
+            yesterdayDayLabel: yesterdayDayLabel,
+            beforeYesterdayDayLabel: beforeYesterdayDayLabel,
+            dayAfterTomorrowDayLabel: dayAfterTomorrowDayLabel,
+            calendarSettings: calendarSettings,
+            scrollController: scrollController,
+            onEventTap: onEventTap ?? (_) {},
+            onLongPress: onLongPress,
+            onChanged: (date) {
+              onSelected?.call(date);
+              context.read<OneDayCalendarCubit>().loadForDate(date);
+            },
+            onDragCompleted: onDragCompleted,
+            onDragUpdate: onDragUpdate,
+            onDragStarted: onDragStarted,
+            useSlivers: useSlivers,
+            isPullToRefreshEnabled: isPullToRefreshEnabled,
+          ),
+        );
+      }),
     );
   }
 }
