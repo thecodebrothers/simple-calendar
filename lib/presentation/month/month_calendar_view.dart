@@ -219,17 +219,18 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
                         children: [
                           Row(
                             children: [
-                              for (var i = 1; i <= 7; i++)
+                              for (var i = 0; i < 7; i++)
                                 Expanded(
                                   child: Container(
                                     height: 24,
                                     alignment: Alignment.center,
                                     child: Text(
                                       _dayName(
-                                        context,
-                                        state.date.add(Duration(days: i)),
-                                        widget.locale,
-                                      ),
+                                          context,
+                                          state.date.add(Duration(
+                                              days:
+                                                  i - state.date.weekday + 1)),
+                                          widget.locale),
                                       style: widget.calendarSettings
                                           .calendarMonthDayStyle,
                                     ),
@@ -287,7 +288,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
     final calendarSettings = widget.calendarSettings;
     DateTime selectedDate = state.selectedDate ?? state.date;
     DateTime firstDayOfWeek =
-        selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
+        selectedDate.subtract(Duration(days: (selectedDate.weekday - 1) % 7));
 
     List<MonthSingleDayItem> weekItems = [];
     for (int i = 0; i < 7; i++) {

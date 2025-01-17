@@ -12,23 +12,30 @@ class MonthCalendarGetEventsUseCase {
     final List<DateTime> days = [];
 
     final startOfCurrentMonth = DateTime(date.year, date.month);
-    final weekdayOfFirstDay = startOfCurrentMonth.weekday;
     final endOfCurrentMonth = DateTime(date.year, date.month + 1, 0);
-    final daysBetween = startOfCurrentMonth.calculateDaysBetween(endOfCurrentMonth);
+
+    final weekdayOfFirstDay = startOfCurrentMonth.weekday;
+    final startOfWeek =
+        startOfCurrentMonth.subtract(Duration(days: weekdayOfFirstDay - 1));
+
+    final endOfWeek =
+        endOfCurrentMonth.add(Duration(days: 7 - endOfCurrentMonth.weekday));
+
     final polandUtcDateTime = DateTime(
-      startOfCurrentMonth.year,
-      startOfCurrentMonth.month,
-      startOfCurrentMonth.day,
-      startOfCurrentMonth.hour + 2,
+      startOfWeek.year,
+      startOfWeek.month,
+      startOfWeek.day,
+      startOfWeek.hour + 2,
     ).toUtc();
 
     final events = await _calendarRepository.getEventsForMultipleDays(
-      startOfCurrentMonth,
-      endOfCurrentMonth,
+      startOfWeek,
+      endOfWeek,
     );
 
-    for (var i = -weekdayOfFirstDay + 1; i <= daysBetween; i++) {
-      days.add(polandUtcDateTime.add(Duration(days: i)));
+    for (var i = 0; i <= endOfWeek.difference(startOfWeek).inDays; i++) {
+      final currentDate = polandUtcDateTime.add(Duration(days: i));
+      days.add(currentDate);
     }
 
     final readyDates = days.map((e) {
@@ -43,9 +50,11 @@ class MonthCalendarGetEventsUseCase {
     return readyDates;
   }
 
-  List<SingleCalendarEvent> _getEventsForDay(DateTime date, List<SingleCalendarEvent> events) {
+  List<SingleCalendarEvent> _getEventsForDay(
+      DateTime date, List<SingleCalendarEvent> events) {
     return events.where((event) {
-      return (event.eventStart.isSameDate(date) || event.eventStart.isBefore(date)) &&
+      return (event.eventStart.isSameDate(date) ||
+              event.eventStart.isBefore(date)) &&
           (event.eventEnd.isSameDate(date) || event.eventEnd.isAfter(date));
     }).toList();
   }
