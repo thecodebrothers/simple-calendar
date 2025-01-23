@@ -60,6 +60,8 @@ class MonthCalendarView extends StatefulWidget {
 
   final bool isWeekViewInitially;
 
+  final bool hasLoading;
+
   MonthCalendarView({
     required this.calendarEventsRepository,
     this.reloadController,
@@ -74,6 +76,7 @@ class MonthCalendarView extends StatefulWidget {
     this.isWeekModeEnabled = false,
     this.isWeekViewInitially = false,
     this.isCalendarExpanded,
+    this.hasLoading = false,
     Key? key,
   }) : super(key: key);
 
@@ -143,6 +146,7 @@ class _MonthCalendarViewState extends State<MonthCalendarView>
         MonthCalendarGetEventsUseCase(widget.calendarEventsRepository),
         widget.initialDate ?? DateTime.now(),
         widget.reloadController,
+        hasLoading: widget.hasLoading,
       ),
       child: BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
         builder: (ctx, state) {

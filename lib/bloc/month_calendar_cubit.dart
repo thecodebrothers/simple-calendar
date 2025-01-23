@@ -8,21 +8,23 @@ import 'package:simple_calendar/use_case/month_calendar_get_events_use_case.dart
 part 'month_calendar_state.dart';
 
 class MonthCalendarCubit extends Cubit<MonthCalendarState> {
-  final MonthCalendarGetEventsUseCase _monthCalendarGetEventsUseCase;
-  final DateTime _initialDate;
-  final StreamController? _streamController;
-  StreamSubscription? _subscription;
-
   MonthCalendarCubit(
     this._monthCalendarGetEventsUseCase,
     this._initialDate,
-    this._streamController,
-  ) : super(MonthCalendarLoading()) {
+    this._streamController, {
+    this.hasLoading = false,
+  }) : super(MonthCalendarLoading()) {
     _subscription = _streamController?.stream.listen((event) {
       _reload();
     });
     loadForDate(_initialDate);
   }
+
+  final MonthCalendarGetEventsUseCase _monthCalendarGetEventsUseCase;
+  final DateTime _initialDate;
+  final StreamController? _streamController;
+  final bool hasLoading;
+  StreamSubscription? _subscription;
 
   @override
   Future<void> close() {
@@ -31,6 +33,9 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   }
 
   Future loadForDate(DateTime date) async {
+    if (hasLoading) {
+      emit(MonthCalendarLoading());
+    }
     final events = await _monthCalendarGetEventsUseCase.getItems(date);
     final currentState = state;
     if (currentState is MonthCalendarChanged) {
