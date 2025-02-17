@@ -73,9 +73,8 @@ class OneDayCalendarView extends StatelessWidget {
   /// Optional label after day after tomorrow date, ex. 26 May, `label`
   final String Function(BuildContext)? dayAfterTomorrowDayLabel;
 
-  /// Whether to keep navigation bar and list of whole day events
-  /// always visible with usage of CustomScrollView and slivers
-  final bool useSlivers;
+  /// Whether to keep list of whole day events always visible
+  final bool shouldStickAllDayEvents;
 
   /// Whether to enable reloading data when user pulls down the calendar
   ///
@@ -100,7 +99,7 @@ class OneDayCalendarView extends StatelessWidget {
     this.dayAfterTomorrowDayLabel,
     this.onDragCompleted,
     this.onDragUpdate,
-    this.useSlivers = false,
+    this.shouldStickAllDayEvents = false,
     this.isPullToRefreshEnabled = false,
     Key? key,
   }) : super(key: key);
@@ -142,7 +141,7 @@ class OneDayCalendarView extends StatelessWidget {
             onDragCompleted: onDragCompleted,
             onDragUpdate: onDragUpdate,
             onDragStarted: onDragStarted,
-            useSlivers: useSlivers,
+            shouldStickAllDayEvents: shouldStickAllDayEvents,
             isPullToRefreshEnabled: isPullToRefreshEnabled,
           ),
         );

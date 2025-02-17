@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
 import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
-import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/all_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_event.dart';
 
 class SingleDay extends StatefulWidget {
   final Function(DateTime)? onChanged;
@@ -30,7 +28,7 @@ class SingleDay extends StatefulWidget {
     SingleEvent object,
   )? onDragUpdate;
   final Function()? onDragStarted;
-  final bool useSlivers;
+  final bool shouldStickAllDayEvents;
   final bool isPullToRefreshEnabled;
 
   const SingleDay({
@@ -39,7 +37,7 @@ class SingleDay extends StatefulWidget {
     required this.calendarSettings,
     required this.onEventTap,
     required this.onLongPress,
-    required this.useSlivers,
+    required this.shouldStickAllDayEvents,
     required this.isPullToRefreshEnabled,
     this.onDragStarted,
     this.locale,
@@ -90,29 +88,9 @@ class _SingleDayState extends State<SingleDay> {
     BuildContext context,
     OneDayCalendarChanged state,
   ) {
-    if (!widget.useSlivers) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildHeader(context, state),
-          Expanded(
-            child: SingleChildScrollView(
-              controller: widget.scrollController,
-              child: Column(
-                children: [
-                  _buildWholeDayEvents(context, state),
-                  _buildShortEvents(context, state),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
     final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
         ? 3
-        : state.dayWithEvents.allDaysEvents.length.toDouble() + 1);
+        : state.dayWithEvents.allDaysEvents.length.toDouble());
 
     return CustomScrollView(
       controller: widget.scrollController,
@@ -135,10 +113,9 @@ class _SingleDayState extends State<SingleDay> {
               minExtent: (widget.calendarSettings.allDayEventHeight * height),
               maxExtent: (widget.calendarSettings.allDayEventHeight * height),
             ),
-            pinned: true,
-          )
-        else
-          SliverToBoxAdapter(child: SizedBox(height: 24)),
+            pinned: widget.shouldStickAllDayEvents,
+          ),
+        SliverToBoxAdapter(child: SizedBox(height: 12)),
         SliverToBoxAdapter(child: _buildShortEvents(context, state)),
       ],
     );
@@ -165,30 +142,6 @@ class _SingleDayState extends State<SingleDay> {
       },
       calendarSettings: widget.calendarSettings,
       date: state.date,
-    );
-  }
-
-  Widget _buildWholeDayEvents(
-    BuildContext context,
-    OneDayCalendarChanged state,
-  ) {
-    final events = state.dayWithEvents.allDaysEvents;
-    final marginLeft = kHourCellWidth + kHourCellSpaceRight;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        for (int i = 0; i < events.length; i++)
-          Container(
-            height: widget.calendarSettings.allDayEventHeight,
-            margin: EdgeInsets.only(left: marginLeft),
-            child: WholeEventTile(
-              calendarSettings: widget.calendarSettings,
-              event: events[i],
-              rowWidth: MediaQuery.of(context).size.width - marginLeft,
-              action: () => widget.onEventTap?.call(events[i]),
-            ),
-          ),
-      ],
     );
   }
 
