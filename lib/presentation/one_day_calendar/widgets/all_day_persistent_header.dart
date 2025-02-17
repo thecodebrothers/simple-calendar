@@ -34,8 +34,8 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildDefault(BuildContext context) {
-    return Container(
-      color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
           for (int i = 0; i < events.length; i++)
@@ -56,8 +56,8 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
   Widget _buildExpandable(BuildContext context) {
     final displayableEvents = isExpanded ? events : events.take(2).toList();
 
-    return Container(
-      color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
           for (int i = 0; i < displayableEvents.length; i++)
