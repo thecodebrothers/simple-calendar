@@ -81,6 +81,11 @@ class OneDayCalendarView extends StatelessWidget {
   /// Make sure to set [isScrollable] in [calendarSettings] to true to make it work
   final bool isPullToRefreshEnabled;
 
+  /// enables swipeable feature in the calendar day view
+  ///
+  /// If not provided [false] is default.
+  final bool isSwipeEnabled;
+
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -101,6 +106,7 @@ class OneDayCalendarView extends StatelessWidget {
     this.onDragUpdate,
     this.shouldStickAllDayEvents = false,
     this.isPullToRefreshEnabled = false,
+    this.isSwipeEnabled = false,
     Key? key,
   }) : super(key: key);
 
@@ -143,6 +149,7 @@ class OneDayCalendarView extends StatelessWidget {
             onDragStarted: onDragStarted,
             shouldStickAllDayEvents: shouldStickAllDayEvents,
             isPullToRefreshEnabled: isPullToRefreshEnabled,
+            isSwipeEnabled: isSwipeEnabled,
           ),
         );
       }),
