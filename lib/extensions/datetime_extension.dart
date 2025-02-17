@@ -27,4 +27,9 @@ extension CalculateDaysBetween on DateTime {
     final newTo = DateTime(to.year, to.month, to.day);
     return (newTo.difference(this).inHours / 24).round();
   }
+
+  int getDayDifference(DateTime date) => DateTime.utc(year, month, day)
+      .difference(DateTime.utc(date.year, date.month, date.day))
+      .inDays
+      .abs();
 }

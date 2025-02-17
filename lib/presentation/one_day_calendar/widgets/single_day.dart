@@ -9,6 +9,7 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_colu
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/swapp_able_wrapper.dart';
 
 class SingleDay extends StatefulWidget {
   final Function(DateTime)? onChanged;
@@ -30,6 +31,7 @@ class SingleDay extends StatefulWidget {
   final Function()? onDragStarted;
   final bool shouldStickAllDayEvents;
   final bool isPullToRefreshEnabled;
+  final bool isSwipeEnabled;
 
   const SingleDay({
     required this.onChanged,
@@ -39,6 +41,7 @@ class SingleDay extends StatefulWidget {
     required this.onLongPress,
     required this.shouldStickAllDayEvents,
     required this.isPullToRefreshEnabled,
+    required this.isSwipeEnabled,
     this.onDragStarted,
     this.locale,
     this.tomorrowDayLabel,
@@ -56,7 +59,7 @@ class SingleDay extends StatefulWidget {
 }
 
 class _SingleDayState extends State<SingleDay> {
-  bool isExpanded = false;
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +91,12 @@ class _SingleDayState extends State<SingleDay> {
     BuildContext context,
     OneDayCalendarChanged state,
   ) {
-    final height = (!isExpanded && state.dayWithEvents.allDaysEvents.length > 2
+    final height = (!_isExpanded && state.dayWithEvents.allDaysEvents.length > 2
         ? 3
         : state.dayWithEvents.allDaysEvents.length.toDouble());
 
     return CustomScrollView(
-      controller: widget.scrollController,
+      controller: !widget.isSwipeEnabled ? widget.scrollController : null,
       slivers: [
         if (widget.calendarSettings.isDaySwitcherPinned)
           SliverPersistentHeader(
@@ -105,8 +108,8 @@ class _SingleDayState extends State<SingleDay> {
         if (state.dayWithEvents.allDaysEvents.isNotEmpty)
           SliverPersistentHeader(
             delegate: AllDayPersistentHeader(
-              updateCallback: (val) => setState(() => isExpanded = val),
-              isExpanded: isExpanded,
+              updateCallback: (val) => setState(() => _isExpanded = val),
+              isExpanded: _isExpanded,
               calendarSettings: widget.calendarSettings,
               events: state.dayWithEvents.allDaysEvents,
               onEventTap: (event) => widget.onEventTap?.call(event),
@@ -116,7 +119,10 @@ class _SingleDayState extends State<SingleDay> {
             pinned: widget.shouldStickAllDayEvents,
           ),
         SliverToBoxAdapter(child: SizedBox(height: 12)),
-        SliverToBoxAdapter(child: _buildShortEvents(context, state)),
+        if (widget.isSwipeEnabled)
+          SliverFillRemaining(child: _buildShortEvents(context, state))
+        else
+          SliverToBoxAdapter(child: _buildShortEvents(context, state)),
       ],
     );
   }
@@ -149,9 +155,7 @@ class _SingleDayState extends State<SingleDay> {
     BuildContext context,
     OneDayCalendarChanged state,
   ) {
-    final calendarKey = GlobalKey();
-
-    return BlocBuilder<ScaleRowHeightCubit, ScaleHeightState>(
+    Widget child = BlocBuilder<ScaleRowHeightCubit, ScaleHeightState>(
       builder: (context, rowState) {
         final rowHeight = rowState.height;
         return GestureDetector(
@@ -181,10 +185,8 @@ class _SingleDayState extends State<SingleDay> {
                     rowHeight: rowHeight,
                     onDragStarted: widget.onDragStarted,
                     onLongPress: widget.onLongPress,
-                    key: calendarKey,
                     multipleEvents: state.dayWithEvents.multipleEvents,
                     date: state.date,
-                    calendarKey: calendarKey,
                     action: (item) => widget.onEventTap?.call(item),
                     calendarSettings: widget.calendarSettings,
                     onDragCompleted: widget.onDragCompleted,
@@ -197,5 +199,20 @@ class _SingleDayState extends State<SingleDay> {
         );
       },
     );
+
+    if (widget.isSwipeEnabled) {
+      child = SwappAbleWrapper(
+        calendarSettings: widget.calendarSettings,
+        date: state.date,
+        child: child,
+        scrollController: widget.scrollController,
+        onChanged: (offset) {
+          final newDate = state.date.add(Duration(days: offset));
+          widget.onChanged?.call(newDate);
+        },
+      );
+    }
+
+    return child;
   }
 }

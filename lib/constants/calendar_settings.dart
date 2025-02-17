@@ -61,6 +61,16 @@ class CalendarSettings {
   /// enables images in one-day calendar's whole day events
   final bool showImagesInWholeDayEvents;
 
+  /// Determines the lower boundary user can scroll.
+  ///
+  /// If not provided [CalendarConstants.epochDate] is default.
+  final DateTime? minDay;
+
+  /// Determines upper boundary user can scroll.
+  ///
+  /// If not provided [CalendarConstants.maxDate] is default.
+  final DateTime? maxDay;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -93,6 +103,8 @@ class CalendarSettings {
     this.dragDelay = const Duration(milliseconds: 500),
     this.zoomEnabled = false,
     this.showImagesInWholeDayEvents = false,
+    this.minDay,
+    this.maxDay,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -128,6 +140,9 @@ class CalendarSettings {
     bool? areMonthTileDotsOnTheRight,
     Duration? dragDelay,
     bool? zoomEnabled,
+    bool? showImagesInWholeDayEvents,
+    DateTime? minDay,
+    DateTime? maxDay,
   }) {
     return CalendarSettings(
       firstLineTileTextStyle:
@@ -173,6 +188,10 @@ class CalendarSettings {
           areMonthTileDotsOnTheRight ?? this.areMonthTileDotsOnTheRight,
       dragDelay: dragDelay ?? this.dragDelay,
       zoomEnabled: zoomEnabled ?? this.zoomEnabled,
+      showImagesInWholeDayEvents:
+          showImagesInWholeDayEvents ?? this.showImagesInWholeDayEvents,
+      minDay: minDay ?? this.minDay,
+      maxDay: maxDay ?? this.maxDay,
     );
   }
 }
