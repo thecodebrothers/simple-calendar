@@ -45,7 +45,7 @@
     },
     {
       "name": "cupertino_icons",
-      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.3",
+      "rootUri": "file:///Users/lukaszkoszentka/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -332,7 +332,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-03-11T13:34:09.566156Z",
+  "generated": "2025-03-10T09:57:51.168959Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }

@@ -8,7 +8,7 @@ environment:
 dependencies:
   flutter_bloc: 8.0.0
   equatable: 2.0.3
-  cupertino_icons: 1.0.3
+  cupertino_icons: 1.0.5
   infinite_listview: 1.1.0
   flutter:
     sdk: flutter
