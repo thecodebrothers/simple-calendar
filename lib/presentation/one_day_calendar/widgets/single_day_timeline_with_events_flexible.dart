@@ -101,7 +101,7 @@ class _SingleDayTimelineWithEventsFlexibleState
           getDateOfDroppedRow: (rowNumber) {
             return widget.items
                 .lastWhereOrNull(
-                    (element) => element.countOfRowsAbove <= rowNumber)
+                    (element) => element.countOfRowsAbove < rowNumber)
                 ?.startTime;
           },
         ));
