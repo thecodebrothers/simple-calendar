@@ -71,6 +71,8 @@ class CalendarSettings {
   /// If not provided [CalendarConstants.maxDate] is default.
   final DateTime? maxDay;
 
+  final bool flexibleHoursMode;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -105,6 +107,7 @@ class CalendarSettings {
     this.showImagesInWholeDayEvents = false,
     this.minDay,
     this.maxDay,
+    this.flexibleHoursMode = false,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);

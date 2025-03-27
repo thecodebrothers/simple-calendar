@@ -5,6 +5,25 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_t
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/draggable_tile.dart';
 
 class CalendarEventTile extends StatelessWidget {
+  const CalendarEventTile({
+    required this.event,
+    required this.action,
+    required this.calendarSettings,
+    required this.date,
+    required this.calendarKey,
+    required this.rowWidth,
+    required this.rowHeight,
+    this.position,
+    this.numberOfEvents,
+    this.onDragCompleted,
+    this.onDragUpdate,
+    this.onDragStarted,
+    this.flexibleMode = false,
+    this.rowNumberForFlexibleMode,
+    this.getDateOfDroppedRow,
+    Key? key,
+  }) : super(key: key);
+
   final SingleEvent event;
   final int? position;
   final int? numberOfEvents;
@@ -20,22 +39,9 @@ class CalendarEventTile extends StatelessWidget {
     SingleEvent object,
   )? onDragUpdate;
   final Function()? onDragStarted;
-
-  const CalendarEventTile({
-    required this.event,
-    required this.action,
-    required this.calendarSettings,
-    required this.date,
-    required this.calendarKey,
-    required this.rowWidth,
-    required this.rowHeight,
-    this.position,
-    this.numberOfEvents,
-    this.onDragCompleted,
-    this.onDragUpdate,
-    this.onDragStarted,
-    Key? key,
-  }) : super(key: key);
+  final bool flexibleMode;
+  final int? rowNumberForFlexibleMode;
+  final DateTime? Function(int rowNumber)? getDateOfDroppedRow;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +51,16 @@ class CalendarEventTile extends StatelessWidget {
     final calculatedRowWidth = (rowWidth) / (numberOfEvents ?? 1);
     final eventWidth = (rowWidth) / (numberOfEvents ?? 1);
     final rescaleFactor = rowHeight / 60;
-    final height =
-        (event.eventHeightThreshold.toDouble() - event.eventStart.toDouble()) *
+    final height = flexibleMode
+        ? rowHeight - 4
+        : (event.eventHeightThreshold.toDouble() -
+                event.eventStart.toDouble()) *
             rescaleFactor;
     return Positioned(
-      top: (event.eventStart.toDouble() * rescaleFactor) -
-          calendarSettings.startHour * rowHeight,
+      top: flexibleMode && rowNumberForFlexibleMode != null
+          ? rowNumberForFlexibleMode! * rowHeight
+          : (event.eventStart.toDouble() * rescaleFactor) -
+              calendarSettings.startHour * rowHeight,
       left: _getPositionLeft(position ?? 0),
       width: eventWidth,
       height: height,
@@ -66,6 +76,8 @@ class CalendarEventTile extends StatelessWidget {
           calendarSettings: calendarSettings,
           onDragCompleted: onDragCompleted,
           onDragUpdate: onDragUpdate,
+          getDateOfDroppedRow: getDateOfDroppedRow,
+          flexibleMode: flexibleMode,
           child: Material(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: event.tileBackgroundColor,

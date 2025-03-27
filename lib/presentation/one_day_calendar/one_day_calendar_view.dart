@@ -8,6 +8,7 @@ import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day.dart';
 import 'package:simple_calendar/repositories/calendar_events_repository.dart';
+import 'package:simple_calendar/use_case/group_events_by_start_time_use_case.dart';
 import 'package:simple_calendar/use_case/one_day_calendar_get_events_use_case.dart';
 
 /// Calendar widget that shows events for one day
@@ -117,9 +118,11 @@ class OneDayCalendarView extends StatelessWidget {
         BlocProvider<OneDayCalendarCubit>(
           create: (_) => OneDayCalendarCubit(
             OneDayCalendarGetEventsUseCase(calendarEventsRepository),
+            GroupEventsByStartTimeUseCase(),
             initialDate ?? DateTime.now(),
             reloadController,
             calendarSettings.minimumEventHeight,
+            flexibleHoursMode: calendarSettings.flexibleHoursMode,
           ),
         ),
         BlocProvider<ScaleRowHeightCubit>(

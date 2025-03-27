@@ -84,7 +84,7 @@ class MockEventsService {
         bottomRightLine: 'Bottom Right Line',
         topLeftLine: 'Top Left Line',
         secondLine: 'Second Line',
-        eventStart: _tomorrow.add(Duration(hours: 4)),
+        eventStart: _tomorrow.add(Duration(hours: 2)),
         eventEnd: _tomorrow.add(Duration(hours: 8)),
         isAllDay: false);
     final tomorrowEvent2 = EventItem(
@@ -96,7 +96,25 @@ class MockEventsService {
         eventStart: _tomorrow.add(Duration(hours: 2)),
         eventEnd: _tomorrow.add(Duration(minutes: 230)),
         isAllDay: false);
+    final tomorrowEvent3 = EventItem(
+        id: 7,
+        name: 'Event 7',
+        bottomRightLine: 'Bottom Right Line',
+        topLeftLine: 'Top Left Line',
+        secondLine: 'Second Line',
+        eventStart: _tomorrow.add(Duration(hours: 10)),
+        eventEnd: _tomorrow.add(Duration(minutes: 11 * 60 + 30)),
+        isAllDay: false);
 
+    final tomorrowEvent4 = EventItem(
+        id: 8,
+        name: 'Event 8',
+        bottomRightLine: 'Bottom Right Line',
+        topLeftLine: 'Top Left Line',
+        secondLine: 'Second Line',
+        eventStart: _tomorrow.add(Duration(hours: 1, minutes: 59)),
+        eventEnd: _tomorrow.add(Duration(hours: 2, minutes: 30)),
+        isAllDay: false);
     _events.addAll([
       todayEvent1,
       todayEvent2,
@@ -104,6 +122,8 @@ class MockEventsService {
       yesterdayEvent2,
       tomorrowEvent1,
       tomorrowEvent2,
+      tomorrowEvent3,
+      tomorrowEvent4
     ]);
   }
 }
