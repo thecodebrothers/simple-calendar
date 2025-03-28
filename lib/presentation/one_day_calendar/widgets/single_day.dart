@@ -101,6 +101,7 @@ class _SingleDayState extends State<SingleDay> {
         : state.dayWithEvents.allDaysEvents.length.toDouble());
 
     return CustomScrollView(
+
       controller: !widget.isSwipeEnabled ? widget.scrollController : null,
       slivers: [
         if (widget.calendarSettings.isDaySwitcherPinned)

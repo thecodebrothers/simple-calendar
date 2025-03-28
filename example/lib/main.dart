@@ -108,7 +108,6 @@ class OneDayCalendarTab extends StatelessWidget {
         scrollController: scrollController,
         calendarEventsRepository: calendarRepository,
         calendarSettings: CalendarSettings(
-
             tileIconSize: 36,
             iconSpacingFromText: 8,
             iconBackgroundOpacity: 0.0,
@@ -120,8 +119,7 @@ class OneDayCalendarTab extends StatelessWidget {
             isDaySwitcherPinned: true,
             daySwitcherBackgroundColor: Colors.white,
             rowHeight: 150,
-            flexibleHoursMode: true,
-             showImagesInWholeDayEvents: true,
+            showImagesInWholeDayEvents: true,
             dragEnabled: true),
 
         // Optional locale for translations

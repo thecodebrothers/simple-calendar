@@ -56,6 +56,7 @@ class _SingleDayTimelineWithEventsFlexibleState
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
+      key: calendarKey,
       builder: (BuildContext context, BoxConstraints constraints) {
         return Stack(
           children: [
