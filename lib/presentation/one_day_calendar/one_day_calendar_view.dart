@@ -87,6 +87,9 @@ class OneDayCalendarView extends StatelessWidget {
   /// If not provided [false] is default.
   final bool isSwipeEnabled;
 
+  /// Scroll physics for the calendar
+  final ScrollPhysics? scrollPhysics;
+
   const OneDayCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -108,6 +111,7 @@ class OneDayCalendarView extends StatelessWidget {
     this.shouldStickAllDayEvents = false,
     this.isPullToRefreshEnabled = false,
     this.isSwipeEnabled = false,
+    this.scrollPhysics,
     Key? key,
   }) : super(key: key);
 
@@ -153,6 +157,7 @@ class OneDayCalendarView extends StatelessWidget {
             shouldStickAllDayEvents: shouldStickAllDayEvents,
             isPullToRefreshEnabled: isPullToRefreshEnabled,
             isSwipeEnabled: isSwipeEnabled,
+            singleDayScrollPhysics: scrollPhysics,
           ),
         );
       }),

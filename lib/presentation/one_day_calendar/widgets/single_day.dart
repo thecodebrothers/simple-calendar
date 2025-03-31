@@ -37,6 +37,7 @@ class SingleDay extends StatefulWidget {
   final bool shouldStickAllDayEvents;
   final bool isPullToRefreshEnabled;
   final bool isSwipeEnabled;
+  final ScrollPhysics? singleDayScrollPhysics;
 
   const SingleDay({
     required this.onChanged,
@@ -56,6 +57,7 @@ class SingleDay extends StatefulWidget {
     this.dayAfterTomorrowDayLabel,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.singleDayScrollPhysics,
     Key? key,
   }) : super(key: key);
 
@@ -101,8 +103,8 @@ class _SingleDayState extends State<SingleDay> {
         : state.dayWithEvents.allDaysEvents.length.toDouble());
 
     return CustomScrollView(
-
       controller: !widget.isSwipeEnabled ? widget.scrollController : null,
+      physics: widget.singleDayScrollPhysics,
       slivers: [
         if (widget.calendarSettings.isDaySwitcherPinned)
           SliverPersistentHeader(
@@ -216,6 +218,8 @@ class _SingleDayState extends State<SingleDay> {
         date: state.date,
         child: child,
         scrollController: widget.scrollController,
+        scrollPhysics: widget.singleDayScrollPhysics,
+
         onChanged: (offset) {
           final newDate = state.date.add(Duration(days: offset));
           widget.onChanged?.call(newDate);

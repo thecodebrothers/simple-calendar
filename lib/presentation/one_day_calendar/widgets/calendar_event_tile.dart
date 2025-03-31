@@ -86,7 +86,8 @@ class CalendarEventTile extends StatelessWidget {
             child: InkWell(
               onTap: action,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: calendarSettings.eventTileAligment ??
+                    CrossAxisAlignment.center,
                 children: [
                   if (calculatedRowWidth > minWidth)
                     SizedBox(width: calendarSettings.iconSpacingFromText),

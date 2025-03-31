@@ -73,6 +73,8 @@ class CalendarSettings {
 
   final bool flexibleHoursMode;
 
+  final CrossAxisAlignment? eventTileAligment;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
@@ -108,6 +110,7 @@ class CalendarSettings {
     this.minDay,
     this.maxDay,
     this.flexibleHoursMode = false,
+    this.eventTileAligment,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
