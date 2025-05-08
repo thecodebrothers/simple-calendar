@@ -182,6 +182,7 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
       onDragCompleted: widget.onDragCompleted,
       onDragUpdate: widget.onDragUpdate,
       shouldStickAllDayEvents: widget.shouldStickAllDayEvents,
+      onTap: widget.onTap,
     );
   }
 }
