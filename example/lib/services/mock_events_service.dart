@@ -25,7 +25,8 @@ class MockEventsService {
 
     return _events
         .where((element) =>
-            element.eventStart.isAfter(date.dateOnly()) &&
+            (element.eventStart.isAfter(date.dateOnly()) ||
+                element.eventStart == date.dateOnly()) &&
             element.eventStart
                 .isBefore(date.dateOnly().add(const Duration(days: 1))))
         .toList();
@@ -55,6 +56,20 @@ class MockEventsService {
         name: 'Event 1',
         eventStart: _today.add(Duration(hours: 1)),
         eventEnd: _today.add(Duration(hours: 5)),
+        isAllDay: true);
+
+    final todayEvent7 = EventItem(
+        id: 7,
+        name: 'Event 7',
+        eventStart: _today.add(Duration(hours: 6)),
+        eventEnd: _today.add(Duration(hours: 7)),
+        isAllDay: true);
+
+    final todayEvent8 = EventItem(
+        id: 7,
+        name: 'Event 8',
+        eventStart: _tomorrow.add(Duration(hours: 6)),
+        eventEnd: _tomorrow.add(Duration(hours: 7)),
         isAllDay: true);
 
     final todayEvent2 = EventItem(
@@ -104,6 +119,8 @@ class MockEventsService {
       yesterdayEvent2,
       tomorrowEvent1,
       tomorrowEvent2,
+      todayEvent7,
+      todayEvent8,
     ]);
   }
 }

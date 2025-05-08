@@ -68,6 +68,9 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Called when user starts dragging event
   final Function()? onDragStarted;
 
+  /// Whether to keep list of whole day events always visible
+  final bool shouldStickAllDayEvents;
+
   const MultipleDaysCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -82,6 +85,7 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.onDragUpdate,
     this.onDragStarted,
     this.onDayChanged,
+    this.shouldStickAllDayEvents = false,
     Key? key,
   }) : super(key: key);
 
@@ -177,6 +181,8 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
       onDragStarted: widget.onDragStarted,
       onDragCompleted: widget.onDragCompleted,
       onDragUpdate: widget.onDragUpdate,
+      shouldStickAllDayEvents: widget.shouldStickAllDayEvents,
+      onTap: widget.onTap,
     );
   }
 }
