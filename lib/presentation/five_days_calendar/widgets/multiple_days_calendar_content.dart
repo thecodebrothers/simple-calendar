@@ -1,16 +1,16 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/multiple_days_calendar_cubit.dart';
 import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/constants/constants.dart';
-import 'package:simple_calendar/presentation/models/day_with_single_multiple_items.dart';
+import 'package:simple_calendar/presentation/five_days_calendar/widgets/multiple_days_day_column.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_date.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
 
 class MultipleDaysCalendarContent extends StatelessWidget {
   const MultipleDaysCalendarContent({
@@ -24,6 +24,7 @@ class MultipleDaysCalendarContent extends StatelessWidget {
     this.onDragCompleted,
     this.onDragUpdate,
     this.onDragStarted,
+    this.shouldStickAllDayEvents = false,
     super.key,
   });
 
@@ -37,6 +38,7 @@ class MultipleDaysCalendarContent extends StatelessWidget {
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(DragUpdateDetails details, SingleEvent object)? onDragUpdate;
   final Function()? onDragStarted;
+  final bool shouldStickAllDayEvents;
 
   @override
   Widget build(BuildContext context) {
@@ -58,65 +60,44 @@ class MultipleDaysCalendarContent extends StatelessWidget {
                 : null,
             onScaleEnd: (details) =>
                 context.read<ScaleRowHeightCubit>().onScaleEnd(),
-            child: SingleChildScrollView(
+            child: CustomScrollView(
               controller: scrollController,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Hours(
-                    rowHeight: rowHeight,
-                    calendarSettings: calendarSettings,
-                    topPadding: kDayNameHeight,
+              slivers: [
+                SliverCrossAxisGroup(slivers: [
+                  SliverConstrainedCrossAxis(
+                    maxExtent: kHourCellWidth + kHourCellSpaceRight,
+                    sliver: SliverToBoxAdapter(
+                      child: Hours(
+                        rowHeight: rowHeight,
+                        calendarSettings: calendarSettings,
+                        topPadding: kDayNameHeight +
+                            maxNumberOfWholeDayTasks *
+                                calendarSettings.allDayEventHeight,
+                      ),
+                    ),
                   ),
                   ...calendarState.daysWithEvents
-                      .map((e) => _buildItemColumn(
-                          e, maxNumberOfWholeDayTasks, rowHeight))
+                      .map((e) => MultipleDaysDayColumn(
+                            item: e,
+                            maxNumberOfWholeDayTasks: maxNumberOfWholeDayTasks,
+                            rowHeight: rowHeight,
+                            rowWidth: rowWidth,
+                            calendarSettings: calendarSettings,
+                            locale: locale,
+                            onTap: onTap,
+                            onLongPress: onLongPress,
+                            onDragCompleted: onDragCompleted,
+                            onDragUpdate: onDragUpdate,
+                            onDragStarted: onDragStarted,
+                            shouldStickAllDayEvents: shouldStickAllDayEvents,
+                          ))
                       .toList(),
-                ],
-              ),
+                ]),
+              ],
             ),
           );
         },
       ),
-    );
-  }
-
-  Widget _buildItemColumn(
-    DayWithSingleAndMultipleItems e,
-    int maxNumberOfWholeDayTasks,
-    double rowHeight,
-  ) {
-    final calendarKey = GlobalKey();
-    return Column(
-      children: [
-        SizedBox(
-          width: rowWidth,
-          child: SingleDayDate(
-            date: e.date,
-            locale: locale,
-            calendarSettings: calendarSettings,
-          ),
-        ),
-        SizedBox(
-          width: rowWidth,
-          height: (calendarSettings.endHour - calendarSettings.startHour) *
-                  rowHeight +
-              maxNumberOfWholeDayTasks * rowHeight,
-          child: SingleDayTimelineWithEvents(
-            rowHeight: rowHeight,
-            onLongPress: onLongPress,
-            key: calendarKey,
-            onDragStarted: onDragStarted,
-            calendarKey: calendarKey,
-            date: e.date,
-            multipleEvents: e.multipleEvents,
-            action: (event) => onTap?.call(event),
-            calendarSettings: calendarSettings,
-            onDragCompleted: onDragCompleted,
-            onDragUpdate: onDragUpdate,
-          ),
-        ),
-      ],
     );
   }
 }

@@ -4,14 +4,6 @@ import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_event.dart';
 
 class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
-  final CalendarSettings calendarSettings;
-  final List<SingleEvent> events;
-  final Function(SingleEvent)? onEventTap;
-  final double minExtent;
-  final double maxExtent;
-  final bool isExpanded;
-  final Function(bool) updateCallback;
-
   AllDayPersistentHeader({
     required this.calendarSettings,
     required this.events,
@@ -20,7 +12,17 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
     required this.maxExtent,
     required this.isExpanded,
     required this.updateCallback,
+    this.showExpandButton = true,
   });
+
+  final CalendarSettings calendarSettings;
+  final List<SingleEvent> events;
+  final Function(SingleEvent)? onEventTap;
+  final double minExtent;
+  final double maxExtent;
+  final bool isExpanded;
+  final Function(bool) updateCallback;
+  final bool showExpandButton;
 
   @override
   Widget build(
@@ -70,39 +72,41 @@ class AllDayPersistentHeader extends SliverPersistentHeaderDelegate {
                 action: () => onEventTap?.call(displayableEvents[i]),
               ),
             ),
-          !isExpanded
-              ? InkWell(
-                  onTap: () => updateCallback.call(true),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'jeszcze ${events.length - displayableEvents.length}',
-                        style: calendarSettings.expandableTextButtonStyle,
+          showExpandButton
+              ? !isExpanded
+                  ? InkWell(
+                      onTap: () => updateCallback.call(true),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'jeszcze ${events.length - displayableEvents.length}',
+                            style: calendarSettings.expandableTextButtonStyle,
+                          ),
+                          Icon(
+                            Icons.expand_more,
+                            color: calendarSettings.expandableIconColor,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        Icons.expand_more,
-                        color: calendarSettings.expandableIconColor,
+                    )
+                  : InkWell(
+                      onTap: () => updateCallback.call(false),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Ukryj',
+                            style: calendarSettings.expandableTextButtonStyle,
+                          ),
+                          Icon(
+                            Icons.expand_less,
+                            color: calendarSettings.expandableIconColor,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-              : InkWell(
-                  onTap: () => updateCallback.call(false),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Ukryj',
-                        style: calendarSettings.expandableTextButtonStyle,
-                      ),
-                      Icon(
-                        Icons.expand_less,
-                        color: calendarSettings.expandableIconColor,
-                      ),
-                    ],
-                  ),
-                ),
+                    )
+              : SizedBox.shrink(),
         ],
       ),
     );
