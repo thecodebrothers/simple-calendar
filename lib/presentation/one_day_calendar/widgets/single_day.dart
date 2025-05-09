@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
-import 'package:simple_calendar/constants/constants.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
@@ -67,25 +66,33 @@ class _SingleDayState extends State<SingleDay> {
             controller: widget.scrollController,
             child: Row(children: [
               Hours(
-                  numberOfConstantsTasks: state.dayWithEvents.allDaysEvents.length,
+                  numberOfConstantsTasks:
+                      state.dayWithEvents.allDaysEvents.length,
                   calendarSettings: widget.calendarSettings),
               Expanded(
                 child: SizedBox(
-                  height: (widget.calendarSettings.endHour - widget.calendarSettings.startHour) *
+                  height: (widget.calendarSettings.endHour -
+                              widget.calendarSettings.startHour) *
                           widget.calendarSettings.rowHeight +
-                      state.dayWithEvents.allDaysEvents.length * widget.calendarSettings.rowHeight,
+                      state.dayWithEvents.allDaysEvents.length *
+                          widget.calendarSettings.rowHeight,
                   child: GestureDetector(
                     onLongPressEnd: (details) {
                       final date = state.date;
-                      widget.onLongPress(
-                          DateTime(date.year, date.month, date.day, (details.localPosition.dy.toInt() +
-                              (widget.calendarSettings.startHour * 60)) ~/ 60));
+                      widget.onLongPress(DateTime(
+                          date.year,
+                          date.month,
+                          date.day,
+                          (details.localPosition.dy.toInt() +
+                                  (widget.calendarSettings.startHour * 60)) ~/
+                              60));
                     },
                     child: SingleDayTimelineWithEvents(
                       multipleEvents: state.dayWithEvents.multipleEvents,
                       allDayEvents: state.dayWithEvents.allDaysEvents,
                       date: state.date,
-                      maxNumberOfWholeDayTasks: state.dayWithEvents.allDaysEvents.length,
+                      maxNumberOfWholeDayTasks:
+                          state.dayWithEvents.allDaysEvents.length,
                       action: (item) => widget.onEventTap(item),
                       calendarSettings: widget.calendarSettings,
                     ),
