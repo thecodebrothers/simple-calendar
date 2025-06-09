@@ -98,10 +98,6 @@ class _SingleDayState extends State<SingleDay> {
     BuildContext context,
     OneDayCalendarChanged state,
   ) {
-    final height = (!_isExpanded && state.dayWithEvents.allDaysEvents.length > 2
-        ? 3
-        : state.dayWithEvents.allDaysEvents.length.toDouble());
-
     return CustomScrollView(
       controller: !widget.isSwipeEnabled ? widget.scrollController : null,
       physics: widget.singleDayScrollPhysics,
@@ -116,17 +112,15 @@ class _SingleDayState extends State<SingleDay> {
         if (state.dayWithEvents.allDaysEvents.isNotEmpty)
           SliverPersistentHeader(
             delegate: AllDayPersistentHeader(
-              updateCallback: (val) => setState(() => _isExpanded = val),
-              isExpanded: _isExpanded,
               calendarSettings: widget.calendarSettings,
               events: state.dayWithEvents.allDaysEvents,
               onEventTap: (event) => widget.onEventTap?.call(event),
-              minExtent: (widget.calendarSettings.allDayEventHeight * height),
-              maxExtent: (widget.calendarSettings.allDayEventHeight * height),
+              isExpanded: _isExpanded,
+              updateCallback: (val) => setState(() => _isExpanded = val),
             ),
             pinned: widget.shouldStickAllDayEvents,
           ),
-        SliverToBoxAdapter(child: SizedBox(height: 12)),
+        SliverToBoxAdapter(child: const SizedBox(height: 12)),
         if (widget.isSwipeEnabled)
           SliverFillRemaining(child: _buildShortEvents(context, state))
         else
@@ -219,7 +213,6 @@ class _SingleDayState extends State<SingleDay> {
         child: child,
         scrollController: widget.scrollController,
         scrollPhysics: widget.singleDayScrollPhysics,
-
         onChanged: (offset) {
           final newDate = state.date.add(Duration(days: offset));
           widget.onChanged?.call(newDate);
