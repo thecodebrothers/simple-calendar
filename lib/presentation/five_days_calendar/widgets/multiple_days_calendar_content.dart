@@ -1,16 +1,14 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/multiple_days_calendar_cubit.dart';
 import 'package:simple_calendar/bloc/scale_row_height_cubit.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/constants/constants.dart';
-import 'package:simple_calendar/presentation/models/day_with_single_multiple_items.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_column.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_date.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/whole_day_event.dart';
 
 class MultipleDaysCalendarContent extends StatelessWidget {
   const MultipleDaysCalendarContent({
@@ -50,88 +48,123 @@ class MultipleDaysCalendarContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxNumberOfWholeDayTasks = calendarState.daysWithEvents
-        .map((e) => e.allDaysEvents.length)
-        .reduce(max);
     return Expanded(
-      child: BlocBuilder<ScaleRowHeightCubit, ScaleHeightState>(
-        builder: (context, rowHeightState) {
-          final rowHeight = rowHeightState.height;
-          return GestureDetector(
-            onScaleUpdate: calendarSettings.zoomEnabled
-                ? (details) {
-                    final cubit = context.read<ScaleRowHeightCubit>();
-                    cubit.setRowHeight(
-                      details.scale * cubit.state.baseHeight,
-                    );
-                  }
-                : null,
-            onScaleEnd: (details) =>
-                context.read<ScaleRowHeightCubit>().onScaleEnd(),
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Hours(
-                    rowHeight: rowHeight,
-                    calendarSettings: calendarSettings,
-                    topPadding: kDayNameHeight,
-                  ),
-                  ...calendarState.daysWithEvents
-                      .map((e) => _buildItemColumn(
-                          e, maxNumberOfWholeDayTasks, rowHeight))
-                      .toList(),
-                ],
-              ),
-            ),
-          );
-        },
+      child: SingleChildScrollView(
+        controller: scrollController,
+        child: Column(
+          children: [
+            _buildDates(),
+            _buildWholeDayEvents(),
+            _buildShortEvents(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildItemColumn(
-    DayWithSingleAndMultipleItems e,
-    int maxNumberOfWholeDayTasks,
-    double rowHeight,
-  ) {
-    final calendarKey = GlobalKey();
-    return Column(
+  Widget _buildDates() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: rowWidth,
-          child: SingleDayDate(
-            date: e.date,
-            locale: locale,
-            calendarSettings: calendarSettings,
-            beforeYesterdayDayLabel: beforeYesterdayDayLabel,
-            yesterdayDayLabel: yesterdayDayLabel,
-            todayDayLabel: todayDayLabel,
-            tomorrowDayLabel: tomorrowDayLabel,
-            dayAfterTomorrowDayLabel: dayAfterTomorrowDayLabel,
-          ),
-        ),
-        SizedBox(
-          width: rowWidth,
-          height: (calendarSettings.endHour - calendarSettings.startHour) *
-                  rowHeight +
-              maxNumberOfWholeDayTasks * rowHeight,
-          child: SingleDayTimelineWithEvents(
-            rowHeight: rowHeight,
-            onLongPress: onLongPress,
-            key: calendarKey,
-            onDragStarted: onDragStarted,
-            calendarKey: calendarKey,
-            date: e.date,
-            multipleEvents: e.multipleEvents,
-            action: (event) => onTap?.call(event),
-            calendarSettings: calendarSettings,
-            onDragCompleted: onDragCompleted,
-            onDragUpdate: onDragUpdate,
-          ),
-        ),
+        SizedBox(width: kHourCellWidth),
+        ...calendarState.daysWithEvents.map((e) {
+          return SizedBox(
+            width: rowWidth,
+            child: SingleDayDate(
+              date: e.date,
+              locale: locale,
+              calendarSettings: calendarSettings,
+              beforeYesterdayDayLabel: beforeYesterdayDayLabel,
+              yesterdayDayLabel: yesterdayDayLabel,
+              todayDayLabel: todayDayLabel,
+              tomorrowDayLabel: tomorrowDayLabel,
+              dayAfterTomorrowDayLabel: dayAfterTomorrowDayLabel,
+            ),
+          );
+        }).toList(),
       ],
+    );
+  }
+
+  Widget _buildWholeDayEvents() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(width: kHourCellWidth),
+        ...calendarState.daysWithEvents.map((day) {
+          return SizedBox(
+            width: rowWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: day.allDaysEvents
+                  .map(
+                    (event) => SizedBox(
+                      height: calendarSettings.allDayEventHeight,
+                      child: WholeEventTile(
+                        calendarSettings: calendarSettings,
+                        event: event,
+                        rowWidth: rowWidth,
+                        action: () => onTap?.call(event),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  Widget _buildShortEvents() {
+    return BlocBuilder<ScaleRowHeightCubit, ScaleHeightState>(
+      builder: (context, rowHeightState) {
+        final rowHeight = rowHeightState.height;
+        return GestureDetector(
+          onScaleUpdate: calendarSettings.zoomEnabled
+              ? (details) {
+                  final cubit = context.read<ScaleRowHeightCubit>();
+                  cubit.setRowHeight(
+                    details.scale * cubit.state.baseHeight,
+                  );
+                }
+              : null,
+          onScaleEnd: (details) =>
+              context.read<ScaleRowHeightCubit>().onScaleEnd(),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hours(
+                rowHeight: rowHeight,
+                calendarSettings: calendarSettings,
+                topPadding: kDayNameHeight,
+              ),
+              ...calendarState.daysWithEvents.map((e) {
+                final calendarKey = GlobalKey();
+                return SizedBox(
+                  width: rowWidth,
+                  height:
+                      (calendarSettings.endHour - calendarSettings.startHour) *
+                          rowHeight,
+                  child: SingleDayTimelineWithEvents(
+                    rowHeight: rowHeight,
+                    onLongPress: onLongPress,
+                    key: calendarKey,
+                    onDragStarted: onDragStarted,
+                    calendarKey: calendarKey,
+                    date: e.date,
+                    multipleEvents: e.multipleEvents,
+                    action: (event) => onTap?.call(event),
+                    calendarSettings: calendarSettings,
+                    onDragCompleted: onDragCompleted,
+                    onDragUpdate: onDragUpdate,
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
