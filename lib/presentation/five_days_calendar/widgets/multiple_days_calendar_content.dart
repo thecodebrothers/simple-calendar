@@ -24,6 +24,11 @@ class MultipleDaysCalendarContent extends StatelessWidget {
     this.onDragCompleted,
     this.onDragUpdate,
     this.onDragStarted,
+    this.beforeYesterdayDayLabel,
+    this.yesterdayDayLabel,
+    this.todayDayLabel,
+    this.tomorrowDayLabel,
+    this.dayAfterTomorrowDayLabel,
     super.key,
   });
 
@@ -37,6 +42,11 @@ class MultipleDaysCalendarContent extends StatelessWidget {
   final Function(int minutes, SingleEvent object)? onDragCompleted;
   final Function(DragUpdateDetails details, SingleEvent object)? onDragUpdate;
   final Function()? onDragStarted;
+  final String Function(BuildContext)? beforeYesterdayDayLabel;
+  final String Function(BuildContext)? yesterdayDayLabel;
+  final String Function(BuildContext)? todayDayLabel;
+  final String Function(BuildContext)? tomorrowDayLabel;
+  final String Function(BuildContext)? dayAfterTomorrowDayLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +105,11 @@ class MultipleDaysCalendarContent extends StatelessWidget {
             date: e.date,
             locale: locale,
             calendarSettings: calendarSettings,
+            beforeYesterdayDayLabel: beforeYesterdayDayLabel,
+            yesterdayDayLabel: yesterdayDayLabel,
+            todayDayLabel: todayDayLabel,
+            tomorrowDayLabel: tomorrowDayLabel,
+            dayAfterTomorrowDayLabel: dayAfterTomorrowDayLabel,
           ),
         ),
         SizedBox(

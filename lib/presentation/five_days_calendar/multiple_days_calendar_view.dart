@@ -68,6 +68,21 @@ class MultipleDaysCalendarView extends StatefulWidget {
   /// Called when user starts dragging event
   final Function()? onDragStarted;
 
+  /// Optional label after day before yesterday date, ex. 22 May, `label`
+  final String Function(BuildContext)? beforeYesterdayDayLabel;
+
+  /// Optional label after yesterday date, ex. 23 May, `label`
+  final String Function(BuildContext)? yesterdayDayLabel;
+
+  /// Optional label after today date, ex. 24 May, `label`
+  final String Function(BuildContext)? todayDayLabel;
+
+  /// Optional label after tomorrow date, ex. 25 May, `label`
+  final String Function(BuildContext)? tomorrowDayLabel;
+
+  /// Optional label after day after tomorrow date, ex. 26 May, `label`
+  final String Function(BuildContext)? dayAfterTomorrowDayLabel;
+
   const MultipleDaysCalendarView({
     required this.scrollController,
     required this.calendarEventsRepository,
@@ -82,6 +97,11 @@ class MultipleDaysCalendarView extends StatefulWidget {
     this.onDragUpdate,
     this.onDragStarted,
     this.onDayChanged,
+    this.beforeYesterdayDayLabel,
+    this.yesterdayDayLabel,
+    this.todayDayLabel,
+    this.tomorrowDayLabel,
+    this.dayAfterTomorrowDayLabel,
     Key? key,
   }) : super(key: key);
 
@@ -173,10 +193,16 @@ class _MultipleDaysCalendarViewState extends State<MultipleDaysCalendarView> {
       scrollController: widget.scrollController,
       calendarSettings: widget.calendarSettings,
       locale: widget.locale,
+      onTap: widget.onTap,
       onLongPress: widget.onLongPress,
       onDragStarted: widget.onDragStarted,
       onDragCompleted: widget.onDragCompleted,
       onDragUpdate: widget.onDragUpdate,
+      beforeYesterdayDayLabel: widget.beforeYesterdayDayLabel,
+      yesterdayDayLabel: widget.yesterdayDayLabel,
+      todayDayLabel: widget.todayDayLabel,
+      tomorrowDayLabel: widget.tomorrowDayLabel,
+      dayAfterTomorrowDayLabel: widget.dayAfterTomorrowDayLabel,
     );
   }
 }
