@@ -30,6 +30,9 @@ class MonthTile extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            mainAxisSize: calendarSettings.areMonthTileDotsOnTheRight
+                ? MainAxisSize.max
+                : MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipOval(
