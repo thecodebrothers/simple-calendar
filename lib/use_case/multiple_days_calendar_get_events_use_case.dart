@@ -41,6 +41,7 @@ class MultipleDaysCalendarGetEventsUseCase {
       }
       return SingleCalendarEventInternal(
         singleLine: element.singleLine,
+        secondLine: element.secondLine,
         eventEnd: element.eventEnd,
         eventStart: element.eventStart,
         id: element.id,

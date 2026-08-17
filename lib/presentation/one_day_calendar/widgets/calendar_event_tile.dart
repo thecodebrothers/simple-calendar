@@ -124,6 +124,7 @@ class CalendarEventTile extends StatelessWidget {
             event.topLeftLine!,
             maxLines: 1,
             overflow: TextOverflow.fade,
+            softWrap: false,
             style: calendarSettings.topLeftLineTileTextStyle,
           ),
         ),
@@ -133,7 +134,10 @@ class CalendarEventTile extends StatelessWidget {
         child: Text(
           event.singleLine,
           maxLines: event.secondLine == null ? 3 : 1,
-          overflow: TextOverflow.fade,
+          overflow: event.secondLine == null
+              ? TextOverflow.ellipsis
+              : TextOverflow.fade,
+          softWrap: false,
           style: calendarSettings.firstLineTileTextStyle,
         ),
       ),
@@ -144,6 +148,7 @@ class CalendarEventTile extends StatelessWidget {
             event.secondLine!,
             maxLines: 1,
             overflow: TextOverflow.fade,
+            softWrap: false,
             style: calendarSettings.secondLineTileTextStyle,
           ),
         ),
@@ -156,6 +161,7 @@ class CalendarEventTile extends StatelessWidget {
             event.bottomRightLine!,
             maxLines: 1,
             overflow: TextOverflow.fade,
+            softWrap: false,
             style: calendarSettings.bottomRightLineTileTextStyle,
           ),
         ),
