@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
+import 'package:simple_calendar/extensions/datetime_extension.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_tile_image.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/draggable_tile.dart';
@@ -102,8 +104,12 @@ class CalendarEventTile extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _columnChildren(),
+                      mainAxisAlignment: _isSingleCellEvent
+                          ? MainAxisAlignment.center
+                          : MainAxisAlignment.start,
+                      children: _columnChildren(
+                        addTopPadding: !_isSingleCellEvent,
+                      ),
                     ),
                   ),
                   if (calculatedRowWidth > minWidth)
@@ -128,8 +134,11 @@ class CalendarEventTile extends StatelessWidget {
     );
   }
 
-  List<Widget> _columnChildren() {
+  bool get _isSingleCellEvent => event.eventEnd - event.eventStart <= 60;
+
+  List<Widget> _columnChildren({required bool addTopPadding}) {
     return [
+      if (addTopPadding) const SizedBox(height: 8),
       if (event.topLeftLine != null) ...[
         Align(
           alignment: Alignment.topLeft,
@@ -150,6 +159,10 @@ class CalendarEventTile extends StatelessWidget {
           style: calendarSettings.firstLineTileTextStyle,
         ),
       ),
+      if (calendarSettings.showDateRangeInTile) ...[
+        const SizedBox(height: 4),
+        ..._dateRangeChildren(),
+      ],
       if (event.secondLine != null) ...[
         const SizedBox(height: 4),
         Flexible(
@@ -173,6 +186,40 @@ class CalendarEventTile extends StatelessWidget {
           ),
         ),
       ]
+    ];
+  }
+
+  List<Widget> _dateRangeChildren() {
+    final start = event.eventStartDisplay;
+    final end = event.eventEndDisplay;
+    final dateFormat = DateFormat('dd.MM.yyyy');
+
+    if (start.isSameDate(end)) {
+      final timeFormat = DateFormat('HH:mm');
+      return [
+        Text(
+          '${dateFormat.format(start)} ${timeFormat.format(start)}–${timeFormat.format(end)}',
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+          style: calendarSettings.dateRangeTileTextStyle,
+        ),
+      ];
+    }
+
+    final timeFormat = DateFormat('HH:mm');
+    return [
+      Text(
+        '${dateFormat.format(start)} g.${timeFormat.format(start)}',
+        maxLines: 1,
+        overflow: TextOverflow.fade,
+        style: calendarSettings.dateRangeTileTextStyle,
+      ),
+      Text(
+        '${dateFormat.format(end)} g.${timeFormat.format(end)}',
+        maxLines: 1,
+        overflow: TextOverflow.fade,
+        style: calendarSettings.dateRangeTileTextStyle,
+      ),
     ];
   }
 

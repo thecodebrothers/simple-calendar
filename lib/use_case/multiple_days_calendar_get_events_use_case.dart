@@ -43,6 +43,8 @@ class MultipleDaysCalendarGetEventsUseCase {
         singleLine: element.singleLine,
         eventEnd: element.eventEnd,
         eventStart: element.eventStart,
+        eventStartDisplay: element.effectiveEventStartDisplay,
+        eventEndDisplay: element.effectiveEventEndDisplay,
         id: element.id,
         isAllDay: element.isAllDay,
         networkIconName: element.networkIconName,

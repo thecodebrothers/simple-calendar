@@ -8,6 +8,10 @@ class SingleEvent extends Equatable {
   final String? secondLine;
   final int eventStart;
   final int eventEnd;
+  final DateTime eventStartDateTime;
+  final DateTime eventEndDateTime;
+  final DateTime eventStartDisplay;
+  final DateTime eventEndDisplay;
   final String localIconName;
   final String networkIconName;
   final Color iconBackgroundColor;
@@ -24,6 +28,10 @@ class SingleEvent extends Equatable {
     required this.singleLine,
     required this.eventStart,
     required this.eventEnd,
+    required this.eventStartDateTime,
+    required this.eventEndDateTime,
+    required this.eventStartDisplay,
+    required this.eventEndDisplay,
     required this.localIconName,
     required this.networkIconName,
     required this.iconBackgroundColor,
@@ -43,6 +51,10 @@ class SingleEvent extends Equatable {
         secondLine = element.secondLine,
         eventStart = element.eventStart.toMinutes(),
         eventEnd = element.eventEnd.toMinutes(),
+        eventStartDateTime = element.eventStart,
+        eventEndDateTime = element.eventEnd,
+        eventStartDisplay = element.effectiveEventStartDisplay,
+        eventEndDisplay = element.effectiveEventEndDisplay,
         iconBackgroundColor = element.iconBackgroundColor,
         localIconName = element.localIconName,
         networkIconName = element.networkIconName,
@@ -61,6 +73,10 @@ class SingleEvent extends Equatable {
         secondLine,
         eventStart,
         eventEnd,
+        eventStartDateTime,
+        eventEndDateTime,
+        eventStartDisplay,
+        eventEndDisplay,
         localIconName,
         networkIconName,
         iconBackgroundColor,
