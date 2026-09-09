@@ -28,6 +28,8 @@
 .packages
 build/
 .metadata
-.fvm/flutter_sdk
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# FVM Version Cache
+.fvm/

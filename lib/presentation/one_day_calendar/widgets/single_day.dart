@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_calendar/bloc/one_day_calendar_cubit.dart';
@@ -9,7 +11,10 @@ import 'package:simple_calendar/presentation/one_day_calendar/widgets/hours_colu
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/one_day_navigation_bar.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_persistent_header.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_timeline_with_events_flexible.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/swapp_able_wrapper.dart';
+
+import '../../models/same_start_time_events_container.dart';
 
 class SingleDay extends StatefulWidget {
   final Function(DateTime)? onChanged;
@@ -32,6 +37,7 @@ class SingleDay extends StatefulWidget {
   final bool shouldStickAllDayEvents;
   final bool isPullToRefreshEnabled;
   final bool isSwipeEnabled;
+  final ScrollPhysics? singleDayScrollPhysics;
 
   const SingleDay({
     required this.onChanged,
@@ -51,6 +57,7 @@ class SingleDay extends StatefulWidget {
     this.dayAfterTomorrowDayLabel,
     this.onDragCompleted,
     this.onDragUpdate,
+    this.singleDayScrollPhysics,
     Key? key,
   }) : super(key: key);
 
@@ -91,12 +98,9 @@ class _SingleDayState extends State<SingleDay> {
     BuildContext context,
     OneDayCalendarChanged state,
   ) {
-    final height = (!_isExpanded && state.dayWithEvents.allDaysEvents.length > 2
-        ? 3
-        : state.dayWithEvents.allDaysEvents.length.toDouble());
-
     return CustomScrollView(
       controller: !widget.isSwipeEnabled ? widget.scrollController : null,
+      physics: widget.singleDayScrollPhysics,
       slivers: [
         if (widget.calendarSettings.isDaySwitcherPinned)
           SliverPersistentHeader(
@@ -108,17 +112,15 @@ class _SingleDayState extends State<SingleDay> {
         if (state.dayWithEvents.allDaysEvents.isNotEmpty)
           SliverPersistentHeader(
             delegate: AllDayPersistentHeader(
-              updateCallback: (val) => setState(() => _isExpanded = val),
-              isExpanded: _isExpanded,
               calendarSettings: widget.calendarSettings,
               events: state.dayWithEvents.allDaysEvents,
               onEventTap: (event) => widget.onEventTap?.call(event),
-              minExtent: (widget.calendarSettings.allDayEventHeight * height),
-              maxExtent: (widget.calendarSettings.allDayEventHeight * height),
+              isExpanded: _isExpanded,
+              updateCallback: (val) => setState(() => _isExpanded = val),
             ),
             pinned: widget.shouldStickAllDayEvents,
           ),
-        SliverToBoxAdapter(child: SizedBox(height: 12)),
+        SliverToBoxAdapter(child: const SizedBox(height: 12)),
         if (widget.isSwipeEnabled)
           SliverFillRemaining(child: _buildShortEvents(context, state))
         else
@@ -175,24 +177,28 @@ class _SingleDayState extends State<SingleDay> {
               Hours(
                 rowHeight: rowHeight,
                 calendarSettings: widget.calendarSettings,
+                itemsGroupedByTime: state.dayGroupedByStartTime,
               ),
               Expanded(
-                child: SizedBox(
-                  height: (widget.calendarSettings.endHour -
-                          widget.calendarSettings.startHour) *
-                      rowHeight,
-                  child: SingleDayTimelineWithEvents(
-                    rowHeight: rowHeight,
-                    onDragStarted: widget.onDragStarted,
-                    onLongPress: widget.onLongPress,
-                    multipleEvents: state.dayWithEvents.multipleEvents,
-                    date: state.date,
-                    action: (item) => widget.onEventTap?.call(item),
-                    calendarSettings: widget.calendarSettings,
-                    onDragCompleted: widget.onDragCompleted,
-                    onDragUpdate: widget.onDragUpdate,
-                  ),
-                ),
+                child: widget.calendarSettings.flexibleHoursMode &&
+                        state.dayGroupedByStartTime != null
+                    ? _getContentForFlexibleMode(state, rowHeight)
+                    : SizedBox(
+                        height: (widget.calendarSettings.endHour -
+                                widget.calendarSettings.startHour) *
+                            rowHeight,
+                        child: SingleDayTimelineWithEvents(
+                          rowHeight: rowHeight,
+                          onDragStarted: widget.onDragStarted,
+                          onLongPress: widget.onLongPress,
+                          multipleEvents: state.dayWithEvents.multipleEvents,
+                          date: state.date,
+                          action: (item) => widget.onEventTap?.call(item),
+                          calendarSettings: widget.calendarSettings,
+                          onDragCompleted: widget.onDragCompleted,
+                          onDragUpdate: widget.onDragUpdate,
+                        ),
+                      ),
               ),
             ],
           ),
@@ -206,6 +212,7 @@ class _SingleDayState extends State<SingleDay> {
         date: state.date,
         child: child,
         scrollController: widget.scrollController,
+        scrollPhysics: widget.singleDayScrollPhysics,
         onChanged: (offset) {
           final newDate = state.date.add(Duration(days: offset));
           widget.onChanged?.call(newDate);
@@ -214,5 +221,33 @@ class _SingleDayState extends State<SingleDay> {
     }
 
     return child;
+  }
+
+  Widget _getContentForFlexibleMode(
+    OneDayCalendarChanged state,
+    double rowHeight,
+  ) {
+    return SizedBox(
+      height: getHeightForFlexibleMode(state.dayGroupedByStartTime!, rowHeight),
+      child: SingleDayTimelineWithEventsFlexible(
+        rowHeight: rowHeight,
+        onDragStarted: widget.onDragStarted,
+        onLongPress: widget.onLongPress,
+        date: state.date,
+        action: (item) => widget.onEventTap?.call(item),
+        calendarSettings: widget.calendarSettings,
+        onDragCompleted: widget.onDragCompleted,
+        onDragUpdate: widget.onDragUpdate,
+        items: state.dayGroupedByStartTime!,
+      ),
+    );
+  }
+
+  double getHeightForFlexibleMode(
+      List<SameStartEventsGroup> itemsGroupedByTime, double rowHeight) {
+    return itemsGroupedByTime.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + rowHeight * max(1, element.events.length));
   }
 }

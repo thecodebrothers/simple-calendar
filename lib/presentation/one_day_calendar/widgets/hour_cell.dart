@@ -3,7 +3,7 @@ import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/constants/constants.dart';
 
 class CalendarHourCell extends StatelessWidget {
-  final int hour;
+  final String hour;
   final CalendarSettings calendarSettings;
   final double? height;
 
@@ -25,7 +25,7 @@ class CalendarHourCell extends StatelessWidget {
               child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
-                    '$hour:00',
+                    hour,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey.shade500,

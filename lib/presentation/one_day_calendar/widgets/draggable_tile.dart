@@ -13,6 +13,8 @@ class DraggableTile extends StatefulWidget {
   final double height;
   final double rowHeight;
   final GlobalKey calendarKey;
+  final bool flexibleMode;
+  final DateTime? Function(int rowNumber)? getDateOfDroppedRow;
   DraggableTile({
     required this.child,
     required this.onDragCompleted,
@@ -24,6 +26,8 @@ class DraggableTile extends StatefulWidget {
     required this.rowHeight,
     this.onDragStarted,
     this.onDragUpdate,
+    this.flexibleMode = false,
+    this.getDateOfDroppedRow,
   });
 
   @override
@@ -47,8 +51,19 @@ class _DraggableTileState extends State<DraggableTile> {
             details.offset.dy - _getGlobalCalendarPosition().dy;
         final rescaled = 60 / widget.rowHeight;
 
-        widget.onDragCompleted
-            ?.call((rescaled * dropPosition).toInt(), widget.data);
+        final droppedOnRowNumber = (rescaled * dropPosition).toInt() ~/ 60;
+
+        final customDateOfDroppedRow = widget.flexibleMode
+            ? (widget.getDateOfDroppedRow?.call(
+                droppedOnRowNumber,
+              ))
+            : null;
+
+        final minutes = customDateOfDroppedRow != null
+            ? customDateOfDroppedRow.hour * 60 + customDateOfDroppedRow.minute
+            : (rescaled * dropPosition).toInt();
+
+        widget.onDragCompleted?.call(minutes, widget.data);
       },
       childWhenDragging: SizedBox(
         width: widget.width,

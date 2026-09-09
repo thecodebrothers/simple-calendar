@@ -5,6 +5,7 @@ class CalendarSettings {
   final TextStyle secondLineTileTextStyle;
   final TextStyle topLeftLineTileTextStyle;
   final TextStyle bottomRightLineTileTextStyle;
+  final TextStyle dateRangeTileTextStyle;
   final double tileIconSize;
   final double iconSpacingFromText;
   final double iconBackgroundOpacity;
@@ -71,11 +72,20 @@ class CalendarSettings {
   /// If not provided [CalendarConstants.maxDate] is default.
   final DateTime? maxDay;
 
+  final bool flexibleHoursMode;
+
+  final CrossAxisAlignment? eventTileAligment;
+
+  /// shows the event's date and start/end time below the title in
+  /// one day and multiple days calendar views
+  final bool showDateRangeInTile;
+
   const CalendarSettings({
     this.firstLineTileTextStyle = const TextStyle(),
     this.secondLineTileTextStyle = const TextStyle(),
     this.topLeftLineTileTextStyle = const TextStyle(),
     this.bottomRightLineTileTextStyle = const TextStyle(),
+    this.dateRangeTileTextStyle = const TextStyle(),
     this.fiveDaysHeaderTextStyle = const TextStyle(),
     this.oneDayHeaderTextStyle = const TextStyle(),
     this.calendarCurrentMonthTileStyle = const TextStyle(),
@@ -105,6 +115,9 @@ class CalendarSettings {
     this.showImagesInWholeDayEvents = false,
     this.minDay,
     this.maxDay,
+    this.flexibleHoursMode = false,
+    this.eventTileAligment,
+    this.showDateRangeInTile = true,
   })  : assert(startHour >= 0 && startHour < 24),
         assert(endHour > 0 && endHour <= 24),
         assert(startHour < endHour);
@@ -114,6 +127,8 @@ class CalendarSettings {
     TextStyle? secondLineTileTextStyle,
     TextStyle? topLeftLineTileTextStyle,
     TextStyle? bottomRightLineTileTextStyle,
+    TextStyle? dateRangeTileTextStyle,
+    bool? showDateRangeInTile,
     double? tileIconSize,
     double? iconSpacingFromText,
     double? iconBackgroundOpacity,
@@ -153,6 +168,9 @@ class CalendarSettings {
           topLeftLineTileTextStyle ?? this.topLeftLineTileTextStyle,
       bottomRightLineTileTextStyle:
           bottomRightLineTileTextStyle ?? this.bottomRightLineTileTextStyle,
+      dateRangeTileTextStyle:
+          dateRangeTileTextStyle ?? this.dateRangeTileTextStyle,
+      showDateRangeInTile: showDateRangeInTile ?? this.showDateRangeInTile,
       tileIconSize: tileIconSize ?? this.tileIconSize,
       iconSpacingFromText: iconSpacingFromText ?? this.iconSpacingFromText,
       iconBackgroundOpacity:

@@ -10,6 +10,7 @@ class SwappAbleWrapper extends StatefulWidget {
     required this.date,
     required this.child,
     required this.scrollController,
+    required this.scrollPhysics,
     required this.onChanged,
   });
 
@@ -17,6 +18,7 @@ class SwappAbleWrapper extends StatefulWidget {
   final DateTime date;
   final Widget child;
   final ScrollController scrollController;
+  final ScrollPhysics? scrollPhysics;
   final Function(int offset)? onChanged;
 
   @override
@@ -56,6 +58,7 @@ class _SwappAbleWrapperState extends State<SwappAbleWrapper> {
       context,
       CustomScrollView(
         controller: widget.scrollController,
+        physics: widget.scrollPhysics,
         slivers: [
           SliverToBoxAdapter(
             child: widget.child,

@@ -1,14 +1,15 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_calendar/constants/calendar_settings.dart';
 import 'package:simple_calendar/extensions/datetime_extension.dart';
+import 'package:simple_calendar/presentation/models/same_start_time_events_container.dart';
 import 'package:simple_calendar/presentation/models/single_event.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/calendar_event_tile.dart';
 import 'package:simple_calendar/presentation/one_day_calendar/widgets/current_time.dart';
-import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_empty_cells.dart';
+import 'package:simple_calendar/presentation/one_day_calendar/widgets/single_day_empty_cells_flexible.dart';
 
-class SingleDayTimelineWithEvents extends StatefulWidget {
+class SingleDayTimelineWithEventsFlexible extends StatefulWidget {
   final DateTime date;
-  final List<List<SingleEvent>> multipleEvents;
   final void Function(SingleEvent) action;
   final CalendarSettings calendarSettings;
   final GlobalKey? calendarKey;
@@ -21,14 +22,15 @@ class SingleDayTimelineWithEvents extends StatefulWidget {
 
   final Function(DateTime)? onLongPress;
   final Function()? onDragStarted;
+  final List<SameStartEventsGroup> items;
 
-  const SingleDayTimelineWithEvents({
+  const SingleDayTimelineWithEventsFlexible({
     required this.date,
-    required this.multipleEvents,
     required this.action,
     required this.calendarSettings,
     required this.onLongPress,
     required this.rowHeight,
+    required this.items,
     this.calendarKey,
     this.onDragStarted,
     this.onDragCompleted,
@@ -37,12 +39,12 @@ class SingleDayTimelineWithEvents extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SingleDayTimelineWithEvents> createState() =>
-      _SingleDayTimelineWithEventsState();
+  State<SingleDayTimelineWithEventsFlexible> createState() =>
+      _SingleDayTimelineWithEventsFlexibleState();
 }
 
-class _SingleDayTimelineWithEventsState
-    extends State<SingleDayTimelineWithEvents> {
+class _SingleDayTimelineWithEventsFlexibleState
+    extends State<SingleDayTimelineWithEventsFlexible> {
   late GlobalKey calendarKey;
 
   @override
@@ -58,41 +60,51 @@ class _SingleDayTimelineWithEventsState
       builder: (BuildContext context, BoxConstraints constraints) {
         return Stack(
           children: [
-            EmptyCells(
+            EmptyCellsFlexible(
               rowHeight: widget.rowHeight,
               date: widget.date,
               calendarSettings: widget.calendarSettings,
               onLongPress: widget.onLongPress,
+              items: widget.items,
             ),
             if (widget.date.isSameDate(DateTime.now()))
               CurrentTime(
                 rowHeight: widget.rowHeight,
                 startHour: widget.calendarSettings.startHour,
               ),
-            ..._getMultiple(constraints),
+            ..._getTiles(constraints),
           ],
         );
       },
     );
   }
 
-  List<Widget> _getMultiple(BoxConstraints constraints) {
+  List<Widget> _getTiles(BoxConstraints constraints) {
     final List<Widget> widgets = [];
-    for (final events in widget.multipleEvents) {
-      for (int i = 0; i < events.length; i++) {
+    for (final group in widget.items) {
+      for (int i = 0; i < group.events.length; i++) {
+        final item = group.events[i];
         widgets.add(CalendarEventTile(
           rowHeight: widget.rowHeight,
           onDragStarted: widget.onDragStarted,
-          event: events[i],
+          event: item,
           calendarKey: calendarKey,
           rowWidth: constraints.maxWidth,
-          position: i,
-          numberOfEvents: events.length < 6 ? events.length : 5,
-          action: () => widget.action(events[i]),
+          position: 0,
+          numberOfEvents: 1,
+          action: () => widget.action(item),
           calendarSettings: widget.calendarSettings,
           date: widget.date,
           onDragCompleted: widget.onDragCompleted,
           onDragUpdate: widget.onDragUpdate,
+          flexibleMode: true,
+          rowNumberForFlexibleMode: group.countOfRowsAbove + i,
+          getDateOfDroppedRow: (rowNumber) {
+            return widget.items
+                .lastWhereOrNull(
+                    (element) => element.countOfRowsAbove < rowNumber)
+                ?.startTime;
+          },
         ));
       }
     }
